@@ -1,0 +1,17 @@
+{
+  "name": "ng-milkdown",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@milkdown/core": "^7.3.2",
+    "@milkdown/ctx": "^7.3.2",
+    "@milkdown/plugin-listener": "^7.3.2",
+    "@milkdown/preset-commonmark": "^7.3.2",
+    "@milkdown/theme-nord": "^7.3.2"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

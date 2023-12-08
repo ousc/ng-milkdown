@@ -1,0 +1,40 @@
+<div class="flex w-64">
+  <button
+    title="Undo"
+    class="flex-1 text-gray-600 text-xs bg-slate-200 px-2 py-1 hover:bg-slate-300 border border-r-2 border-r-blue-50 border-b-blue-50 hover:text-gray-900 whitespace-nowrap"
+    (mousedown)="undo($event)">
+    <span class="material-symbols-outlined">undo</span>
+  </button>
+  <button
+    title="Redo"
+    class="flex-1 text-gray-600 text-xs bg-slate-200 px-2 py-1 hover:bg-slate-300 border border-b-blue-50 hover:text-gray-900 whitespace-nowrap"
+    (mousedown)="redo($event)">
+    <span class="material-symbols-outlined">redo</span>
+  </button>
+</div>
+<div class="flex-1 flex w-64">
+  <button
+    title="Bold"
+    class="text-gray-600 text-xs bg-slate-200 px-2 py-1 hover:bg-slate-300 border border-b-blue-50 hover:text-gray-900"
+    (mousedown)="setBold($event)">
+    <span class="material-symbols-outlined">format_bold</span>
+  </button>
+  <button
+    title="Italic"
+    class="flex-1 text-gray-600 text-xs bg-slate-200 px-2 py-1 hover:bg-slate-300 border border-b-blue-50 hover:text-gray-900"
+    (mousedown)="setItalic($event)">
+    <span class="material-symbols-outlined">format_italic</span>
+  </button>
+  <button
+    title="Underline"
+    class="flex-1 text-gray-600 text-xs bg-slate-200 px-2 py-1 hover:bg-slate-300 border border-b-blue-50 hover:text-gray-900"
+    (mousedown)="strikethrough($event)">
+    <span class="material-symbols-outlined">format_strikethrough</span>
+  </button>
+  <button
+    title="Quote"
+    class="flex-1 text-gray-600 text-xs bg-slate-200 px-2 py-1 hover:bg-slate-300 border border-b-blue-50 hover:text-gray-900"
+    (mousedown)="quote($event)">
+    <span class="material-symbols-outlined">format_quote</span>
+  </button>
+</div>

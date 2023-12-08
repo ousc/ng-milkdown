@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import 'prism-themes/themes/prism-nord.css';
+@import '@milkdown/theme-nord/style.css';
+@import 'katex/dist/katex.min.css';
+
+.prose table {
+  width: calc(100% - 2rem)!important;
+}
+
+li p {
+  margin: 0!important;
+  line-height: 1.5rem!important;
+}

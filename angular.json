@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "tailwindTest": {
+    "ng-milkdown-example": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/tailwind-test",
+            "outputPath": "dist/ng-milkdown-example",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "tailwindTest:build:production"
+              "buildTarget": "ng-milkdown-example:build:production"
             },
             "development": {
-              "buildTarget": "tailwindTest:build:development"
+              "buildTarget": "ng-milkdown-example:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "tailwindTest:build"
+            "buildTarget": "ng-milkdown-example:build"
           }
         },
         "test": {
@@ -93,6 +93,72 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "ng-milkdown": {
+      "projectType": "library",
+      "root": "projects/ng-milkdown",
+      "sourceRoot": "projects/ng-milkdown/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ng-milkdown/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-milkdown/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-milkdown/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ng-milkdown/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "ng-prosemirror-adapter": {
+      "projectType": "library",
+      "root": "projects/ng-prosemirror-adapter",
+      "sourceRoot": "projects/ng-prosemirror-adapter/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ng-prosemirror-adapter/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-prosemirror-adapter/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-prosemirror-adapter/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ng-prosemirror-adapter/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }

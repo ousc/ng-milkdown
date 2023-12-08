@@ -1,0 +1,19 @@
+<div>
+  <button
+    class="slash-menu text-gray-600 bg-slate-200 px-2 py-1 hover:bg-slate-300 border hover:text-gray-900 w-32"
+    (keydown)="createCodeBlockCommand($event)"
+    (mousedown)="createCodeBlockCommand($event)"
+  >
+    Code Block
+  </button>
+
+</div>
+<div>
+  <button
+    class="slash-menu text-gray-600 bg-slate-200 px-2 py-1 hover:bg-slate-300 border hover:text-gray-900 w-32"
+    (keydown)="createQuoteBlockCommand($event)"
+    (mousedown)="createQuoteBlockCommand($event)"
+  >
+    Quote Block
+  </button>
+</div>
