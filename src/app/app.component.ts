@@ -44,12 +44,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get('assets/markdown.md', {responseType: 'text'}).subscribe((markdown) => {
-      this.text = markdown;
+      this.value = markdown;
     });
   }
 
   editor: any = null;
-  text: string;
+  value: string;
 
   tooltip = tooltipFactory('my-tooltip')
   slash = slashFactory('my-slash')

@@ -2,10 +2,10 @@
 <div class="ctn">
   <ng-prosemirror-adapter-provider #provider>
     <ng-milkdown
-      *ngIf="text"
+      *ngIf="value"
       [editorConfig]="config"
       [plugins]="plugins"
-      [(ngModel)]="text"
+      [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
       (onReady)="editor = $event"
     />

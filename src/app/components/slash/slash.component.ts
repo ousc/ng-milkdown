@@ -17,7 +17,6 @@ export class SlashComponent extends NgMilkdownSlash {
       this.onKeyBoardDown(e);
     }
     e.preventDefault() // Prevent the keyboad key to be inserted in the editor.
-    // 如果是enter键或者是鼠标点击，那么就执行下面的代码
     if (e instanceof MouseEvent || e.key === 'Enter') {
       this.action((ctx) => {
         const view = ctx.get(editorViewCtx);
@@ -36,7 +35,6 @@ export class SlashComponent extends NgMilkdownSlash {
       this.onKeyBoardDown(e);
     }
     e.preventDefault() // Prevent the keyboad key to be inserted in the editor.
-    // 如果是enter键或者是鼠标点击，那么就执行下面的代码
     if (e instanceof MouseEvent || e.key === 'Enter') {
       this.action((ctx) => {
         const view = ctx.get(editorViewCtx);

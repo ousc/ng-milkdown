@@ -72,6 +72,8 @@ example:
 ```typescript
 @Component({...})
 export class AppComponent {
+  @ViewChild(NgProsemirrorAdapterProvider, {static: true}) provider: NgProsemirrorAdapterProvider;
+
   config = (ctx: any) => {
     ctx.set(editorViewOptionsCtx, {
       attributes: {
@@ -90,13 +92,24 @@ export class AppComponent {
     clipboard,
     cursor,
     math,
-    diagram,
     emoji,
+    [
+      diagram, // diagram plugin
+      $view(diagramSchema.node, () =>
+        this.provider.createNodeView({ // create node view for diagram node
+          component: Diagram,
+          stopEvent: () => true,
+        })
+      )
+    ].flat(),
+    $view(listItemSchema.node, () =>
+      this.provider.createNodeView({ component: ListItem }) // create node view for list item node
+    ),
     {
       plugin: block,
       config: provider => ctx => {
         ctx.set(block.key, {
-          view: provider.createPluginView({
+          view: provider.createPluginView({ // create plugin view for block plugin
             component: BlockComponent,
             inputs: {ctx}
           })
@@ -106,7 +119,7 @@ export class AppComponent {
     {
       plugin: indent,
       config: provider => ctx => {
-        ctx.set(indentConfig.key as any, {
+        ctx.set(indentConfig.key as any, { // set indent config
           type: 'space',
           size: 4,
         });
@@ -116,7 +129,7 @@ export class AppComponent {
       plugin: this.tooltip,
       config: provider => ctx => {
         ctx.set(this.tooltip.key, {
-          view: provider.createPluginView({component: TooltipComponent})
+          view: provider.createPluginView({component: TooltipComponent}) // create plugin view for tooltip plugin
         })
       }
     },
@@ -124,7 +137,7 @@ export class AppComponent {
       plugin: this.slash,
       config: provider => ctx => {
         ctx.set(this.slash.key, {
-          view: provider.createPluginView({component: SlashComponent})
+          view: provider.createPluginView({component: SlashComponent}) // create plugin view for slash plugin
         })
       }
     }
@@ -179,7 +192,6 @@ export class SlashComponent extends NgMilkdownSlash {
       this.onKeyBoardDown(e);
     }
     e.preventDefault() // Prevent the keyboad key to be inserted in the editor.
-    // 如果是enter键或者是鼠标点击，那么就执行下面的代码
     if (e instanceof MouseEvent || e.key === 'Enter') {
       this.action((ctx) => {
         const view = ctx.get(editorViewCtx);
@@ -212,7 +224,7 @@ export class SlashComponent extends NgMilkdownSlash {
 export class BlockComponent extends NgMilkdownBlock {}
 ```
 ### ng-milkdown-diagram
-```typescrip
+```typescript
 @Component({
   selector: 'diagram',
   template: `<div></div>`,
@@ -226,3 +238,8 @@ export class Diagram extends NgMilkdownDiagram {
   //if you dont want to wrap the diagram with a div
   //keep the `template` empty and don't override the `container` getter.
 }
+```
+
+## license
+
+[MIT](./LICENSE)
