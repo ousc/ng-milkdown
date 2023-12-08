@@ -24,7 +24,7 @@ import {
   NgProsemirrorAdapterProvider
 } from "../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {blockquoteAttr, inlineCodeAttr, listItemAttr, listItemSchema} from "@milkdown/preset-commonmark";
+import {blockquoteAttr, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
 import {$view} from "@milkdown/utils";
 import {Diagram} from "./components/diagram.component";
 import {ListItem} from "./components/list-item.component";
@@ -71,13 +71,13 @@ export class AppComponent implements OnInit {
       )
     ].flat(),
     $view(listItemSchema.node, () =>
-      this.provider.createNodeView({ component: ListItem })
+      this.provider.createNodeView({component: ListItem})
     ),
     {
       plugin: block,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(block.key, {
-          view: provider.createPluginView({
+          view: this.provider.createPluginView({
             component: BlockComponent,
             inputs: {ctx}
           })
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
     },
     {
       plugin: indent,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(indentConfig.key as any, {
           type: 'space',
           size: 4,
@@ -95,17 +95,17 @@ export class AppComponent implements OnInit {
     },
     {
       plugin: this.tooltip,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(this.tooltip.key, {
-          view: provider.createPluginView({component: TooltipComponent})
+          view: this.provider.createPluginView({component: TooltipComponent})
         })
       }
     },
     {
       plugin: this.slash,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(this.slash.key, {
-          view: provider.createPluginView({component: SlashComponent})
+          view: this.provider.createPluginView({component: SlashComponent})
         })
       }
     }
