@@ -1,6 +1,6 @@
 # Milkdown
 
-![greeting bear](../assets/polar.jpeg)
+![greeting bear](./assets/polar.jpeg)
 
 > Milkdown is a WYSIWYG markdown editor framework.
 >
