@@ -18,7 +18,7 @@ npm run start
 ```
 
 ## Online Demo
-[https://ousc.github.io/ng-milkdown](https://ousc.github.io/ng-prosemirror-adapter/)
+[https://ousc.github.io/ng-milkdown](https://ousc.github.io/ng-milkdown)
 
 ## ng-prosemirror-adapter:(now this library is not published to npm,  we will publish it soon)
 Angular adapter for ProseMirror, only supports Angular 17+.
