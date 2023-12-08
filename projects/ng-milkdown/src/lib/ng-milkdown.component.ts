@@ -240,11 +240,10 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
             config: NgMilkdownPluginConfig
           };
           editor = editor.use(plugin);
-          const configFn = config(this.provider);
-          if (isZoneAwarePromise(configFn)) {
-            editor = editor.config((await configFn) as (ctx: Ctx) => void)
+          if (isZoneAwarePromise(config)) {
+            editor = editor.config((await config) as (ctx: Ctx) => void)
           } else {
-            editor = editor.config(configFn as (ctx: Ctx) => void)
+            editor = editor.config(config as (ctx: Ctx) => void)
           }
         } else {
           editor = editor.use(ngPlugin as (MilkdownPlugin | MilkdownPlugin[]));

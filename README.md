@@ -107,9 +107,9 @@ export class AppComponent {
     ),
     {
       plugin: block,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(block.key, {
-          view: provider.createPluginView({ // create plugin view for block plugin
+          view: this.provider.createPluginView({ // create plugin view for block plugin
             component: BlockComponent,
             inputs: {ctx}
           })
@@ -118,7 +118,7 @@ export class AppComponent {
     },
     {
       plugin: indent,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(indentConfig.key as any, { // set indent config
           type: 'space',
           size: 4,
@@ -127,17 +127,17 @@ export class AppComponent {
     },
     {
       plugin: this.tooltip,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(this.tooltip.key, {
-          view: provider.createPluginView({component: TooltipComponent}) // create plugin view for tooltip plugin
+          view: this.provider.createPluginView({component: TooltipComponent}) // create plugin view for tooltip plugin
         })
       }
     },
     {
       plugin: this.slash,
-      config: provider => ctx => {
+      config: ctx => {
         ctx.set(this.slash.key, {
-          view: provider.createPluginView({component: SlashComponent}) // create plugin view for slash plugin
+          view: this.provider.createPluginView({component: SlashComponent}) // create plugin view for slash plugin
         })
       }
     }
