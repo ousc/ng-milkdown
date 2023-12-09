@@ -43,9 +43,10 @@ Angular adapter for ProseMirror, only supports Angular 17+.
 - [x] `plugin-diagram`**(supported)**
 - [x] `plugin-emoji`**(supported)**
 - [x] `plugin-cursor`**(supported)**
-- [ ] `plugin-trailing`**(not support)**
-- [ ] `plugin-upload`**(not support)**
-- [ ] `plugin-collab`**(not support)**
+- [ ] `plugin-trailing`**(planned)**
+- [ ] `plugin-upload`**(planned)**
+- [ ] `plugin-collab`**(planned)**
+- [ ] `plugin-copilot`**(planned)**
 
 ## Quick Start
 
