@@ -3,8 +3,7 @@ import {NgMilkdownDiagram} from "../../../projects/ng-milkdown/src/lib/directive
 @Component({
   selector: 'diagram',
   template: `
-      <div class="border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100">
-      </div>
+      <div class="border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100"></div>
   `,
   styles:[`
 

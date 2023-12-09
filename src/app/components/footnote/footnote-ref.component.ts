@@ -7,8 +7,7 @@ import {
   selector: 'footnote',
   template: `
       <sup>
-          <a [attr.id]="'footnote-' + label + 'ref'" class="text-nord8" [href]="'#footnote-' + label + 'def'"
-      >
+          <a [attr.id]="'footnote-' + label + '-ref'" class="text-nord8" [href]="'#footnote-' + label + '-def'">
         {{ label }}
       </a>
     </sup>
