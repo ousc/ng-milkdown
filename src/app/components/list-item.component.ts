@@ -1,9 +1,7 @@
-import {AfterViewInit, Component} from '@angular/core';
-import {NgMilkdownBlock} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-block.directive";
+import {Component} from '@angular/core';
 import {
   NgProsemirrorNode
 } from "../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-node.component";
-import {Attrs} from "prosemirror-model";
 
 @Component({
   selector: 'list-item',

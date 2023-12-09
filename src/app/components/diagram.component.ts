@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {NgMilkdownBlock} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-block.directive";
 import {NgMilkdownDiagram} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-diagram.directive";
 @Component({
   selector: 'diagram',

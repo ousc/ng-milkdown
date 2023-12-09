@@ -6,7 +6,7 @@ import {NgMilkdown} from "../../projects/ng-milkdown/src/lib/ng-milkdown.compone
 import {tooltipFactory} from "@milkdown/plugin-tooltip";
 import {slashFactory} from "@milkdown/plugin-slash";
 import {NgMilkdownPlugin} from "../../projects/ng-milkdown/src/lib/ng-milkdown.type";
-import {gfm} from "@milkdown/preset-gfm";
+import {footnoteDefinitionSchema, footnoteReferenceSchema, gfm} from "@milkdown/preset-gfm";
 import {clipboard} from "@milkdown/plugin-clipboard";
 import {prism} from "@milkdown/plugin-prism";
 import {cursor} from "@milkdown/plugin-cursor";
@@ -24,10 +24,13 @@ import {
   NgProsemirrorAdapterProvider
 } from "../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {blockquoteAttr, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
+import {blockquoteAttr, codeBlockSchema, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
 import {$view} from "@milkdown/utils";
 import {Diagram} from "./components/diagram.component";
 import {ListItem} from "./components/list-item.component";
+import {FootnoteDef} from "./components/footnote/footnote-def.component";
+import {FootnoteRef} from "./components/footnote/footnote-ref.component";
+import {CodeBlock} from "./components/code-block.component";
 
 @Component({
   selector: 'app-root',
@@ -61,17 +64,24 @@ export class AppComponent implements OnInit {
     cursor,
     math,
     emoji,
-    [
-      diagram,
-      $view(diagramSchema.node, () =>
-        this.provider.createNodeView({
-          component: Diagram,
-          stopEvent: () => true,
-        })
-      )
-    ].flat(),
+    diagram,
+    $view(diagramSchema.node, () =>
+      this.provider.createNodeView({
+        component: Diagram,
+        stopEvent: () => true,
+      })
+    ),
     $view(listItemSchema.node, () =>
       this.provider.createNodeView({component: ListItem})
+    ),
+    $view(footnoteDefinitionSchema.node, () =>
+      this.provider.createNodeView({component: FootnoteDef})
+    ),
+    $view(footnoteReferenceSchema.node, () =>
+      this.provider.createNodeView({component: FootnoteRef})
+    ),
+    $view(codeBlockSchema.node, () =>
+      this.provider.createNodeView({component: CodeBlock})
     ),
     {
       plugin: block,
