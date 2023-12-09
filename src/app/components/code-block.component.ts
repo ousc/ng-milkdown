@@ -18,10 +18,12 @@ import {
                   }
               </select>
 
-              <button class="inline-flex items-center justify-center rounded border border-gray-200 bg-white px-4 py-2 text-base font-medium leading-6 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 dark:bg-black"
+              <button class="inline-flex items-center justify-center rounded border border-gray-200 px-4 py-2 text-base font-medium leading-6 shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-offset-2 dark:bg-black"
+                      [class]="copiedSuccessfully ? ['bg-green-400', 'hover:bg-green-400', 'text-white'] : ['bg-white']"
+                      [disabled]="copiedSuccessfully"
                       (click)="copyToClipboard($event)"
               >
-                  Copy
+                  {{ copiedSuccessfully ? 'Copied!' : 'Copy' }}
               </button>
           </div>
           <pre spellCheck="false" class="flex !m-0 !mb-4">
@@ -64,6 +66,10 @@ export class CodeBlock extends NgProsemirrorNode implements AfterViewInit {
   async copyToClipboard(e: Event) {
     e.preventDefault();
     await navigator.clipboard.writeText(this.node.textContent);
+    this.copiedSuccessfully = true;
+    setTimeout(() => {
+      this.copiedSuccessfully = false;
+    }, 2000);
   }
 
   override get container() {
@@ -75,4 +81,6 @@ export class CodeBlock extends NgProsemirrorNode implements AfterViewInit {
     this.setAttrs({language: value});
     this.contentRef(this.container)
   }
+
+  copiedSuccessfully = false;
 }
