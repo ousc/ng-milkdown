@@ -7,5 +7,6 @@
 - tooltip
 - code-block
 - diagram
+- emoji-menu
 - list-item
 - block
