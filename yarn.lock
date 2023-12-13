@@ -3319,6 +3319,11 @@ concat-map@0.0.1:
   resolved "https://registry.npmmirror.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
+conditio@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.npmmirror.com/conditio/-/conditio-2.3.4.tgz#7c1d7adbd09c3fca400d571b9fdfa7d23a5c2c67"
+  integrity sha512-mvOJQSdnedve0fQje27uISLhyjZMWqN/xLScL1Oah472vBm9gDMPnYUAljom+2Liy/Ar8J/fpzYhm/AP0Tmnwg==
+
 connect-history-api-fallback@^1:
   version "1.6.0"
   resolved "https://registry.npmmirror.com/connect-history-api-fallback/-/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
@@ -4591,6 +4596,11 @@ function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmmirror.com/function-bind/-/function-bind-1.1.2.tgz#2c02d864d97f3ea6c8830c464cbd11ab6eab7a1c"
   integrity sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==
+
+gemoji@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.npmmirror.com/gemoji/-/gemoji-8.1.0.tgz#3d47a26e569c51efa95198822a6f483d7a7ae600"
+  integrity sha512-HA4Gx59dw2+tn+UAa7XEV4ufUKI4fH1KgcbenVA9YKSj1QJTT0xh5Mwv5HMFNN3l2OtUe3ZIfuRwSyZS5pLIWw==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"

@@ -1,8 +1,14 @@
 import {Component} from '@angular/core';
-import {editorViewCtx} from "@milkdown/core";
-import {callCommand} from "@milkdown/utils";
-import {createCodeBlockCommand, wrapInBlockquoteCommand} from "@milkdown/preset-commonmark";
+import {CmdKey, commandsCtx, editorViewCtx} from "@milkdown/core";
+import {
+  createCodeBlockCommand,
+  insertHrCommand,
+  wrapInBlockquoteCommand,
+  wrapInHeadingCommand
+} from "@milkdown/preset-commonmark";
 import {NgMilkdownSlash} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-slash.directive";
+import {Ctx} from "@milkdown/ctx";
+import {Is, when} from 'conditio';
 
 @Component({
   selector: 'slash',
@@ -12,64 +18,53 @@ import {NgMilkdownSlash} from "../../../../projects/ng-milkdown/src/lib/directiv
   styleUrl: './slash.component.scss'
 })
 export class SlashComponent extends NgMilkdownSlash {
-  createCodeBlockCommand = (e: KeyboardEvent | MouseEvent) => {
-    if(e instanceof KeyboardEvent) {
-      this.onKeyBoardDown(e);
+  override list = [
+    {
+      label: 'Heading 1',
+      icon: 'looks_one',
+    },
+    {
+      label: 'Heading 2',
+      icon: 'looks_two',
+    },
+    {
+      label: 'Heading 3',
+      icon: 'looks_3',
+    },
+    {
+      label: 'Code Block',
+      icon: 'data_object',
+    },
+    {
+      label: 'Quote Block',
+      icon: 'format_quote',
+    },
+    {
+      label: 'Divider',
+      icon: 'horizontal_rule',
     }
-    e.preventDefault() // Prevent the keyboad key to be inserted in the editor.
-    if (e instanceof MouseEvent || e.key === 'Enter') {
-      this.action((ctx) => {
-        const view = ctx.get(editorViewCtx);
-        const { dispatch, state } = view;
-        const { tr, selection } = state;
-        const { from } = selection;
-        dispatch(tr.deleteRange(from - 1, from))
-        view.focus()
-        return callCommand(createCodeBlockCommand.key)(ctx)
-      });
-    }
-  }
+  ];
 
-  createQuoteBlockCommand = (e: KeyboardEvent | MouseEvent) => {
-    if(e instanceof KeyboardEvent) {
-      this.onKeyBoardDown(e);
+  override get onPick(): (ctx: Ctx) => void {
+    const callCommand = (command: CmdKey<any>, payload: any = null) => {
+      return (ctx: Ctx) => {
+        this.removeSlash(ctx);
+        ctx.get(commandsCtx).call(command, payload);
+      }
     }
-    e.preventDefault() // Prevent the keyboad key to be inserted in the editor.
-    if (e instanceof MouseEvent || e.key === 'Enter') {
-      this.action((ctx) => {
-        const view = ctx.get(editorViewCtx);
-        const { dispatch, state } = view;
-        const { tr, selection } = state;
-        const { from } = selection;
-        dispatch(tr.deleteRange(from - 1, from))
-        view.focus()
-        return callCommand(wrapInBlockquoteCommand.key)(ctx)
-      });
-    }
+    const command = when(this.selected)(
+      Is(0, () => callCommand(wrapInHeadingCommand.key, 1)),
+      Is(1, () => callCommand(wrapInHeadingCommand.key, 2)),
+      Is(2, () => callCommand(wrapInHeadingCommand.key, 3)),
+      Is(3, () => callCommand(createCodeBlockCommand.key)),
+      Is(4, () => callCommand(wrapInBlockquoteCommand.key)),
+      Is(5, () => callCommand(insertHrCommand.key, {mode: 'horizontal'})),
+    )
+    setTimeout(() => {
+      this.action(ctx => {
+        ctx.get(editorViewCtx).focus();
+      })
+    })
+    return command;
   }
-
-  onKeyBoardDown = (e: KeyboardEvent) => {
-    const getSlashMenus = () => {
-      const slashMenus = this.el.nativeElement.querySelectorAll('.slash-menu');
-      const currentFocus = this.el.nativeElement.querySelector('.slash-menu:focus');
-      const currentFocusIndex = Array.from(slashMenus).indexOf(currentFocus);
-      return {slashMenus, currentFocusIndex}
-    }
-    if(e.key === 'ArrowUp') {
-      const {slashMenus, currentFocusIndex} = getSlashMenus();
-      slashMenus[(currentFocusIndex + slashMenus.length - 1) % slashMenus.length].focus()
-    }
-    if(e.key === 'ArrowDown') {
-      const {slashMenus, currentFocusIndex} = getSlashMenus();
-      slashMenus[(currentFocusIndex + 1) % slashMenus.length].focus()
-    }
-    if(e.key === 'Escape') {
-      this.action((ctx) => {
-        const view = ctx.get(editorViewCtx);
-        view.focus()
-        return false
-      });
-    }
-  }
-
 }

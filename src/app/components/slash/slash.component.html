@@ -1,19 +1,13 @@
-<div>
-  <button
-    class="slash-menu text-gray-600 bg-slate-200 px-2 py-1 hover:bg-slate-300 border hover:text-gray-900 w-32"
-    (keydown)="createCodeBlockCommand($event)"
-    (mousedown)="createCodeBlockCommand($event)"
-  >
-    Code Block
-  </button>
-
-</div>
-<div>
-  <button
-    class="slash-menu text-gray-600 bg-slate-200 px-2 py-1 hover:bg-slate-300 border hover:text-gray-900 w-32"
-    (keydown)="createQuoteBlockCommand($event)"
-    (mousedown)="createQuoteBlockCommand($event)"
-  >
-    Quote Block
-  </button>
-</div>
+<ul class="m-0 w-96 list-none rounded bg-gray-50 shadow-lg ring-2 dark:bg-gray-900">
+  @for (item of list;track item) {
+    <li class="cursor-pointer px-6 py-3"
+        [class]="selected === $index ? ['bg-gray-200', 'dark:bg-gray-500'] : []"
+        (mousemove)="selected = $index"
+        (mousedown)="action(onPick)">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-nord-10 dark:text-nord-9">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </div>
+    </li>
+  }
+</ul>

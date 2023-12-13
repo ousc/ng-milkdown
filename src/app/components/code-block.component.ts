@@ -31,15 +31,23 @@ import {
           </pre>
       </div>
   `,
-  styles: [],
+  styles: [
+    `
+      .code-block-ref {
+        min-width: 1px;
+      }
+    `
+  ],
   standalone: true
 })
 export class CodeBlock extends NgProsemirrorNode implements AfterViewInit {
-  language: string;
+  language: string = 'text';
 
   override ngAfterViewInit(): void {
     super.ngAfterViewInit();
-    this.language = this.node.attrs?.['language'] || 'text';
+    setTimeout(() => {
+      this.language = this.node.attrs?.['language'];
+    });
   }
 
   langs = [

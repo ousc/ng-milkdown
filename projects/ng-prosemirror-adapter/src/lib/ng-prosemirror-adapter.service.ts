@@ -1,5 +1,4 @@
 import {
-  ComponentRef,
   Injectable, Injector, ViewContainerRef
 } from '@angular/core';
 import {Decoration, EditorView} from "prosemirror-view";
@@ -23,9 +22,9 @@ import {NgProsemirrorPlugin} from "./components/ng-prosemirror-plugin.component"
  * @param {HTMLElement} el - The HTMLElement to get the first child element from.
  * @returns {HTMLElement} The first child element of the given HTMLElement, or the HTMLElement itself if it does not have a first child element.
  */
-const firstElementChild = (el: HTMLElement) => {
+export const firstElementChild = (el: HTMLElement): HTMLElement => {
   if (el.firstElementChild) {
-    return el.firstElementChild;
+    return el.firstElementChild as HTMLElement;
   }
   return el;
 }
@@ -160,7 +159,7 @@ export class NgProsemirrorAdapterService {
         }
       });
       this.updatePluginViewContext(key);
-      firstElementChild(this.provider.editor.el.nativeElement).appendChild(componentRef.location.nativeElement);
+      firstElementChild(this.provider.editor.el.nativeElement).appendChild(componentRef.instance.container);
       this.pluginView[key].update(view, view.state)
       return this.pluginView[key];
     }

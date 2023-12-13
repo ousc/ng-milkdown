@@ -31,6 +31,7 @@ import {ListItem} from "./components/list-item.component";
 import {FootnoteDef} from "./components/footnote/footnote-def.component";
 import {FootnoteRef} from "./components/footnote/footnote-ref.component";
 import {CodeBlock} from "./components/code-block.component";
+import {EmojiMenu} from "./components/emoji-menu.component";
 
 @Component({
   selector: 'app-root',
@@ -54,8 +55,10 @@ export class AppComponent implements OnInit {
   editor: any = null;
   value: string;
 
-  tooltip = tooltipFactory('my-tooltip')
-  slash = slashFactory('my-slash')
+  tooltip = tooltipFactory('tooltipMenu');
+  slash = slashFactory('slashMenu');
+  emojiSlash = slashFactory("emojiMenu");
+
   plugins: NgMilkdownPlugin[] = [
     gfm,
     history,
@@ -63,7 +66,6 @@ export class AppComponent implements OnInit {
     clipboard,
     cursor,
     math,
-    emoji,
     diagram,
     $view(diagramSchema.node, () =>
       this.provider.createNodeView({
@@ -115,14 +117,23 @@ export class AppComponent implements OnInit {
       plugin: this.slash,
       config: ctx => {
         ctx.set(this.slash.key, {
-          view: this.provider.createPluginView({component: SlashComponent})
+          view: this.provider.createPluginView({component: SlashComponent, inputs: {slash: this.slash}}),
+        })
+      }
+    },
+    emoji,
+    {
+      plugin: this.emojiSlash,
+      config: ctx => {
+        ctx.set(this.emojiSlash.key, {
+          view: this.provider.createPluginView({component: EmojiMenu, inputs: {slash: this.emojiSlash}}),
         })
       }
     }
   ];
 
   onChange(markdownText: any) {
-    console.log('markdown changed!', {markdownText})
+    // console.log('markdown changed!', {markdownText})
   }
 
   config = (ctx: any) => {

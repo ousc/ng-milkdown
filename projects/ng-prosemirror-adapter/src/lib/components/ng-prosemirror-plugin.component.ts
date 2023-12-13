@@ -30,6 +30,10 @@ export abstract class NgProsemirrorPlugin {
     return this.provider?.service?.pluginViewContext?.[this.key]?.prevState;
   }
 
+  get container() {
+    return this.el.nativeElement;
+  }
+
   get pluginView(): CorePluginView<NgProsemirrorPlugin>{
     return null;
   }
