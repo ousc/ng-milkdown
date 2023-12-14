@@ -59,6 +59,7 @@
     "@angular/cli": "^17.0.3",
     "@angular/compiler-cli": "^17.0.0",
     "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/forms": "^0.5.7",
     "@types/d3": "^7.4.3",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.16",

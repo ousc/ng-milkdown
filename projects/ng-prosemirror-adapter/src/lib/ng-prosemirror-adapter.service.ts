@@ -9,11 +9,12 @@ import {
   PluginViewContext,
   PluginViewFactory, WidgetViewContext, WidgetViewFactory
 } from "./ngProsemirrorAdapter.type";
-import {CoreNodeView, CorePluginView, CoreWidgetView} from "@prosemirror-adapter/core";
+import {CoreNodeView, CorePluginView, CoreWidgetView, type WidgetDecorationSpec} from "@prosemirror-adapter/core";
 import {nanoid} from "nanoid";
 import {NgProsemirrorEditor} from "./components/ng-prosemirror-editor.component";
 import {NgProsemirrorWidget} from "./components/ng-prosemirror-widget.component";
 import {NgProsemirrorPlugin} from "./components/ng-prosemirror-plugin.component";
+import {EditorState} from "prosemirror-state";
 
 /**
  * Returns the first child element of the given HTMLElement.
@@ -119,10 +120,11 @@ export class NgProsemirrorAdapterService {
   pluginView: Record<string, CorePluginView<NgProsemirrorPlugin>> = {};
   pluginViewContext: Record<string, PluginViewContext> = {};
 
-  updatePluginViewContext(key: string) {
+  updatePluginViewContext(key: string, view?: EditorView, prevState?: EditorState) {
     const pluginView = this.pluginView[key];
     if (!pluginView.view) {
-      return;
+      pluginView.view = view;
+      pluginView.prevState = prevState;
     }
     this.pluginViewContext[key] = {
       view: Object.assign(Object.create(Object.getPrototypeOf(pluginView.view)), pluginView.view),
@@ -158,9 +160,9 @@ export class NgProsemirrorAdapterService {
           },
         }
       });
-      this.updatePluginViewContext(key);
       firstElementChild(this.provider.editor.el.nativeElement).appendChild(componentRef.instance.container);
-      this.pluginView[key].update(view, view.state)
+      this.pluginView[key].update(view, view.state);
+      this.updatePluginViewContext(key, view, view.state);
       return this.pluginView[key];
     }
   }
@@ -168,11 +170,11 @@ export class NgProsemirrorAdapterService {
   widgetView: Record<string, CoreWidgetView<NgProsemirrorWidget>> = {};
   widgetViewContext: Record<string, WidgetViewContext> = {};
 
-  updateWidgetViewContext(key: string) {
+  updateWidgetViewContext(key: string, view?: EditorView, getPos?: () => number | undefined, spec?: WidgetDecorationSpec) {
     const widgetView = this.widgetView[key];
-    if (!widgetView.spec) {
-      return;
-    }
+    widgetView.view = widgetView.view || view;
+    widgetView.getPos = widgetView.getPos || getPos;
+    widgetView.spec = widgetView.spec || spec;
     this.widgetViewContext[key] = {
       ...this.widgetViewContext[key],
       spec: widgetView.spec
@@ -202,7 +204,8 @@ export class NgProsemirrorAdapterService {
 
       return Decoration.widget(pos, (view, getPos) => {
         this.widgetView[key].bind(view, getPos);
-        this.updateWidgetViewContext(key);
+        this.updateWidgetViewContext(key, view, getPos, spec);
+        componentRef.instance.onUpdate.emit(this.widgetViewContext[key]);
         firstElementChild(this.widgetView[key].dom).appendChild(componentRef.location.nativeElement);
         return this.widgetView[key].dom;
       }, spec)

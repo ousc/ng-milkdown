@@ -1,5 +1,6 @@
-import {Directive, ElementRef, Input} from "@angular/core";
+import {Directive, ElementRef, EventEmitter, Input} from "@angular/core";
 import {NgProsemirrorAdapterProvider} from "../ng-prosemirror-adapter.component";
+import {WidgetViewContext} from "../ngProsemirrorAdapter.type";
 
 @Directive({
   selector: 'ng-prosemirror-widget',
@@ -27,4 +28,6 @@ export abstract class NgProsemirrorWidget {
   get spec() {
     return this.provider.service.widgetViewContext?.[this.key]?.spec;
   }
+
+  onUpdate = new EventEmitter<WidgetViewContext>();
 }

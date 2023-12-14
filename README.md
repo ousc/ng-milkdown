@@ -130,7 +130,7 @@ export class AppComponent {
       plugin: this.tooltip,
       config: ctx => {
         ctx.set(this.tooltip.key, {
-          view: this.provider.createPluginView({component: TooltipComponent}) // create plugin view for tooltip plugin
+          view: this.provider.createPluginView({component: ImageTooltipComponent}) // create plugin view for tooltip plugin
         })
       }
     },
@@ -166,7 +166,7 @@ export class AppComponent {
   `,
   ...
 })
-export class TooltipComponent extends NgMilkdownTooltip{
+export class ImageTooltipComponent extends NgMilkdownTooltip{
     setBold(e: MouseEvent) {
       e.preventDefault();
       this.action(callCommand(toggleStrongCommand.key));

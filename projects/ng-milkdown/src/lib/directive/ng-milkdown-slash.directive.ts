@@ -114,7 +114,7 @@ export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewIni
   }
 
   override get pluginView() { //default pluginView
-    return this.provider.service.pluginView[this.key] || new SlashProvider({
+    return new SlashProvider({
       content: this.el.nativeElement,
       debounce: 50,
       trigger: this.trigger,

@@ -17,7 +17,7 @@ import {Is, when} from 'conditio';
   templateUrl: './slash.component.html',
   styleUrl: './slash.component.scss'
 })
-export class SlashComponent extends NgMilkdownSlash {
+export class Slash extends NgMilkdownSlash {
   override list = [
     {
       label: 'Heading 1',

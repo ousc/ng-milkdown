@@ -14,10 +14,10 @@ import {block} from "@milkdown/plugin-block";
 import {math} from "@milkdown/plugin-math";
 import {indent, indentConfig} from "@milkdown/plugin-indent";
 import {history} from "@milkdown/plugin-history";
-import {TooltipComponent} from "./components/tooltip/tooltip.component";
-import {SlashComponent} from "./components/slash/slash.component";
+import {Tooltip} from "./components/tooltip/tooltip.component";
+import {Slash} from "./components/slash/slash.component";
 import {editorViewOptionsCtx} from "@milkdown/core";
-import {BlockComponent} from "./components/block.component";
+import {Block} from "./components/block.component";
 import {diagram, diagramSchema} from "@milkdown/plugin-diagram";
 import {emoji, emojiAttr} from "@milkdown/plugin-emoji";
 import {
@@ -32,6 +32,8 @@ import {FootnoteDef} from "./components/footnote/footnote-def.component";
 import {FootnoteRef} from "./components/footnote/footnote-ref.component";
 import {CodeBlock} from "./components/code-block.component";
 import {EmojiMenu} from "./components/emoji-menu.component";
+import {ImageTooltip} from "./components/image-tooltip/image-tooltip.component";
+import {linkPlugin} from "./components/link/link.component";
 
 @Component({
   selector: 'app-root',
@@ -48,6 +50,87 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get('assets/markdown.md', {responseType: 'text'}).subscribe((markdown) => {
+      this.plugins = [
+        gfm,
+        history,
+        prism,
+        clipboard,
+        cursor,
+        math,
+        diagram,
+        $view(diagramSchema.node, () =>
+          this.provider.createNodeView({
+            component: Diagram,
+            stopEvent: () => true,
+          })
+        ),
+        $view(listItemSchema.node, () =>
+          this.provider.createNodeView({component: ListItem})
+        ),
+        $view(footnoteDefinitionSchema.node, () =>
+          this.provider.createNodeView({component: FootnoteDef})
+        ),
+        $view(footnoteReferenceSchema.node, () =>
+          this.provider.createNodeView({component: FootnoteRef})
+        ),
+        $view(codeBlockSchema.node, () =>
+          this.provider.createNodeView({component: CodeBlock})
+        ),
+        {
+          plugin: block,
+          config: ctx => {
+            ctx.set(block.key, {
+              view: this.provider.createPluginView({
+                component: Block,
+                inputs: {ctx}
+              })
+            });
+          }
+        },
+        {
+          plugin: indent,
+          config: ctx => {
+            ctx.set(indentConfig.key as any, {
+              type: 'space',
+              size: 4,
+            });
+          }
+        },
+        {
+          plugin: this.tooltip,
+          config: ctx => {
+            ctx.set(this.tooltip.key, {
+              view: this.provider.createPluginView({component: Tooltip})
+            })
+          }
+        },
+        {
+          plugin: this.slash,
+          config: ctx => {
+            ctx.set(this.slash.key, {
+              view: this.provider.createPluginView({component: Slash, inputs: {slash: this.slash}}),
+            })
+          }
+        },
+        emoji,
+        {
+          plugin: this.emojiSlash,
+          config: ctx => {
+            ctx.set(this.emojiSlash.key, {
+              view: this.provider.createPluginView({component: EmojiMenu, inputs: {slash: this.emojiSlash}}),
+            })
+          }
+        },
+        {
+          plugin: this.imageTooltip,
+          config: ctx => {
+            ctx.set(this.imageTooltip.key, {
+              view: this.provider.createPluginView({component: ImageTooltip})
+            })
+          }
+        },
+        linkPlugin(this.provider)
+      ];
       this.value = markdown;
     });
   }
@@ -58,79 +141,9 @@ export class AppComponent implements OnInit {
   tooltip = tooltipFactory('tooltipMenu');
   slash = slashFactory('slashMenu');
   emojiSlash = slashFactory("emojiMenu");
+  imageTooltip = tooltipFactory("IMAGE");
 
-  plugins: NgMilkdownPlugin[] = [
-    gfm,
-    history,
-    prism,
-    clipboard,
-    cursor,
-    math,
-    diagram,
-    $view(diagramSchema.node, () =>
-      this.provider.createNodeView({
-        component: Diagram,
-        stopEvent: () => true,
-      })
-    ),
-    $view(listItemSchema.node, () =>
-      this.provider.createNodeView({component: ListItem})
-    ),
-    $view(footnoteDefinitionSchema.node, () =>
-      this.provider.createNodeView({component: FootnoteDef})
-    ),
-    $view(footnoteReferenceSchema.node, () =>
-      this.provider.createNodeView({component: FootnoteRef})
-    ),
-    $view(codeBlockSchema.node, () =>
-      this.provider.createNodeView({component: CodeBlock})
-    ),
-    {
-      plugin: block,
-      config: ctx => {
-        ctx.set(block.key, {
-          view: this.provider.createPluginView({
-            component: BlockComponent,
-            inputs: {ctx}
-          })
-        });
-      }
-    },
-    {
-      plugin: indent,
-      config: ctx => {
-        ctx.set(indentConfig.key as any, {
-          type: 'space',
-          size: 4,
-        });
-      }
-    },
-    {
-      plugin: this.tooltip,
-      config: ctx => {
-        ctx.set(this.tooltip.key, {
-          view: this.provider.createPluginView({component: TooltipComponent})
-        })
-      }
-    },
-    {
-      plugin: this.slash,
-      config: ctx => {
-        ctx.set(this.slash.key, {
-          view: this.provider.createPluginView({component: SlashComponent, inputs: {slash: this.slash}}),
-        })
-      }
-    },
-    emoji,
-    {
-      plugin: this.emojiSlash,
-      config: ctx => {
-        ctx.set(this.emojiSlash.key, {
-          view: this.provider.createPluginView({component: EmojiMenu, inputs: {slash: this.emojiSlash}}),
-        })
-      }
-    }
-  ];
+  plugins: NgMilkdownPlugin[] = null;
 
   onChange(markdownText: any) {
     // console.log('markdown changed!', {markdownText})

@@ -42,9 +42,10 @@ function isZoneAwarePromise(object: any) {
       }
       <ng-template #spinner>
           <div class="milkdown-spinner">
-              <div class="spinner">
-                  <div class="spinner-text">loading...</div>
-                  <div class="spinner-dot"></div>
+              <div class="lds-grid">
+                  @for (i of [].constructor(9);track i) {
+                    <div></div>
+                  }
               </div>
           </div>
       </ng-template>
@@ -72,39 +73,74 @@ function isZoneAwarePromise(object: any) {
         align-items: center;
       }
 
-      .spinner {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+      .lds-grid {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
       }
-
-      .spinner-text {
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 10px;
-      }
-
-      .spinner-dot {
-        width: 10px;
-        height: 10px;
+      .lds-grid div {
+        position: absolute;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
-        background-color: #333;
-        animation: loading 1s infinite;
-        margin-left: -100px;
+        background: #81A1C1;
+        animation: lds-grid 1.2s linear infinite;
       }
-
-      @keyframes loading {
-        0% {
-          transform: translateX(0);
+      .lds-grid div:nth-child(1) {
+        top: 8px;
+        left: 8px;
+        animation-delay: 0s;
+      }
+      .lds-grid div:nth-child(2) {
+        top: 8px;
+        left: 32px;
+        animation-delay: -0.4s;
+      }
+      .lds-grid div:nth-child(3) {
+        top: 8px;
+        left: 56px;
+        animation-delay: -0.8s;
+      }
+      .lds-grid div:nth-child(4) {
+        top: 32px;
+        left: 8px;
+        animation-delay: -0.4s;
+      }
+      .lds-grid div:nth-child(5) {
+        top: 32px;
+        left: 32px;
+        animation-delay: -0.8s;
+      }
+      .lds-grid div:nth-child(6) {
+        top: 32px;
+        left: 56px;
+        animation-delay: -1.2s;
+      }
+      .lds-grid div:nth-child(7) {
+        top: 56px;
+        left: 8px;
+        animation-delay: -0.8s;
+      }
+      .lds-grid div:nth-child(8) {
+        top: 56px;
+        left: 32px;
+        animation-delay: -1.2s;
+      }
+      .lds-grid div:nth-child(9) {
+        top: 56px;
+        left: 56px;
+        animation-delay: -1.6s;
+      }
+      @keyframes lds-grid {
+        0%, 100% {
+          opacity: 1;
         }
         50% {
-          transform: translateX(100px);
-        }
-        100% {
-          transform: translateX(0);
+          opacity: 0.5;
         }
       }
+
     `
   ],
   imports: [

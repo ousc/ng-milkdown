@@ -26,7 +26,7 @@ export class EmojiMenu extends NgMilkdownSlash {
   override get pluginView() {
     const emojiSearchRegexp = /:(?<search>\S+)/;
     const _this = this;
-    return this.provider.service.pluginView[this.key] || new SlashProvider({
+    return new SlashProvider({
       content: this.el.nativeElement,
       debounce: 50,
       trigger: this.trigger,

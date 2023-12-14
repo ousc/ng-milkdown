@@ -4,6 +4,8 @@ import {toggleEmphasisCommand, toggleStrongCommand, wrapInBlockquoteCommand} fro
 import {NgMilkdownTooltip} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-tooltip.directive";
 import {redoCommand, undoCommand} from "@milkdown/plugin-history";
 import {toggleStrikethroughCommand} from "@milkdown/preset-gfm";
+import {TooltipProvider} from "@milkdown/plugin-tooltip";
+import {NodeSelection, TextSelection} from "prosemirror-state";
 
 @Component({
   selector: 'tooltip',
@@ -11,7 +13,7 @@ import {toggleStrikethroughCommand} from "@milkdown/preset-gfm";
   styleUrl: './tooltip.component.scss',
   standalone: true
 })
-export class TooltipComponent extends NgMilkdownTooltip {
+export class Tooltip extends NgMilkdownTooltip {
   setBold(e: MouseEvent) {
     e.preventDefault();
     this.action(callCommand(toggleStrongCommand.key));
@@ -40,5 +42,16 @@ export class TooltipComponent extends NgMilkdownTooltip {
   quote(e: MouseEvent) {
     e.preventDefault()
     this.action(callCommand(wrapInBlockquoteCommand.key))
+  }
+
+  override get pluginView() {
+    return new TooltipProvider({
+      debounce: 50,
+      content: this.container,
+      shouldShow: (view) => {
+        const {from} = view.state.selection;
+        return view.state.doc.nodeAt(from)?.type.name !== "image";
+      }
+    }) as any;
   }
 }

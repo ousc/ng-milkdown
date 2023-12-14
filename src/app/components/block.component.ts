@@ -12,4 +12,4 @@ import {NgMilkdownBlock} from "../../../projects/ng-milkdown/src/lib/directive/n
   styles:[],
   standalone: true
 })
-export class BlockComponent extends NgMilkdownBlock {}
+export class Block extends NgMilkdownBlock {}
