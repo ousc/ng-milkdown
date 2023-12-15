@@ -3,7 +3,6 @@ import {
   Directive,
   ElementRef,
   Input,
-  NgZone,
 } from '@angular/core';
 import {Ctx} from '@milkdown/ctx';
 import {SlashPlugin, SlashProvider} from '@milkdown/plugin-slash';
@@ -21,7 +20,7 @@ import {undoCommand} from "@milkdown/plugin-history";
 })
 export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewInit {
 
-  constructor(override el: ElementRef, private ngZone: NgZone) {
+  constructor(override el: ElementRef) {
     super(el);
   }
 

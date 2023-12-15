@@ -1,8 +1,5 @@
-import {AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output} from "@angular/core";
+import {AfterViewInit, Directive, ElementRef, Input} from "@angular/core";
 import {NgProsemirrorAdapterProvider} from "../ng-prosemirror-adapter.component";
-import {CoreNodeView} from "@prosemirror-adapter/core";
-import {NgEditorViewComponent} from "../ngProsemirrorAdapter.type";
-import type {Attrs} from "prosemirror-model";
 
 @Directive({
   selector: 'ng-prosemirror-node',

@@ -6,7 +6,18 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "prosemirror-view/*": [
+        "../../node_modules/prosemirror-view/*"
+      ],
+      "prosemirror-model/*": [
+        "../../node_modules/prosemirror-model/*"
+      ],
+      "prosemirror-state/*": [
+        "../../node_modules/prosemirror-state/*"
+      ]
+    }
   },
   "exclude": [
     "**/*.spec.ts"

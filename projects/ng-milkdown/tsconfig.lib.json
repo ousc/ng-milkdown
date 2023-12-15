@@ -6,7 +6,15 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "prosemirror-view/*": [
+        "../../node_modules/prosemirror-view/*"
+      ],
+      "@milkdown/*": [
+        "../../node_modules/@milkdown/*"
+      ]
+    }
   },
   "exclude": [
     "**/*.spec.ts"

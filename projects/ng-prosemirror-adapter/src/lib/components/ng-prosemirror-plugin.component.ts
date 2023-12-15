@@ -1,7 +1,6 @@
-import {AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output} from "@angular/core";
+import {Directive, ElementRef, Input} from "@angular/core";
 import {NgProsemirrorAdapterProvider} from "../ng-prosemirror-adapter.component";
 import {CorePluginView} from "@prosemirror-adapter/core";
-import {NgEditorViewComponent} from "../ngProsemirrorAdapter.type";
 
 @Directive({
   selector: 'ng-prosemirror-plugin',

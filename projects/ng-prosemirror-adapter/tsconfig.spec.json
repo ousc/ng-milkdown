@@ -5,7 +5,11 @@
     "outDir": "../../out-tsc/spec",
     "types": [
       "jasmine"
-    ]
+    ],
+    "paths": {
+      "@milkdown/*": [
+        "../../node_modules/@milkdown/*"
+      ]
   },
   "include": [
     "**/*.spec.ts",

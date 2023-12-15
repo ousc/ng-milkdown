@@ -1,13 +1,17 @@
-import {
-  Injectable, Injector, ViewContainerRef
-} from '@angular/core';
+import {Injectable, Injector, ViewContainerRef} from '@angular/core';
 import {Decoration, EditorView} from "prosemirror-view";
 import {NgProsemirrorAdapterProvider} from "./ng-prosemirror-adapter.component";
 import {
-  NgEditorViewComponent, NgNodeViewUserOptions,
-  NgPluginViewUserOptions, NgWidgetUserOptions, NodeViewContext, NodeViewFactory,
+  NgEditorViewComponent,
+  NgNodeViewUserOptions,
+  NgPluginViewUserOptions,
+  NgWidgetUserOptions,
+  NodeViewContext,
+  NodeViewFactory,
   PluginViewContext,
-  PluginViewFactory, WidgetViewContext, WidgetViewFactory
+  PluginViewFactory,
+  WidgetViewContext,
+  WidgetViewFactory
 } from "./ngProsemirrorAdapter.type";
 import {CoreNodeView, CorePluginView, CoreWidgetView, type WidgetDecorationSpec} from "@prosemirror-adapter/core";
 import {nanoid} from "nanoid";
@@ -192,7 +196,16 @@ export class NgProsemirrorAdapterService {
     componentRef.setInput("provider", this.provider);
     componentRef.setInput("key", key);
 
-    return (pos, spec) => {
+    return (pos, userSpec = {}) => {
+      const spec: WidgetDecorationSpec = {
+        key,
+        ...userSpec,
+        destroy: (node)=>{
+          userSpec.destroy?.(node);
+          componentRef.destroy();
+        }
+      }
+
       this.widgetView[key] = new CoreWidgetView<NgProsemirrorWidget>({
         pos,
         spec,
@@ -208,7 +221,7 @@ export class NgProsemirrorAdapterService {
         componentRef.instance.onUpdate.emit(this.widgetViewContext[key]);
         firstElementChild(this.widgetView[key].dom).appendChild(componentRef.location.nativeElement);
         return this.widgetView[key].dom;
-      }, spec)
+      }, spec);
     }
   }
 }

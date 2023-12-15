@@ -22,6 +22,6 @@ export class NgMilkdownTooltip extends NgProsemirrorPlugin implements AfterViewI
   }
 
   override get pluginView() {
-    return new TooltipProvider({content: this.container, debounce: 50}) as any;
+    return new TooltipProvider({content: this.container, debounce: 50, tippyOptions: {appendTo: document.body}}) as any;
   }
 }

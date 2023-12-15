@@ -5,7 +5,6 @@ import {NgMilkdownTooltip} from "../../../../projects/ng-milkdown/src/lib/direct
 import {redoCommand, undoCommand} from "@milkdown/plugin-history";
 import {toggleStrikethroughCommand} from "@milkdown/preset-gfm";
 import {TooltipProvider} from "@milkdown/plugin-tooltip";
-import {NodeSelection, TextSelection} from "prosemirror-state";
 
 @Component({
   selector: 'tooltip',
@@ -51,7 +50,8 @@ export class Tooltip extends NgMilkdownTooltip {
       shouldShow: (view) => {
         const {from} = view.state.selection;
         return view.state.doc.nodeAt(from)?.type.name !== "image";
-      }
+      },
+      tippyOptions: {appendTo: document.body}
     }) as any;
   }
 }

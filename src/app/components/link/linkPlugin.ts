@@ -8,8 +8,6 @@ import {
 import {$prose} from "@milkdown/utils";
 
 export function linkPlugin(provider: NgProsemirrorAdapterProvider) {
-  const before = provider.createWidgetView({as: "span", component: LinkWidgetBefore});
-  const after = provider.createWidgetView({as: "span", component: LinkWidgetAfter});
   return $prose(
     () => new Plugin({
       state: {
@@ -40,6 +38,8 @@ export function linkPlugin(provider: NgProsemirrorAdapterProvider) {
             return undefined;
           });
 
+          const before = provider.createWidgetView({as: "span", component: LinkWidgetBefore});
+          const after = provider.createWidgetView({as: "span", component: LinkWidgetAfter});
           return DecorationSet.create(tr.doc, [
             before(markPos.start),
             after(markPos.end, {

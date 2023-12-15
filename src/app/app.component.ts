@@ -33,7 +33,7 @@ import {FootnoteRef} from "./components/footnote/footnote-ref.component";
 import {CodeBlock} from "./components/code-block.component";
 import {EmojiMenu} from "./components/emoji-menu.component";
 import {ImageTooltip} from "./components/image-tooltip/image-tooltip.component";
-import {linkPlugin} from "./components/link/link.component";
+import {linkPlugin} from "./components/link/linkPlugin";
 
 @Component({
   selector: 'app-root',
@@ -139,9 +139,9 @@ export class AppComponent implements OnInit {
   value: string;
 
   tooltip = tooltipFactory('tooltipMenu');
+  imageTooltip = tooltipFactory("imageTooltipMenu");
   slash = slashFactory('slashMenu');
   emojiSlash = slashFactory("emojiMenu");
-  imageTooltip = tooltipFactory("IMAGE");
 
   plugins: NgMilkdownPlugin[] = null;
 
