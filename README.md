@@ -1,10 +1,9 @@
-<h1 style="font-weight: 500; background: linear-gradient(to right,#8514f5,#f637e3,#fa2c05); -webkit-background-clip: text; background-clip: text;-webkit-text-fill-color: transparent;">ng-milkdown</h1>
+<center>
+  <h1>ng-milkdown</h1>
+  <img src="milkdownLogo.png" width="200" style="vertical-align: middle;">
+</center>
 
-<img src="milkdownLogo.svg" width="200" style="vertical-align: middle;">
-<span style="font-size: 30px;color: #aaa;margin: 0 20px;">+</span>
-<img src="O1CN01RSfkps1J0vtVaKr0U_!!6000000000967-49-tps-1920-1920.webp" width="150" style="vertical-align: middle;">
-
-WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [Angular](https://angular.dev/) out of box, only supports Angular **17**+.
+WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [**Angular**](https://angular.dev/) out of box, only supports Angular **17**+.
 
 ## Example
 
@@ -18,35 +17,39 @@ npm run start
 ```
 
 ## Online Demo
+
 [https://ousc.github.io/ng-milkdown](https://ousc.github.io/ng-milkdown)
 
-## ng-prosemirror-adapter:(now this library is not published to npm,  we will publish it soon)
-Angular adapter for ProseMirror, only supports Angular 17+.
+## ng-prosemirror-adapter
+
+Angular adapter for ProseMirror, only supports Angular 17+.(now this library is not published to npm, we will publish it soon)
 
 [https://github.com/ousc/ng-prosemirror-adapter](https://github.com/ousc/ng-prosemirror-adapter)
 
 ## Official plugins support on NgMilkdown:
 
-- [x] `theme-nord`**(preset)**
-- [x] `preset-commonmark`**(preset)**
-- [x] `plugin-listener`**(preset)**
-- [x] `preset-gfm`**(supported)**
-- [x] `plugin-history`**(supported)**
-- [x] `plugin-prism`**(supported)**
-- [x] `plugin-clipboard`**(supported)**
-- [x] `plugin-cursor`**(supported)**
-- [x] `plugin-math`**(supported)**
-- [x] `plugin-block`**(supported)**
-- [x] `plugin-indent`**(supported)**
-- [x] `plugin-tooltip`**(supported)**
-- [x] `plugin-slash`**(supported)**
-- [x] `plugin-diagram`**(supported)**
-- [x] `plugin-emoji`**(supported)**
-- [x] `plugin-cursor`**(supported)**
-- [ ] `plugin-trailing`**(planned)**
-- [ ] `plugin-upload`**(planned)**
-- [ ] `plugin-collab`**(planned)**
-- [ ] `plugin-copilot`**(planned)**
+- [X]  `theme-nord`**(preset)**
+- [X]  `preset-commonmark`**(preset)**
+- [X]  `plugin-listener`**(preset)**
+- [X]  `preset-gfm`**(supported)**
+- [X]  `plugin-history`**(supported)**
+- [X]  `plugin-prism`**(supported)**
+- [X]  `plugin-clipboard`**(supported)**
+- [X]  `plugin-cursor`**(supported)**
+- [X]  `plugin-math`**(supported)**
+- [X]  `plugin-block`**(supported)**
+- [X]  `plugin-indent`**(supported)**
+- [X]  `plugin-tooltip`**(supported)**
+- [X]  `plugin-slash`**(supported)**
+- [X]  `plugin-diagram`**(supported)**
+- [X]  `plugin-emoji`**(supported)**
+- [X]  `plugin-cursor`**(supported)**
+- [ ]  `plugin-trailing`**(planned)**
+- [ ]  `plugin-upload`**(planned)**
+- [ ]  `plugin-collab`**(planned)**
+- [ ]  `plugin-copilot`**(planned)**
+
+usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
 
 ## Quick Start
 
@@ -56,19 +59,23 @@ Angular adapter for ProseMirror, only supports Angular 17+.
 npm install ng-milkdown
 ```
 
-example:
+### Example
 
+#### app.component.ts
 ```html
 <ng-prosemirror-adapter-provider>
   <ng-milkdown
     [editorConfig]="config"
     [plugins]="plugins"
     [(ngModel)]="value"
+    [(loading)]="loading"
+    [spinner]="spinner"
     (ngModelChange)="onChange($event)"
     (onReady)="editor = $event"
   />
 </ng-prosemirror-adapter-provider>
 ```
+#### app.component.ts
 
 ```typescript
 @Component({...})
@@ -155,8 +162,23 @@ export class AppComponent {
 
 ```
 
+### API
+
+| Property          | Description                                                       | Type                       | Default |
+|-------------------|-------------------------------------------------------------------|----------------------------|---------|
+| `[classList]`     | editor element class names                                        | `string[]`                   | `[]`      |
+| `[editorConfig]`  | config before Editor.create()                                     | `NgMilkdownEditorConfig`     | `[]`      |
+| `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`         | `[]`     |
+| `[loading]`       | set the loading status of editor                                  | `boolean`                    | `true`    |
+| `[spinner]`       | Custom spinner                                                    | `TemplateRef<any>`           | -       |
+| `[ngModel]`       | current value , double binding                                    | `DefaultValue`               | -       |
+| `(ngModelChange)` | callback when markdown change                                     | `EventEmitter<DefaultValue>` | -       |
+| `(onReady)`       | A callback function, can be executed when editor has bean created | `Editor`                     | -       |
+
 ## OutOfBox Plugins
+
 ### ng-milkdown-tooltip
+
 ```typescript
 @Component({
   template: `
@@ -173,14 +195,16 @@ export class ImageTooltipComponent extends NgMilkdownTooltip{
     }
 }
 ```
+
 ### ng-milkdown-slash
+
 ```typescript
 @Component({
   template: `
       <button
-        class="slash-menu"
-        (keydown)="createCodeBlockCommand($event)"
-        (mousedown)="createCodeBlockCommand($event)"
+        [class]="selected === 0 ? ['selected'] : []"
+        (mousemove)="selected = $index"
+        (mousedown)="action(onPick)"
       >
         Code Block
       </button>
@@ -188,25 +212,16 @@ export class ImageTooltipComponent extends NgMilkdownTooltip{
   ...
 })
 export class SlashComponent extends NgMilkdownSlash {
-  createCodeBlockCommand = (e: KeyboardEvent | MouseEvent) => {
-    if(e instanceof KeyboardEvent) {
-      this.onKeyBoardDown(e);
-    }
-    e.preventDefault() // Prevent the keyboad key to be inserted in the editor.
-    if (e instanceof MouseEvent || e.key === 'Enter') {
-      this.action((ctx) => {
-        const view = ctx.get(editorViewCtx);
-        const { dispatch, state } = view;
-        const { tr, selection } = state;
-        const { from } = selection;
-        dispatch(tr.deleteRange(from - 1, from))
-        view.focus()
-        return callCommand(createCodeBlockCommand.key)(ctx)
-      });
+  override get onPick(): (ctx: Ctx) => void {
+    return (ctx: Ctx) => {
+      this.removeSlash(ctx);
+      ctx.get(commandsCtx).call(createCodeBlockCommand.key);
+      ctx.get(editorViewCtx).focus();
     }
   }
 }
 ```
+
 ### ng-milkdown-block
 
 ```typescript
@@ -224,22 +239,8 @@ export class SlashComponent extends NgMilkdownSlash {
 })
 export class BlockComponent extends NgMilkdownBlock {}
 ```
-### ng-milkdown-diagram
-```typescript
-@Component({
-  selector: 'diagram',
-  template: `<div></div>`,
-  styles:[],
-  standalone: true
-})
-export class Diagram extends NgMilkdownDiagram {
-  override get container(): any {
-    return super.container.children[0];
-  } 
-  //if you dont want to wrap the diagram with a div
-  //keep the `template` empty and don't override the `container` getter.
-}
-```
+
+More detailed examples and more plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
 
 ## license
 

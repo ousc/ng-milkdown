@@ -36,7 +36,7 @@ function isZoneAwarePromise(object: any) {
   selector: 'ng-milkdown',
   standalone: true,
   template: `
-      <div #editorRef class="milkdown-editor"></div>
+      <div #editorRef class="milkdown-editor" [class]="classList"></div>
       @if (loading && spinner) {
           <ng-container *stringTemplateOutlet="spinner"></ng-container>
       }
@@ -173,6 +173,7 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   @Input() set loading(value) {
     this.ngMilkdownService.loading = value
   }
+  @Output() loadingChange = new EventEmitter<boolean>();
 
   @ViewChild('spinner') _defaultSpinner: TemplateRef<any>;
   _spinner: TemplateRef<any> = null;
@@ -288,6 +289,7 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
 
       editor = await editor.create();
       this.loading = false;
+      this.loadingChange.emit(false);
       this.onReady.emit(editor);
       this.editor = editor;
     })
