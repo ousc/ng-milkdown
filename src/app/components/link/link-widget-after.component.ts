@@ -52,7 +52,9 @@ export class LinkWidgetAfter extends NgProsemirrorWidget {
     });
   }
 
-  action = actionFactory(this.provider.editor)
+  get action() {
+    return actionFactory(this.provider.editor)
+  };
 
   href = '';
 
