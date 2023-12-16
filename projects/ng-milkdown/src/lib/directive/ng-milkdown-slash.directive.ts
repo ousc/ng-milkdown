@@ -13,6 +13,7 @@ import {
 import {editorViewCtx, rootDOMCtx} from "@milkdown/core";
 import {callCommand} from "@milkdown/utils";
 import {undoCommand} from "@milkdown/plugin-history";
+import {actionFactory} from "../actionFactory";
 
 @Directive({
   selector: 'ng-milkdown-slash',
@@ -25,9 +26,10 @@ export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewIni
   }
 
   @Input() slash: SlashPlugin<any>;
-  action: <T>(action: (ctx: Ctx) => T) => T = (command) => {
-    return (this.provider.editor as NgMilkdown).editor.action(command);
-  }
+
+  get action() {
+    return actionFactory(this.provider.editor)
+  };
 
   list: any[] = [];
 

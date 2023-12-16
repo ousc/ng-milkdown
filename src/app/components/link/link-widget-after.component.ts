@@ -1,12 +1,11 @@
-import {AfterViewInit, Component, ElementRef} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {
   NgProsemirrorWidget
 } from "../../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-widget.component";
-import {Ctx} from "@milkdown/ctx";
-import {NgMilkdown} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 import {commandsCtx} from "@milkdown/core";
 import {updateLinkCommand} from "@milkdown/preset-commonmark";
 import {FormsModule} from "@angular/forms";
+import {actionFactory} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
 
 @Component({
   selector: 'link-widget-after',
@@ -52,9 +51,8 @@ export class LinkWidgetAfter extends NgProsemirrorWidget {
       this.title = this.spec?.['title'] ?? "";
     });
   }
-  action: <T>(action: (ctx: Ctx) => T) => T = (command) => {
-    return (this.provider.editor as NgMilkdown).editor.action(command);
-  }
+
+  action = actionFactory(this.provider.editor)
 
   href = '';
 

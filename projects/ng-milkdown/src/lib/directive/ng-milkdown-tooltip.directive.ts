@@ -5,15 +5,17 @@ import {NgMilkdown} from '../../public-api';
 import {
   NgProsemirrorPlugin
 } from "../../../../ng-prosemirror-adapter/src/lib/components/ng-prosemirror-plugin.component";
+import {actionFactory} from "../actionFactory";
 
 @Directive({
   selector: 'ng-milkdown-tooltip',
   standalone: true,
 })
 export class NgMilkdownTooltip extends NgProsemirrorPlugin implements AfterViewInit {
-  action: <T>(action: (ctx: Ctx) => T) => T = (command) => {
-    return (this.provider.editor as NgMilkdown).editor.action(command);
-  }
+
+  get action() {
+    return actionFactory(this.provider.editor)
+  };
 
   loading = true;
 

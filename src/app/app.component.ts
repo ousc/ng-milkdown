@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, IMAGE_CONFIG} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {NgMilkdown} from "../../projects/ng-milkdown/src/lib/ng-milkdown.component";
