@@ -39,49 +39,72 @@ export type NodeViewContentRef = (node: HTMLElement | null) => void
 
 export interface NodeViewContext {
   // won't change
-  contentRef: NodeViewContentRef // A reference to the content of the NodeView. This is a function that takes a node (HTMLElement or null) as an argument.
-  view: EditorView // An instance of EditorView. This represents the editor's view.
-  getPos: () => number | undefined // A function that returns the position of the node in the document. If the node is not found, it returns undefined.
-  setAttrs: (attrs: Attrs) => void // A function that sets the attributes of the node. It takes an Attrs object as an argument.
+  // A reference to the content of the NodeView. This is a function that takes a node (HTMLElement or null) as an argument.
+  contentRef: NodeViewContentRef
+  // An instance of EditorView. This represents the editor's view.
+  view: EditorView
+  // A function that returns the position of the node in the document. If the node is not found, it returns undefined.
+  getPos: () => number | undefined
+  // A function that sets the attributes of the node. It takes an Attrs object as an argument.
+  setAttrs: (attrs: Attrs) => void
 
   // changes between updates
-  node: Node // The ProseMirror Node that the NodeView is displaying.
-  selected: boolean // A boolean indicating whether the node is selected.
-  decorations: readonly Decoration[] // An array of decorations that are active on the node.
-  innerDecorations: DecorationSource // A DecorationSource object that contains decorations that are active on the node's content.
+  // The ProseMirror Node that the NodeView is displaying.
+  node: Node
+  // A boolean indicating whether the node is selected.
+  selected: boolean
+  // An array of decorations that are active on the node.
+  decorations: readonly Decoration[]
+  // A DecorationSource object that contains decorations that are active on the node's content.
+  innerDecorations: DecorationSource
 }
 
 export type NgPluginViewUserOptions = {
-  component: Type<NgProsemirrorPlugin> // The component that will be used to render the plugin view.
-  root?: (viewDOM: HTMLElement) => HTMLElement // A function that takes the root DOM element of the plugin view and returns the root DOM element of the plugin view.
-  update?: (view: EditorView, prevState: EditorState) => void // A function that is called when the plugin view is updated. It takes the editor's view and the previous state as arguments.
-  destroy?: () => void, // A function that is called when the plugin view is destroyed.
-  inputs?: { // An object containing the inputs that will be passed to the plugin view component.
+  // The component that will be used to render the plugin view.
+  component: Type<NgProsemirrorPlugin>
+  // A function that takes the root DOM element of the plugin view and returns the root DOM element of the plugin view.
+  root?: (viewDOM: HTMLElement) => HTMLElement
+  // A function that is called when the plugin view is updated. It takes the editor's view and the previous state as arguments.
+  update?: (view: EditorView, prevState: EditorState) => void
+  // A function that is called when the plugin view is destroyed.
+  destroy?: () => void,
+  // An object containing the inputs that will be passed to the plugin view component.
+  inputs?: {
     [key: string]: any
   },
-  key?: string // A string that is used to identify the plugin view.
+  // A string that is used to identify the plugin view.
+  key?: string
 }
 
 export type PluginViewFactory = (options: NgPluginViewUserOptions) => PluginViewSpec
 
 export interface PluginViewContext {
-  view: EditorView // An instance of EditorView. This represents the editor's view.
-  prevState: EditorState // The previous state of the editor.
+  // An instance of EditorView. This represents the editor's view.
+  view: EditorView
+  // The previous state of the editor.
+  prevState: EditorState
 }
 
 export type NgWidgetUserOptions = {
-  as: string | HTMLElement // The element that will be used to render the widget.
-  component: Type<NgProsemirrorWidget>, // The component that will be used to render the widget.
-  inputs?: { // An object containing the inputs that will be passed to the widget component.
+  // The element that will be used to render the widget.
+  as: string | HTMLElement
+  // The component that will be used to render the widget.
+  component: Type<NgProsemirrorWidget>,
+  // An object containing the inputs that will be passed to the widget component.
+  inputs?: {
     [key: string]: any
   },
-  key?: string // A string that is used to identify the widget.
+  // A string that is used to identify the widget.
+  key?: string
 }
 
 export type WidgetViewFactory = (options: NgWidgetUserOptions) => WidgetDecorationFactory
 
 export interface WidgetViewContext {
-  view: EditorView // An instance of EditorView. This represents the editor's view.
-  getPos: () => number | undefined // A function that returns the position of the node in the document. If the node is not found, it returns undefined.
-  spec?: WidgetDecorationSpec // A WidgetDecorationSpec object that contains the widget's spec.
+  // An instance of EditorView. This represents the editor's view.
+  view: EditorView
+  // A function that returns the position of the node in the document. If the node is not found, it returns undefined.
+  getPos: () => number | undefined
+  // A WidgetDecorationSpec object that contains the widget's spec.
+  spec?: WidgetDecorationSpec
 }
