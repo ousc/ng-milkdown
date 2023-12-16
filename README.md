@@ -4,7 +4,7 @@
 </center>
 <p align="center">
   <a href="https://ousc.github.io/ng-milkdown">
-    <img src="milkdownLogo.png" width="230" style="vertical-align: middle;">
+    <img src="milkdownLogo.png?v1" width="230" style="vertical-align: middle;">
   </a>
 </p>
 
@@ -71,7 +71,7 @@ npm install ng-milkdown
 
 ### Example
 
-#### app.component.ts
+#### app.component.html
 ```html
 <ng-prosemirror-adapter-provider>
   <ng-milkdown
