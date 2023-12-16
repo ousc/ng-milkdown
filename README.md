@@ -1,7 +1,17 @@
 <center>
-  <h1>ng-milkdown</h1>
-  <img src="milkdownLogo.png" width="200" style="vertical-align: middle;">
+  <h1></h1>
+  
 </center>
+<p align="center">
+  <a href="https://ousc.github.io/ng-milkdown">
+    <img src="milkdownLogo.png" width="230" style="vertical-align: middle;">
+  </a>
+</p>
+
+<h1 align="center">
+NG-MILKDOWN
+</h1>
+
 
 WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [**Angular**](https://angular.dev/) out of box, only supports Angular **17**+.
 
