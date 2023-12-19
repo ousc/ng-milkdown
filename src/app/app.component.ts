@@ -38,11 +38,12 @@ import {upload} from "@milkdown/plugin-upload";
 import {tableSelectorPlugin} from "./components/table-selector/tableSelectorPlugin";
 import {TableTooltip, tableTooltip, tableTooltipCtx} from './components/table-selector/table-tooltip.component';
 import {MathBlock} from "./components/math-block.component";
+import {ToolBarComponent} from "./components/tool-bar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, NgProsemirrorAdapterProvider, NgMilkdown, HttpClientModule],
+  imports: [CommonModule, RouterOutlet, FormsModule, NgProsemirrorAdapterProvider, NgMilkdown, HttpClientModule, ToolBarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

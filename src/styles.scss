@@ -22,6 +22,13 @@ $theme: mat.define-light-theme((
 @import 'katex/dist/katex.min.css';
 
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
 .prose table {
   width: calc(100% - 2rem)!important;
 }
