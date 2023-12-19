@@ -47,8 +47,8 @@ export class LinkWidgetAfter extends NgProsemirrorWidget {
   constructor(override el: ElementRef) {
     super(el);
     this.onUpdate.subscribe((context) => {
-      this.href = this.spec?.['href'] ?? "";
-      this.title = this.spec?.['title'] ?? "";
+      this.href = this.spec?.href || "";
+      this.title = this.spec?.title || "";
     });
   }
 

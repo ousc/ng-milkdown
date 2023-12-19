@@ -1,7 +1,5 @@
 import {AfterViewInit, Directive} from '@angular/core';
 import {TooltipProvider} from "@milkdown/plugin-tooltip";
-import {Ctx} from "@milkdown/ctx";
-import {NgMilkdown} from '../../public-api';
 import {
   NgProsemirrorPlugin
 } from "../../../../ng-prosemirror-adapter/src/lib/components/ng-prosemirror-plugin.component";
@@ -21,6 +19,10 @@ export class NgMilkdownTooltip extends NgProsemirrorPlugin implements AfterViewI
 
   ngAfterViewInit(): void {
     this.loading = false;
+  }
+
+  get tooltipProvider(): TooltipProvider {
+    return this.provider?.service?.pluginView[this.key] as unknown as TooltipProvider;
   }
 
   override get pluginView() {

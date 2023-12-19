@@ -46,7 +46,7 @@ export class CodeBlock extends NgProsemirrorNode implements AfterViewInit {
   override ngAfterViewInit(): void {
     super.ngAfterViewInit();
     setTimeout(() => {
-      this.language = this.node.attrs?.['language'];
+      this.language = this.node.attrs?.language;
     });
   }
 

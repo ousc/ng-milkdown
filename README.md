@@ -1,10 +1,6 @@
-<center>
-  <h1></h1>
-  
-</center>
 <p align="center">
   <a href="https://ousc.github.io/ng-milkdown">
-    <img src="milkdownLogo.png?v1" width="230" style="vertical-align: middle;">
+    <img src="milkdownLogo.png" width="230" style="vertical-align: middle;">
   </a>
 </p>
 
@@ -54,8 +50,8 @@ Angular adapter for ProseMirror, only supports Angular 17+.(now this library is 
 - [X]  `plugin-diagram`**(supported)**
 - [X]  `plugin-emoji`**(supported)**
 - [X]  `plugin-cursor`**(supported)**
-- [ ]  `plugin-trailing`**(planned)**
-- [ ]  `plugin-upload`**(planned)**
+- [X]  `plugin-trailing`**(supported)**
+- [X]  `plugin-upload`**(supported)**
 - [ ]  `plugin-collab`**(planned)**
 - [ ]  `plugin-copilot`**(planned)**
 

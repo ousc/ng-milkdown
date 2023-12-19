@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CommonModule, IMAGE_CONFIG} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {NgMilkdown} from "../../projects/ng-milkdown/src/lib/ng-milkdown.component";
@@ -11,7 +11,7 @@ import {clipboard} from "@milkdown/plugin-clipboard";
 import {prism} from "@milkdown/plugin-prism";
 import {cursor} from "@milkdown/plugin-cursor";
 import {block} from "@milkdown/plugin-block";
-import {math} from "@milkdown/plugin-math";
+import {math, mathBlockSchema} from "@milkdown/plugin-math";
 import {indent, indentConfig} from "@milkdown/plugin-indent";
 import {history} from "@milkdown/plugin-history";
 import {Tooltip} from "./components/tooltip/tooltip.component";
@@ -34,6 +34,10 @@ import {CodeBlock} from "./components/code-block.component";
 import {EmojiMenu} from "./components/emoji-menu.component";
 import {ImageTooltip} from "./components/image-tooltip/image-tooltip.component";
 import {linkPlugin} from "./components/link/linkPlugin";
+import {upload} from "@milkdown/plugin-upload";
+import {tableSelectorPlugin} from "./components/table-selector/tableSelectorPlugin";
+import {TableTooltip, tableTooltip, tableTooltipCtx} from './components/table-selector/table-tooltip.component';
+import {MathBlock} from "./components/math-block.component";
 
 @Component({
   selector: 'app-root',
@@ -56,8 +60,17 @@ export class AppComponent implements OnInit {
         prism,
         clipboard,
         cursor,
-        math,
+        [
+          math,
+          $view(mathBlockSchema.node, () =>
+            this.provider.createNodeView({
+              component: MathBlock,
+              stopEvent: () => true,
+            })
+          )
+        ],
         diagram,
+        upload,
         $view(diagramSchema.node, () =>
           this.provider.createNodeView({
             component: Diagram,
@@ -67,12 +80,14 @@ export class AppComponent implements OnInit {
         $view(listItemSchema.node, () =>
           this.provider.createNodeView({component: ListItem})
         ),
-        $view(footnoteDefinitionSchema.node, () =>
-          this.provider.createNodeView({component: FootnoteDef})
-        ),
-        $view(footnoteReferenceSchema.node, () =>
-          this.provider.createNodeView({component: FootnoteRef})
-        ),
+        [
+          $view(footnoteDefinitionSchema.node, () =>
+            this.provider.createNodeView({component: FootnoteDef})
+          ),
+          $view(footnoteReferenceSchema.node, () =>
+            this.provider.createNodeView({component: FootnoteRef})
+          )
+        ],
         $view(codeBlockSchema.node, () =>
           this.provider.createNodeView({component: CodeBlock})
         ),
@@ -129,7 +144,19 @@ export class AppComponent implements OnInit {
             })
           }
         },
-        linkPlugin(this.provider)
+        linkPlugin(this.provider),
+        tableTooltip,
+        {
+          plugin: tableTooltipCtx,
+          config: ctx => {
+            ctx.set(tableTooltip.key, {
+              view: this.provider.createPluginView({
+                component: TableTooltip,
+              }),
+            })
+          }
+        },
+        tableSelectorPlugin(this.provider),
       ];
       this.value = markdown;
     });

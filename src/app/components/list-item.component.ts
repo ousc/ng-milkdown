@@ -25,15 +25,15 @@ import {
 })
 export class ListItem extends NgProsemirrorNode {
   get checked() {
-    return this.node.attrs?.['checked'];
+    return this.node.attrs?.checked;
   }
 
   get isBullet() {
-    return this.node.attrs?.['listType'] === "bullet";
+    return this.node.attrs?.listType === "bullet";
   }
 
   get label() {
-    return this.node.attrs?.['label'];
+    return this.node.attrs?.label;
   }
 
   override get container() {

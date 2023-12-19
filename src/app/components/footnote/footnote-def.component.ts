@@ -28,7 +28,7 @@ import {
 export class FootnoteDef extends NgProsemirrorNode {
 
   get label() {
-    return this.node.attrs?.['label'];
+    return this.node.attrs?.label;
   }
 
   override get container() {

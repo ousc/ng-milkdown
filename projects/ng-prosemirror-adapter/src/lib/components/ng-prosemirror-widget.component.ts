@@ -29,5 +29,9 @@ export abstract class NgProsemirrorWidget {
     return this.provider.service.widgetViewContext?.[this.key]?.spec;
   }
 
+  get container() {
+    return this.el.nativeElement;
+  }
+
   onUpdate = new EventEmitter<WidgetViewContext>();
 }

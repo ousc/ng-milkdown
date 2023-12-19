@@ -18,6 +18,6 @@ import {
 export class FootnoteRef extends NgProsemirrorNode {
 
   get label() {
-    return this.node.attrs?.['label'];
+    return this.node.attrs?.label;
   }
 }

@@ -5,11 +5,19 @@
   - footnote-ref
 - image-tooltip
 - link
+  - link-widget-after
+  - link-widget-before
+  - linkPlugin
 - slash
+- table-selector
+  - table-tooltip-button
+  - table-tooltip
+  - table-selector-widget
+  - tableSelectorPlugin
 - tooltip
 - block
 - code-block
 - diagram
 - emoji-menu
 - list-item
-- nav
+- math-block

@@ -131,7 +131,7 @@ export class NgProsemirrorAdapterService {
       pluginView.prevState = prevState;
     }
     this.pluginViewContext[key] = {
-      view: Object.assign(Object.create(Object.getPrototypeOf(pluginView.view)), pluginView.view),
+      view: pluginView.view,
       prevState: pluginView.prevState,
     };
   }
@@ -181,22 +181,22 @@ export class NgProsemirrorAdapterService {
     widgetView.spec = widgetView.spec || spec;
     this.widgetViewContext[key] = {
       ...this.widgetViewContext[key],
+      ...widgetView,
       spec: widgetView.spec
     };
   }
 
   createWidgetView: WidgetViewFactory = (options: NgWidgetUserOptions) => {
-    const componentRef = this._vcf.createComponent(options.component, {injector: this._injector});
-
-    const key = options.key || nanoid();
-    Object.keys(options.inputs || {}).forEach((key) => {
-      componentRef.setInput(key, options.inputs[key])
-    });
-
-    componentRef.setInput("provider", this.provider);
-    componentRef.setInput("key", key);
-
     return (pos, userSpec = {}) => {
+      const componentRef = this._vcf.createComponent(options.component, {injector: this._injector});
+
+      const key = options.key || nanoid();
+      Object.keys(options.inputs || {}).forEach((key) => {
+        componentRef.setInput(key, options.inputs[key])
+      });
+
+      componentRef.setInput("provider", this.provider);
+      componentRef.setInput("key", key);
       const spec: WidgetDecorationSpec = {
         key,
         ...userSpec,
@@ -219,7 +219,7 @@ export class NgProsemirrorAdapterService {
         this.widgetView[key].bind(view, getPos);
         this.updateWidgetViewContext(key, view, getPos, spec);
         componentRef.instance.onUpdate.emit(this.widgetViewContext[key]);
-        firstElementChild(this.widgetView[key].dom).appendChild(componentRef.location.nativeElement);
+        firstElementChild(this.widgetView[key].dom).appendChild(componentRef.instance.container);
         return this.widgetView[key].dom;
       }, spec);
     }

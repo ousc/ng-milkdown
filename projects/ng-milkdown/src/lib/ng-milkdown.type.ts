@@ -15,5 +15,5 @@ export type NgMilkdownEditorConfigSync =
 
 export type NgMilkdownEditorConfig = NgMilkdownEditorConfigAsync | NgMilkdownEditorConfigSync
 
-export type NgMilkdownPlugin = (MilkdownPlugin | MilkdownPlugin[]) |
+export type NgMilkdownPlugin = (MilkdownPlugin | MilkdownPlugin[] | (MilkdownPlugin[] | MilkdownPlugin)[] ) |
   { plugin: (MilkdownPlugin | MilkdownPlugin[]), config: NgMilkdownPluginConfig }

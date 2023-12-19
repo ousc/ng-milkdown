@@ -6,7 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
@@ -22,8 +22,9 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
+    "noUncheckedIndexedAccess": true,
     "lib": [
-      "ES2022",
+      "ESNext",
       "dom"
     ]
   },
