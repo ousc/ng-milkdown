@@ -12,9 +12,15 @@ import katex from 'katex';
 @Component({
   selector: 'math-block',
   template: `
-      <mat-tab-group contenteditable="false" [animationDuration]="150" [(selectedIndex)]="selectedIndex" preserveContent>
+      <mat-tab-group contenteditable="false" [animationDuration]="150" [(selectedIndex)]="selectedIndex"
+                     preserveContent>
           <mat-tab label="Preview">
-              <div class="cursor-pointer border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100 math-block-ref"></div>
+              <div [style.min-height.px]="100"
+                   class="cursor-pointer border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100 math-block-ref">
+                  @if (!code || !rendering) {
+                      <span> (˚Δ˚)b</span>
+                  }
+              </div>
           </mat-tab>
           <mat-tab label="Source">
                 <textarea [(ngModel)]="code"

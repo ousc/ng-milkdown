@@ -21,3 +21,4 @@
 - emoji-menu
 - list-item
 - math-block
+- top-bar

@@ -67,7 +67,7 @@ export class TableSelectorWidget extends NgProsemirrorWidget {
       };
       setTimeout(() => {
         tooltip.show();
-      }, 50)
+      }, 50);
     });
   }
 
