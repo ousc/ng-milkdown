@@ -1,13 +1,14 @@
 .ctn {
   width: 50%;
   margin: auto;
-  height: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   padding: 20px;
   position: absolute;
   left: 0;
   right: 0;
+  min-height: 100%;
 
   @media (max-width: 767px) { // 应用于移动设备
     width: 100%;
