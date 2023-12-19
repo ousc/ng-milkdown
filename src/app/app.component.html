@@ -1,18 +1,18 @@
 <article class="prose lg:prose-xl"></article>
 <div class="relative h-full pt-10">
-    <tool-bar [provider]="provider" *ngIf="editor && !editor.loading"/>
-    <div class="ctn">
-        <div class="h-full overflow-auto overscroll-none">
-            <ng-prosemirror-adapter-provider #provider>
-                <ng-milkdown
-                  *ngIf="value"
-                  [editorConfig]="config"
-                  [plugins]="plugins"
-                  [(ngModel)]="value"
-                  (ngModelChange)="onChange($event)"
-                  (onReady)="editor = $event"
-                />
-            </ng-prosemirror-adapter-provider>
-        </div>
-    </div>
+  @if (editor && !editor.loading) {
+    <tool-bar class="opacity-80" [provider]="provider"/>
+  }
+  <div class="h-full overflow-auto overscroll-none ctn left-0 right-0 mx-auto flex flex-col px-4">
+    <ng-prosemirror-adapter-provider #provider>
+      <ng-milkdown
+        *ngIf="value"
+        [editorConfig]="config"
+        [plugins]="plugins"
+        [(ngModel)]="value"
+        (ngModelChange)="onChange($event)"
+        (onReady)="editor = $event"
+      />
+    </ng-prosemirror-adapter-provider>
+  </div>
 </div>
