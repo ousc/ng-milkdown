@@ -1,10 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {
   NgProsemirrorAdapterProvider
 } from "../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory";
 import {redoCommand, undoCommand} from '@milkdown/plugin-history';
-import {Is, when} from "conditio";
 import {
   createCodeBlockCommand,
   insertHrCommand,
@@ -19,6 +18,7 @@ import {callCommand} from '@milkdown/utils';
 import {insertTableCommand, toggleStrikethroughCommand} from "@milkdown/preset-gfm";
 import {insertDiagramCommand} from "@milkdown/plugin-diagram";
 import {CmdKey} from "@milkdown/core";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'tool-bar',
@@ -27,30 +27,34 @@ import {CmdKey} from "@milkdown/core";
           <div class="prose mx-auto flex">
               @for (item of navBarItems;track $index) {
                   <div class="flex h-10 w-10 cursor-pointer items-center justify-center rounded hover:bg-gray-100"
-                          [title]="item.title"
-                          (mousedown)="onMouseDown($event, item.slice, item.payload)"
-                          (touchstart)="onMouseDown($event, item.slice, item.payload)"
-                          [class]="item.className"
+                       [title]="item.title"
+                       (mousedown)="onMouseDown($event, item.slice, item.payload)"
+                       (touchstart)="onMouseDown($event, item.slice, item.payload)"
+                       [class]="item.className"
+                       [routerLink]="item.routerLink"
                   >
-                    <span class="material-symbols-outlined !text-base">{{ item.icon }}</span>
+                      <span class="material-symbols-outlined !text-base">{{ item.icon }}</span>
                   </div>
               }
           </div>
       </div>
   `,
   styles: [`
-    @media(max-width: 768px){
+    @media(max-width: 768px) {
       .hidden-sm {
         display: none;
       }
     }
 
-    @media(max-width: 640px){
+    @media(max-width: 640px) {
       .hidden-xs {
         display: none;
       }
     }
   `],
+  imports: [
+    RouterLink
+  ],
   standalone: true
 })
 export class ToolBarComponent {
@@ -143,11 +147,18 @@ export class ToolBarComponent {
       title: 'Quote Block',
       icon: 'format_quote',
       slice: wrapInBlockquoteCommand.key,
+    },
+    {
+      title: 'Test collaborative Editing',
+      icon: 'partner_exchange',
+      className: ['hidden-sm'],
+      routerLink: ['/collaborative-editing']
     }
   ]
 
   onMouseDown(e: MouseEvent | TouchEvent, slice: CmdKey<any>, payload?: any) {
     e.preventDefault();
-    this.action(callCommand(slice, payload));
+    if (slice)
+      this.action(callCommand(slice, payload));
   }
 }

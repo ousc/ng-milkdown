@@ -52,7 +52,7 @@ Angular adapter for ProseMirror, only supports Angular 17+.(now this library is 
 - [X]  `plugin-cursor`**(supported)**
 - [X]  `plugin-trailing`**(supported)**
 - [X]  `plugin-upload`**(supported)**
-- [ ]  `plugin-collab`**(planned)**
+- [X]  `plugin-collab`**(supported)**
 - [ ]  `plugin-copilot`**(planned)**
 
 usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
@@ -67,7 +67,7 @@ npm install ng-milkdown
 
 ### Example
 
-#### app.component.html
+#### workGround.component.html
 ```html
 <ng-prosemirror-adapter-provider>
   <ng-milkdown
@@ -81,11 +81,11 @@ npm install ng-milkdown
   />
 </ng-prosemirror-adapter-provider>
 ```
-#### app.component.ts
+#### workGround.component.ts
 
 ```typescript
 @Component({...})
-export class AppComponent {
+export class WorkGroundComponent {
   @ViewChild(NgProsemirrorAdapterProvider, {static: true}) provider: NgProsemirrorAdapterProvider;
 
   config = (ctx: any) => {

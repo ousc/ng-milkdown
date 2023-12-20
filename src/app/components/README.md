@@ -22,3 +22,4 @@
 - list-item
 - math-block
 - top-bar
+- collab

@@ -2,10 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
-import {NgMilkdown} from "../../projects/ng-milkdown/src/lib/ng-milkdown.component";
+import {NgMilkdown} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 import {tooltipFactory} from "@milkdown/plugin-tooltip";
 import {slashFactory} from "@milkdown/plugin-slash";
-import {NgMilkdownPlugin} from "../../projects/ng-milkdown/src/lib/ng-milkdown.type";
+import {NgMilkdownPlugin} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.type";
 import {footnoteDefinitionSchema, footnoteReferenceSchema, gfm} from "@milkdown/preset-gfm";
 import {clipboard} from "@milkdown/plugin-clipboard";
 import {prism} from "@milkdown/plugin-prism";
@@ -14,40 +14,40 @@ import {block} from "@milkdown/plugin-block";
 import {math, mathBlockSchema} from "@milkdown/plugin-math";
 import {indent, indentConfig} from "@milkdown/plugin-indent";
 import {history} from "@milkdown/plugin-history";
-import {Tooltip} from "./components/tooltip/tooltip.component";
-import {Slash} from "./components/slash/slash.component";
-import {editorViewOptionsCtx} from "@milkdown/core";
-import {Block} from "./components/block.component";
+import {Tooltip} from "../../components/tooltip/tooltip.component";
+import {Slash} from "../../components/slash/slash.component";
+import {Editor, editorViewOptionsCtx} from "@milkdown/core";
+import {Block} from "../../components/block.component";
 import {diagram, diagramSchema} from "@milkdown/plugin-diagram";
 import {emoji, emojiAttr} from "@milkdown/plugin-emoji";
 import {
   NgProsemirrorAdapterProvider
-} from "../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
+} from "../../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {blockquoteAttr, codeBlockSchema, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
 import {$view} from "@milkdown/utils";
-import {Diagram} from "./components/diagram.component";
-import {ListItem} from "./components/list-item.component";
-import {FootnoteDef} from "./components/footnote/footnote-def.component";
-import {FootnoteRef} from "./components/footnote/footnote-ref.component";
-import {CodeBlock} from "./components/code-block.component";
-import {EmojiMenu} from "./components/emoji-menu.component";
-import {ImageTooltip} from "./components/image-tooltip/image-tooltip.component";
-import {linkPlugin} from "./components/link/linkPlugin";
+import {Diagram} from "../../components/diagram.component";
+import {ListItem} from "../../components/list-item.component";
+import {FootnoteDef} from "../../components/footnote/footnote-def.component";
+import {FootnoteRef} from "../../components/footnote/footnote-ref.component";
+import {CodeBlock} from "../../components/code-block.component";
+import {EmojiMenu} from "../../components/emoji-menu.component";
+import {ImageTooltip} from "../../components/image-tooltip/image-tooltip.component";
+import {linkPlugin} from "../../components/link/linkPlugin";
 import {upload} from "@milkdown/plugin-upload";
-import {tableSelectorPlugin} from "./components/table-selector/tableSelectorPlugin";
-import {TableTooltip, tableTooltip, tableTooltipCtx} from './components/table-selector/table-tooltip.component';
-import {MathBlock} from "./components/math-block.component";
-import {ToolBarComponent} from "./components/tool-bar.component";
+import {tableSelectorPlugin} from "../../components/table-selector/tableSelectorPlugin";
+import {TableTooltip, tableTooltip, tableTooltipCtx} from '../../components/table-selector/table-tooltip.component';
+import {MathBlock} from "../../components/math-block.component";
+import {ToolBarComponent} from "../../components/tool-bar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, NgProsemirrorAdapterProvider, NgMilkdown, HttpClientModule, ToolBarComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  templateUrl: './workGround.component.html',
+  styleUrl: './workGround.component.scss'
 })
-export class AppComponent implements OnInit {
+export class WorkGroundComponent implements OnInit {
   @ViewChild(NgProsemirrorAdapterProvider, {static: true}) provider: NgProsemirrorAdapterProvider;
 
   constructor(private http: HttpClient) {
