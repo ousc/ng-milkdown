@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
   plugins: NgMilkdownPlugin[] = null;
 
   onChange(markdownText: any) {
-    // console.log('markdown changed!', {markdownText})
+    console.log('markdown changed!', {markdownText})
   }
 
   config = (ctx: any) => {

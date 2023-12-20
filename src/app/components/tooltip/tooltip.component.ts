@@ -5,6 +5,7 @@ import {NgMilkdownTooltip} from "../../../../projects/ng-milkdown/src/lib/direct
 import {redoCommand, undoCommand} from "@milkdown/plugin-history";
 import {toggleStrikethroughCommand} from "@milkdown/preset-gfm";
 import {TooltipProvider} from "@milkdown/plugin-tooltip";
+import {CmdKey} from "@milkdown/core";
 
 @Component({
   selector: 'tooltip',
@@ -13,34 +14,46 @@ import {TooltipProvider} from "@milkdown/plugin-tooltip";
   standalone: true
 })
 export class Tooltip extends NgMilkdownTooltip {
-  setBold(e: MouseEvent) {
+  buttons = [
+    [
+      {
+        icon: 'undo',
+        title: 'Undo',
+        command: undoCommand.key
+      },
+      {
+        icon: 'redo',
+        title: 'Redo',
+        command: redoCommand.key
+      },
+    ],
+    [
+      {
+        icon: 'format_bold',
+        title: 'Bold',
+        command: toggleStrongCommand.key
+      },
+      {
+        icon: 'format_italic',
+        title: 'Italic',
+        command: toggleEmphasisCommand.key
+      },
+      {
+        icon: 'format_strikethrough',
+        title: 'Strikethrough',
+        command: toggleStrikethroughCommand.key
+      },
+      {
+        icon: 'format_quote',
+        title: 'Quote',
+        command: wrapInBlockquoteCommand.key
+      },
+    ],
+  ]
+
+  mousedown(e: MouseEvent | TouchEvent, cmd: CmdKey<any>) {
     e.preventDefault();
-    this.action(callCommand(toggleStrongCommand.key));
-  }
-
-  setItalic(e: MouseEvent) {
-    e.preventDefault();
-    this.action(callCommand(toggleEmphasisCommand.key));
-  }
-
-  undo(e: MouseEvent) {
-    e.preventDefault();
-    this.action(callCommand(undoCommand.key));
-  }
-
-  redo(e: MouseEvent) {
-    e.preventDefault();
-    this.action(callCommand(redoCommand.key));
-  }
-
-  strikethrough(e: MouseEvent) {
-    e.preventDefault()
-    this.action(callCommand(toggleStrikethroughCommand.key))
-  }
-
-  quote(e: MouseEvent) {
-    e.preventDefault()
-    this.action(callCommand(wrapInBlockquoteCommand.key))
+    this.action(callCommand(cmd));
   }
 
   override get pluginView() {

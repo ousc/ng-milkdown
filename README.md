@@ -170,16 +170,16 @@ export class AppComponent {
 
 ### API
 
-| Property          | Description                                                       | Type                       | Default |
-|-------------------|-------------------------------------------------------------------|----------------------------|---------|
-| `[classList]`     | editor element class names                                        | `string[]`                   | `[]`      |
-| `[editorConfig]`  | config before Editor.create()                                     | `NgMilkdownEditorConfig`     | `[]`      |
-| `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`         | `[]`     |
-| `[loading]`       | set the loading status of editor                                  | `boolean`                    | `true`    |
-| `[spinner]`       | Custom spinner                                                    | `TemplateRef<any>`           | -       |
-| `[ngModel]`       | current value , double binding                                    | `DefaultValue`               | -       |
-| `(ngModelChange)` | callback when markdown change                                     | `EventEmitter<DefaultValue>` | -       |
-| `(onReady)`       | A callback function, can be executed when editor has bean created | `Editor`                     | -       |
+| Property          | Description                                                       | Type                     | Default                |
+|-------------------|-------------------------------------------------------------------|--------------------------|------------------------|
+| `[classList]`     | editor element class names                                        | `string[]`               | `[]`                   |
+| `[editorConfig]`  | config before Editor.create()                                     | `NgMilkdownEditorConfig` | `(ctx: Ctx) => void 0` |
+| `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`     | `[]`                   |
+| `[loading]`       | set the loading status of editor                                  | `boolean`                | `true`                 |
+| `[spinner]`       | Custom spinner                                                    | `TemplateRef<any>`       | -                      |
+| `[ngModel]`       | current value , double binding                                    | `DefaultValue`           | -                      |
+| `(ngModelChange)` | callback when markdown change                                     | `EventEmitter<string>`   | -                      |
+| `(onReady)`       | A callback function, can be executed when editor has bean created | `Editor`                 | -                      |
 
 ## OutOfBox Plugins
 
