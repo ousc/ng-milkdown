@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
-import {WorkGroundComponent} from "./router/work-ground/workGround.component";
-import {CollaborativeEditingComponent} from "./router/collaborative-editing/collaborative-editing.component";
+import {WorkGroundComponent} from "./routes/work-ground/workGround.component";
+import {CollaborativeEditingComponent} from "./routes/collaborative-editing/collaborative-editing.component";
 import {AppComponent} from "./app.component";
 
 export const routes: Routes = [
