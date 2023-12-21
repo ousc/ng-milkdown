@@ -232,7 +232,7 @@ export class CollaborativeEditingComponent implements OnDestroy{
       </div>
       <div mat-dialog-actions>
           <button mat-button (click)="onNoClick()">Use default setting</button>
-          <button mat-button [mat-dialog-close]="data.serverUrl">Ok</button>
+          <button mat-button [mat-dialog-close]="data.serverUrl" (click)="onClick()">Ok</button>
       </div>
   `,
   standalone: true,
@@ -255,6 +255,10 @@ export class CollabDialog {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({});
+  }
+
+  onClick(): void {
+    this.dialogRef.close(this.data);
   }
 }
