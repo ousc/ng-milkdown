@@ -3,7 +3,6 @@ import {NgMilkdownTooltip} from "../../../../projects/ng-milkdown/src/lib/direct
 import {$ctx} from "@milkdown/utils";
 import {tooltipFactory, TooltipProvider} from "@milkdown/plugin-tooltip";
 import {TableButton} from "./table-tooltip-button.component";
-import {Else, Is, when} from "conditio";
 import {CellSelection} from '@milkdown/prose/tables';
 import {commandsCtx, editorViewCtx} from "@milkdown/core";
 import {
@@ -25,28 +24,10 @@ export const tableTooltip = tooltipFactory("TABLE");
   selector: 'table-tooltip',
   template: `
       <div class="flex">
-          @if (!isWholeTable && !isHeading && isRow) {
-              <table-tooltip-button icon="splitscreen_add" style="transform: scaleY(-1)"
-                                    (onClick)="onClick('addRowBefore')" title="Add row before"/>
-          }
-          @if (!isWholeTable && isCol) {
-              <table-tooltip-button icon="splitscreen_vertical_add" style="transform: scaleX(-1)"
-                                    (onClick)="onClick('addColBefore')" title="Add column before"/>
-          }
-          @if ((isWholeTable || (!isHeading && isAny))) {
-              <table-tooltip-button icon="delete" (onClick)="onClick('deleteSelectedCells')"
-                                    title="Delete selected cells"/>
-          }
-          @if (!isWholeTable && isRow) {
-              <table-tooltip-button icon="splitscreen_add" (onClick)="onClick('addRowAfter')" title="Add row after"/>
-          }
-          @if (!isWholeTable && isCol) {
-              <table-tooltip-button icon="splitscreen_vertical_add" (onClick)="onClick('addColAfter')"
-                                    title="Add column after"/>
-              <table-tooltip-button icon="format_align_left" (onClick)="onClick('setAlignLeft')" title="Align left"/>
-              <table-tooltip-button icon="format_align_center" (onClick)="onClick('setAlignCenter')"
-                                    title="Align center"/>
-              <table-tooltip-button icon="format_align_right" (onClick)="onClick('setAlignRight')" title="Align right"/>
+          @for (button of buttons;track $index) {
+              @if (button.iif()) {
+                  <table-tooltip-button [icon]="button.icon" [title]="button.title" (onClick)="onClick($index)" [style]="button.style"/>
+              }
           }
       </div>
   `,
@@ -97,30 +78,82 @@ export class TableTooltip extends NgMilkdownTooltip {
         ?.type.name === "table_header";
   }
 
-  onClick(type: string) {
-    this.tooltipProvider?.hide();
-    const {slice, payload} = when(type)(
-      Is("addRowBefore", {slice: addRowBeforeCommand.key}),
-      Is("addColBefore", {slice: addColBeforeCommand.key}),
-      Is("deleteSelectedCells", {slice: deleteSelectedCellsCommand.key}),
-      Is("addRowAfter", {slice: addRowAfterCommand.key}),
-      Is("addColAfter", {slice: addColAfterCommand.key}),
-      Is("setAlignLeft", {slice: setAlignCommand.key, payload: "left"}),
-      Is("setAlignCenter", {slice: setAlignCommand.key, payload: "center"}),
-      Is("setAlignRight", {slice: setAlignCommand.key, payload: "right"}),
-      Else({})
-    )
-    if (slice) {
-      this.action((ctx) => {
-        ctx.get(commandsCtx).call(slice, payload);
-      });
-      if(!slice.startsWith('set')){
-        this.tooltipProvider?.hide();
+  buttons = [
+    {
+      icon: 'splitscreen_add',
+      title: 'Add row before',
+      slice: addRowBeforeCommand.key,
+      iif: () => !this.isWholeTable && !this.isHeading && this.isRow,
+      hide: true,
+      style: {
+        transform: 'scaleY(-1)'
       }
-      this.action(ctx=>{
-        ctx.get(editorViewCtx).focus();
-      })
+    },
+    {
+      icon: 'splitscreen_vertical_add',
+      title: 'Add column before',
+      slice: addColBeforeCommand.key,
+      iif: () => !this.isWholeTable && this.isCol,
+      hide: true,
+      style: {
+        transform: 'scaleX(-1)'
+      }
+    },
+    {
+      icon: 'delete',
+      title: 'Delete selected cells',
+      slice: deleteSelectedCellsCommand.key,
+      iif: () => this.isWholeTable || (!this.isHeading && this.isAny),
+      hide: true
+    },
+    {
+      icon: 'splitscreen_add',
+      title: 'Add row after',
+      slice: addRowAfterCommand.key,
+      iif: () => !this.isWholeTable && this.isRow,
+      hide: true
+    },
+    {
+      icon: 'splitscreen_vertical_add',
+      title: 'Add column after',
+      slice: addColAfterCommand.key,
+      iif: () => !this.isWholeTable && this.isCol
+    },
+    {
+      icon: 'format_align_left',
+      title: 'Align left',
+      slice: setAlignCommand.key,
+      payload: 'left',
+      iif: () => !this.isWholeTable && this.isCol,
+    },
+    {
+      icon: 'format_align_center',
+      title: 'Align center',
+      slice: setAlignCommand.key,
+      payload: 'center',
+      iif: () => !this.isWholeTable && this.isCol
+    },
+    {
+      icon: 'format_align_right',
+      title: 'Align right',
+      slice: setAlignCommand.key,
+      payload: 'right',
+      iif: () => !this.isWholeTable && this.isCol
     }
+  ]
+
+  onClick(index: number) {
+    const {slice, payload, hide} = this.buttons[index]
+    this.tooltipProvider?.hide();
+    this.action((ctx) => {
+      ctx.get(commandsCtx).call(slice, payload);
+    });
+    if (hide) {
+      this.tooltipProvider?.hide();
+    }
+    this.action(ctx => {
+      ctx.get(editorViewCtx).focus();
+    })
   }
 
   override ngAfterViewInit() {

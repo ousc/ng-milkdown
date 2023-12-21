@@ -98,7 +98,7 @@ export interface DialogData {
 })
 export class CollaborativeEditingComponent implements OnDestroy{
 
-  value = `Setting up a WebSocket server on \`port\` **3001**, and click \`connect\` button, then you can test \`collab plugin\` in two browser tabs, ensure use **same** \`room name\`!
+  value = `Setting up a WebSocket server on \`port\` **3001**, and click \`connect\` button, open two browser tabs to try \`collab plugin\`, ensure using **same** \`room name\`!
 
   Read the milkdown document for [collaborative-editing](https://milkdown.dev/docs/guide/collaborative-editing) before create your angular collaborative-editing-app project.
 
