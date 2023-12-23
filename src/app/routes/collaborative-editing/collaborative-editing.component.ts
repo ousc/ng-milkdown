@@ -98,47 +98,11 @@ export interface DialogData {
 })
 export class CollaborativeEditingComponent implements OnDestroy{
 
-  value = `Setting up a WebSocket server on \`port\` **3001**, and click \`connect\` button, open two browser tabs to try \`collab plugin\`, ensure using **same** \`room name\`!
+  value = `Setting up a y-webSocket server, and click \`connect\` button, ensure using **same** \`room name\`!
 
   Read the milkdown document for [collaborative-editing](https://milkdown.dev/docs/guide/collaborative-editing) before create your angular collaborative-editing-app project.
 
-  \`\`\`bash
-  mkdir websocket-example && cd websocket-example
-  npm install ws
-  \`\`\`
-
-  server.js
-  \`\`\`javascript
-  const http = require('http');
-  const WebSocket = require('ws');
-  const fs = require('fs')
-  const buffer = require('buffer');
-
-  const server = require("http").createServer((req, res) => {
-      res.setHeader("Content-Type", "text/html");
-      res.statusCode = 200;
-      fs.readFile("index.html", (err, data) => {
-          if(err){
-              res.end("error");
-              return
-          }
-          res.end(data)
-      })
-  })
-
-  const ws = new WebSocket.Server({server});
-  ws.on("connection", ws => {
-      console.log("Connect successfully!");
-      ws.on("message", e => {
-          console.log(e)
-          console.log(e.toString())
-      })
-  })
-  server.listen(3001, () => {
-      console.log("localhost:3001")
-  })
-  \`\`\`
-
+  Set up a WebSocket server for [https://github.com/yjs/y-websocket](https://github.com/yjs/y-websocket);
   `
 
   config = (ctx: Ctx) => {
@@ -157,7 +121,7 @@ export class CollaborativeEditingComponent implements OnDestroy{
   }
 
   roomName: string = 'ng-milkdown';
-  serverUrl: string = 'ws://localhost:3001';
+  serverUrl: string = 'wss://ws.leinbo.com/ws';
   connecting = false;
   wsProvider: WebsocketProvider;
   collabService: any;
@@ -170,7 +134,7 @@ export class CollaborativeEditingComponent implements OnDestroy{
 
     dialogRef.afterClosed().subscribe(result => {
       this.roomName = result?.roomName || 'ng-milkdown';
-      this.serverUrl = result?.serverUrl || 'ws://localhost:3001';
+      this.serverUrl = result?.serverUrl || 'wss://ws.leinbo.com/ws';
       const doc = new Doc();
       this.wsProvider = new WebsocketProvider(this.serverUrl, this.roomName, doc);
       editor.action((ctx) => {
@@ -188,9 +152,10 @@ export class CollaborativeEditingComponent implements OnDestroy{
   }
 
   connect(ctx: Ctx){
+    const template = `Welcome to ng-milkdown collaborative-editing demo, you can edit this document with your friends together!`;
     if(!this.connecting){
       this.wsProvider.connect();
-      this.collabService.connect();
+      this.collabService.applyTemplate(template).connect();
       this.connecting = true;
       console.log('Connect successfully!');
 
@@ -224,10 +189,10 @@ export class CollaborativeEditingComponent implements OnDestroy{
               <mat-label>Room name</mat-label>
               <input matInput [(ngModel)]="data.roomName" placeholder="ng-milkdown">
           </mat-form-field>
-          <p></p>
+          <p>this is a test server url, you can use it to test collab plugin, but <strong>DO NOT</strong> use it in production environment.</p>
           <mat-form-field class="w-full">
               <mat-label>Server url</mat-label>
-              <input matInput [(ngModel)]="data.serverUrl" placeholder="ws://localhost:3001">
+              <input matInput [(ngModel)]="data.serverUrl" placeholder="wss://ws.leinbo.com/ws">
           </mat-form-field>
       </div>
       <div mat-dialog-actions>
