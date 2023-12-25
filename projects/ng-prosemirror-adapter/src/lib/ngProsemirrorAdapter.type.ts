@@ -14,23 +14,36 @@ import {NgProsemirrorWidget} from "./components/ng-prosemirror-widget.component"
 
 export type NgEditorViewComponent = ComponentRef<any>
 export type NgNodeViewUserOptions = {
-  component: Type<NgProsemirrorNode> // The component that will be used to render the node view.
-  as?: string | HTMLElement // The element that will be used to render the node view.
-  contentAs?: string | HTMLElement // The element that will be used to render the node view's content.
-  update?: (node: Node, decorations: readonly Decoration[], innerDecorations: DecorationSource) => boolean | void // A function that is called when the node view is updated. It takes the node, decorations, and innerDecorations as arguments.
-  ignoreMutation?: (mutation: MutationRecord) => boolean | void // A function that is called when a mutation occurs on the node view's content. It takes a MutationRecord object as an argument.
-  selectNode?: () => void // A function that is called when the node view is selected.
-  deselectNode?: () => void // A function that is called when the node view is deselected.
-  setSelection?: (anchor: number, head: number, root: Document | ShadowRoot) => void // A function that is called when the node view's content is selected. It takes the anchor and head positions and the root element as arguments.
-  stopEvent?: (event: Event) => boolean // A function that is called when an event occurs on the node view. It takes an Event object as an argument.
-  destroy?: () => void // A function that is called when the node view is destroyed.
+  /** The component that will be used to render the node view. */
+  component: Type<NgProsemirrorNode>
+  // The element that will be used to render the node view.
+  as?: string | HTMLElement
+  // The element that will be used to render the node view's content.
+  contentAs?: string | HTMLElement
+  // A function that is called when the node view is updated. It takes the node, decorations, and innerDecorations as arguments.
+  update?: (node: Node, decorations: readonly Decoration[], innerDecorations: DecorationSource) => boolean | void
+  // A function that is called when a mutation occurs on the node view's content. It takes a MutationRecord object as an argument.
+  ignoreMutation?: (mutation: MutationRecord) => boolean | void
+  // A function that is called when the node view is selected.
+  selectNode?: () => void
+  // A function that is called when the node view is deselected.
+  deselectNode?: () => void
+  // A function that is called when the node view's content is selected. It takes the anchor and head positions and the root element as arguments.
+  setSelection?: (anchor: number, head: number, root: Document | ShadowRoot) => void
+  // A function that is called when an event occurs on the node view. It takes an Event object as an argument.
+  stopEvent?: (event: Event) => boolean
+  // A function that is called when the node view is destroyed.
+  destroy?: () => void
 
   // Additional
-  onUpdate?: () => void // A function that is called when the node view is updated.
-  inputs?: { // An object containing the inputs that will be passed to the node view component.
+  /** A function that is called when the node view is updated. */
+  onUpdate?: () => void
+  // An object containing the inputs that will be passed to the node view component.
+  inputs?: {
     [key: string]: any
   },
-  key?: string // A string that is used to identify the node view.
+  // A string that is used to identify the node view.
+  key?: string
 }
 
 export type NodeViewFactory = (options: NgNodeViewUserOptions) => NodeViewConstructor
@@ -39,7 +52,8 @@ export type NodeViewContentRef = (node: HTMLElement | null) => void
 
 export interface NodeViewContext {
   // won't change
-  // A reference to the content of the NodeView. This is a function that takes a node (HTMLElement or null) as an argument.
+
+  /** A reference to the content of the NodeView. This is a function that takes a node (HTMLElement or null) as an argument. */
   contentRef: NodeViewContentRef
   // An instance of EditorView. This represents the editor's view.
   view: EditorView
@@ -49,7 +63,7 @@ export interface NodeViewContext {
   setAttrs: (attrs: Attrs) => void
 
   // changes between updates
-  // The ProseMirror Node that the NodeView is displaying.
+  /** The ProseMirror Node that the NodeView is displaying. */
   node: Node
   // A boolean indicating whether the node is selected.
   selected: boolean

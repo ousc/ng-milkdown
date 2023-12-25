@@ -62,7 +62,7 @@ usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/t
 ### Install
 
 ```bash
-npm install ng-milkdown
+npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @milkdown/plugin-listener @milkdown/preset-commonmark @milkdown/theme-nord
 ```
 
 ### Example

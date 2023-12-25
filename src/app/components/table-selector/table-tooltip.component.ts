@@ -117,7 +117,8 @@ export class TableTooltip extends NgMilkdownTooltip {
       icon: 'splitscreen_vertical_add',
       title: 'Add column after',
       slice: addColAfterCommand.key,
-      iif: () => !this.isWholeTable && this.isCol
+      iif: () => !this.isWholeTable && this.isCol,
+      hide: true
     },
     {
       icon: 'format_align_left',
@@ -125,20 +126,23 @@ export class TableTooltip extends NgMilkdownTooltip {
       slice: setAlignCommand.key,
       payload: 'left',
       iif: () => !this.isWholeTable && this.isCol,
+      hide: false
     },
     {
       icon: 'format_align_center',
       title: 'Align center',
       slice: setAlignCommand.key,
       payload: 'center',
-      iif: () => !this.isWholeTable && this.isCol
+      iif: () => !this.isWholeTable && this.isCol,
+      hide: false
     },
     {
       icon: 'format_align_right',
       title: 'Align right',
       slice: setAlignCommand.key,
       payload: 'right',
-      iif: () => !this.isWholeTable && this.isCol
+      iif: () => !this.isWholeTable && this.isCol,
+      hide: false
     }
   ]
 
