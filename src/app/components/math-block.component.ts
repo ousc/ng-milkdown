@@ -5,7 +5,7 @@ import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {katexOptionsCtx} from '@milkdown/plugin-math';
 import katex from 'katex';
-import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
+import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'math-block',
@@ -41,7 +41,7 @@ import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng
   ],
   standalone: true
 })
-export class MathBlock extends NgMilkdownNode implements AfterViewInit {
+export class MathBlock extends NgMilkdownNodeComp implements AfterViewInit {
   selectedIndex = 0;
 
   override get container(): any {

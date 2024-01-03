@@ -10,7 +10,7 @@ import {
   selectTableCommand
 } from "@milkdown/preset-gfm";
 import {Else, Is, when} from 'conditio';
-import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
+import {NgMilkdownWidgetComp} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
 
 @Component({
   selector: 'table-select-widget',
@@ -36,7 +36,7 @@ import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directi
   styles: [],
   standalone: true
 })
-export class TableSelectorWidget extends NgMilkdownWidget {
+export class TableSelectorWidget extends NgMilkdownWidgetComp {
   get type(): string {
     return this.context?.spec?.type;
   }

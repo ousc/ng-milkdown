@@ -10,13 +10,13 @@ import {NgMilkdown} from '../../public-api';
 import {editorViewCtx, rootDOMCtx} from "@milkdown/core";
 import {callCommand} from "@milkdown/utils";
 import {undoCommand} from "@milkdown/plugin-history";
-import {NgMilkdownPlugin} from "./ng-milkdown-plugin.directive";
+import {NgMilkdownPluginComp} from "./ng-milkdown-plugin.directive";
 
 @Directive({
   selector: 'ng-milkdown-slash',
   standalone: true
 })
-export class NgMilkdownSlash extends NgMilkdownPlugin implements AfterViewInit {
+export class NgMilkdownSlash extends NgMilkdownPluginComp implements AfterViewInit {
 
   constructor(override el: ElementRef) {
     super(el);

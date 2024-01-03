@@ -1,13 +1,13 @@
 import {AfterViewInit, Directive} from '@angular/core';
 import {TooltipProvider} from "@milkdown/plugin-tooltip";
 import {actionFactory} from "../actionFactory";
-import {NgMilkdownPlugin} from "./ng-milkdown-plugin.directive";
+import {NgMilkdownPluginComp} from "./ng-milkdown-plugin.directive";
 
 @Directive({
   selector: 'ng-milkdown-tooltip',
   standalone: true,
 })
-export class NgMilkdownTooltip extends NgMilkdownPlugin {
+export class NgMilkdownTooltip extends NgMilkdownPluginComp {
   get tooltipProvider(): TooltipProvider {
     return this.provider?.service?.pluginView[this.key] as unknown as TooltipProvider;
   }

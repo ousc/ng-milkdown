@@ -6,7 +6,7 @@ import {NgProsemirrorPlugin} from "ng-prosemirror-adapter";
   selector: 'ng-milkdown-plugin',
   standalone: true
 })
-export class NgMilkdownPlugin extends NgProsemirrorPlugin implements AfterViewInit {
+export class NgMilkdownPluginComp extends NgProsemirrorPlugin implements AfterViewInit {
 
   get action() {
     return actionFactory(this.provider.editor)

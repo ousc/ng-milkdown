@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
+import {NgMilkdownWidgetComp} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
 
 @Component({
   selector: 'copilot-widget',
@@ -7,7 +7,7 @@ import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directi
   styles: [],
   standalone: true
 })
-export class CopilotWidget extends NgMilkdownWidget {
+export class CopilotWidget extends NgMilkdownWidgetComp {
   get message(){
     return this.spec?.message;
   }

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgMilkdownNode} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
+import {NgMilkdownNodeComp} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'footnote',
@@ -23,7 +23,7 @@ import {NgMilkdownNode} from "../../../../projects/ng-milkdown/src/lib/directive
   `],
   standalone: true
 })
-export class FootnoteDef extends NgMilkdownNode {
+export class FootnoteDef extends NgMilkdownNodeComp {
 
   get label() {
     return this.node.attrs?.label;

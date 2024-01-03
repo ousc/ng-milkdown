@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
+import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'list-item',
@@ -21,7 +21,7 @@ import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng
   styles: [],
   standalone: true
 })
-export class ListItem extends NgMilkdownNode {
+export class ListItem extends NgMilkdownNodeComp {
   get checked() {
     return this.node.attrs?.checked;
   }

@@ -6,7 +6,7 @@ import {NgProsemirrorWidget} from "ng-prosemirror-adapter";
   selector: 'ng-milkdown-widget',
   standalone: true
 })
-export class NgMilkdownWidget extends NgProsemirrorWidget {
+export class NgMilkdownWidgetComp extends NgProsemirrorWidget {
   get action() {
     return actionFactory(this.provider.editor)
   };

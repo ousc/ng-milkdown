@@ -4,7 +4,7 @@ import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory
 import {MatTabsModule} from "@angular/material/tabs";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
-import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
+import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'diagram',
@@ -38,7 +38,7 @@ import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng
   ],
   standalone: true
 })
-export class Diagram extends NgMilkdownNode implements AfterViewInit {
+export class Diagram extends NgMilkdownNodeComp implements AfterViewInit {
   selectedIndex= 0;
 
   override get container(): any {

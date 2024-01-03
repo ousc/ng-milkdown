@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
+import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'code-block',
@@ -38,7 +38,7 @@ import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng
   ],
   standalone: true
 })
-export class CodeBlock extends NgMilkdownNode implements AfterViewInit {
+export class CodeBlock extends NgMilkdownNodeComp implements AfterViewInit {
   language: string = 'text';
 
   override ngAfterViewInit(): void {

@@ -3,7 +3,7 @@ import {commandsCtx} from "@milkdown/core";
 import {updateLinkCommand} from "@milkdown/preset-commonmark";
 import {FormsModule} from "@angular/forms";
 import {actionFactory} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
-import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
+import {NgMilkdownWidgetComp} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
 
 @Component({
   selector: 'link-widget-after',
@@ -41,7 +41,7 @@ import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directi
   ],
   standalone: true
 })
-export class LinkWidgetAfter extends NgMilkdownWidget {
+export class LinkWidgetAfter extends NgMilkdownWidgetComp {
   constructor(override el: ElementRef) {
     super(el);
     this.onUpdate.subscribe((context) => {

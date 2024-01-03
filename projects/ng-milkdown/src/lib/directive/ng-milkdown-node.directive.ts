@@ -6,7 +6,7 @@ import {NgProsemirrorNode} from "ng-prosemirror-adapter";
   selector: 'ng-milkdown-node',
   standalone: true
 })
-export class NgMilkdownNode extends NgProsemirrorNode {
+export class NgMilkdownNodeComp extends NgProsemirrorNode {
   get action() {
     return actionFactory(this.provider.editor)
   };
