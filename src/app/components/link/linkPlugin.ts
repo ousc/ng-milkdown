@@ -2,12 +2,10 @@ import {LinkWidgetBefore} from "./link-widget-before.component";
 import {LinkWidgetAfter} from "./link-widget-after.component";
 import {Plugin} from "@milkdown/prose/state";
 import {DecorationSet} from "prosemirror-view";
-import {
-  NgProsemirrorAdapterProvider
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {$prose} from "@milkdown/utils";
+import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 
-export function linkPlugin(provider: NgProsemirrorAdapterProvider) {
+export function linkPlugin(provider: NgMilkdownProvider) {
   return $prose(
     () => new Plugin({
       state: {

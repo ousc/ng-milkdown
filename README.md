@@ -84,9 +84,11 @@ npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @mil
 #### workGround.component.ts
 
 ```typescript
+import {NgMilkdownProvider} from "./ng-milkdown-provider.component";
+
 @Component({...})
 export class WorkGroundComponent {
-  @ViewChild(NgProsemirrorAdapterProvider, {static: true}) provider: NgProsemirrorAdapterProvider;
+  @ViewChild(NgMilkdownProvider, {static: true}) provider: NgMilkdownProvider;
 
   config = (ctx: any) => {
     ctx.set(editorViewOptionsCtx, {
@@ -117,7 +119,7 @@ export class WorkGroundComponent {
       )
     ].flat(),
     $view(listItemSchema.node, () =>
-      this.provider.createNodeView({ component: ListItem }) // create node view for list item node
+      this.provider.createNodeView({component: ListItem}) // create node view for list item node
     ),
     {
       plugin: block,

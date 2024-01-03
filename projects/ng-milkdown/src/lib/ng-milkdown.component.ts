@@ -1,5 +1,3 @@
-// noinspection TypeScriptValidateTypes
-
 import {
   AfterViewInit,
   Component,
@@ -25,7 +23,7 @@ import {
   NgMilkdownPlugin,
   NgMilkdownPluginConfig,
 } from "./ng-milkdown.type";
-import {NgProsemirrorEditor} from "../../../ng-prosemirror-adapter/src/lib/components/ng-prosemirror-editor.component";
+import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
 
 
 function isZoneAwarePromise(object: any) {

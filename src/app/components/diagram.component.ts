@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
-import {
-  NgProsemirrorNode
-} from "../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-node.component";
 import mermaid from "mermaid";
 import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory";
 import {MatTabsModule} from "@angular/material/tabs";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
+import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'diagram',
@@ -40,12 +38,8 @@ import {MatButtonModule} from "@angular/material/button";
   ],
   standalone: true
 })
-export class Diagram extends NgProsemirrorNode implements AfterViewInit {
+export class Diagram extends NgMilkdownNode implements AfterViewInit {
   selectedIndex= 0;
-
-  get action() {
-    return actionFactory(this.provider.editor)
-  };
 
   override get container(): any {
     return super.container.children[0];

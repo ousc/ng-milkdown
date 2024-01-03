@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {
-  NgProsemirrorWidget
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-widget.component";
+import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
 
 @Component({
   selector: 'link-widget-before',
@@ -9,4 +7,4 @@ import {
   styles: [],
   standalone: true
 })
-export class LinkWidgetBefore extends NgProsemirrorWidget {}
+export class LinkWidgetBefore extends NgMilkdownWidget {}

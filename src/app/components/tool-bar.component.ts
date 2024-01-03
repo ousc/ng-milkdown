@@ -1,7 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {
-  NgProsemirrorAdapterProvider
-} from "../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory";
 import {redoCommand, undoCommand} from '@milkdown/plugin-history';
 import {
@@ -19,6 +16,7 @@ import {insertTableCommand, toggleStrikethroughCommand} from "@milkdown/preset-g
 import {insertDiagramCommand} from "@milkdown/plugin-diagram";
 import {CmdKey} from "@milkdown/core";
 import {RouterLink} from "@angular/router";
+import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 
 @Component({
   selector: 'tool-bar',
@@ -58,7 +56,7 @@ import {RouterLink} from "@angular/router";
   standalone: true
 })
 export class ToolBarComponent {
-  @Input() provider: NgProsemirrorAdapterProvider;
+  @Input() provider: NgMilkdownProvider;
 
   get action() {
     return actionFactory(this.provider.editor);

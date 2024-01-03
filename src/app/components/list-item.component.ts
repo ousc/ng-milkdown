@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {
-  NgProsemirrorNode
-} from "../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-node.component";
+import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'list-item',
@@ -23,7 +21,7 @@ import {
   styles: [],
   standalone: true
 })
-export class ListItem extends NgProsemirrorNode {
+export class ListItem extends NgMilkdownNode {
   get checked() {
     return this.node.attrs?.checked;
   }

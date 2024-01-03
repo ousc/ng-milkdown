@@ -1,13 +1,11 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
-import {
-  NgProsemirrorNode
-} from "../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-node.component";
+import {AfterViewInit, Component} from '@angular/core';
 import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory";
 import {MatTabsModule} from "@angular/material/tabs";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {katexOptionsCtx} from '@milkdown/plugin-math';
 import katex from 'katex';
+import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'math-block',
@@ -43,12 +41,8 @@ import katex from 'katex';
   ],
   standalone: true
 })
-export class MathBlock extends NgProsemirrorNode implements AfterViewInit {
+export class MathBlock extends NgMilkdownNode implements AfterViewInit {
   selectedIndex = 0;
-
-  get action() {
-    return actionFactory(this.provider.editor)
-  };
 
   override get container(): any {
     return super.container.children[0];

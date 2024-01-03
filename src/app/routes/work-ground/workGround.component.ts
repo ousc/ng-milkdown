@@ -16,13 +16,10 @@ import {indent, indentConfig} from "@milkdown/plugin-indent";
 import {history} from "@milkdown/plugin-history";
 import {Tooltip} from "../../components/tooltip/tooltip.component";
 import {Slash} from "../../components/slash/slash.component";
-import {Editor, editorViewOptionsCtx} from "@milkdown/core";
+import {editorViewOptionsCtx} from "@milkdown/core";
 import {Block} from "../../components/block.component";
 import {diagram, diagramSchema} from "@milkdown/plugin-diagram";
 import {emoji, emojiAttr} from "@milkdown/plugin-emoji";
-import {
-  NgProsemirrorAdapterProvider
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {blockquoteAttr, codeBlockSchema, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
 import {$view} from "@milkdown/utils";
@@ -39,18 +36,23 @@ import {tableSelectorPlugin} from "../../components/table-selector/tableSelector
 import {TableTooltip, tableTooltip, tableTooltipCtx} from '../../components/table-selector/table-tooltip.component';
 import {MathBlock} from "../../components/math-block.component";
 import {ToolBarComponent} from "../../components/tool-bar.component";
+import {CopilotService} from "../../components/copilot/copilot.service";
+import {
+  NgMilkdownProvider
+} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, NgProsemirrorAdapterProvider, NgMilkdown, HttpClientModule, ToolBarComponent],
+  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdown, HttpClientModule, ToolBarComponent, NgMilkdownProvider],
   templateUrl: './workGround.component.html',
-  styleUrl: './workGround.component.scss'
+  styleUrl: './workGround.component.scss',
+  providers: [CopilotService]
 })
 export class WorkGroundComponent implements OnInit {
-  @ViewChild(NgProsemirrorAdapterProvider, {static: true}) provider: NgProsemirrorAdapterProvider;
+  @ViewChild(NgMilkdownProvider, {static: true}) provider: NgMilkdownProvider;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private copilotService: CopilotService) {
   }
 
   ngOnInit(): void {
@@ -146,6 +148,7 @@ export class WorkGroundComponent implements OnInit {
           }
         },
         linkPlugin(this.provider),
+        this.copilotService.copilotPlugin,
         tableTooltip,
         {
           plugin: tableTooltipCtx,

@@ -8,7 +8,8 @@
     "@milkdown/ctx": "^7.3.2",
     "@milkdown/plugin-listener": "^7.3.2",
     "@milkdown/preset-commonmark": "^7.3.2",
-    "@milkdown/theme-nord": "^7.3.2"
+    "@milkdown/theme-nord": "^7.3.2",
+    "ng-prosemirror-adapter": "^0.0.1-beta.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

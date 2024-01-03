@@ -1,14 +1,12 @@
-import {
-  NgProsemirrorAdapterProvider
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {$prose} from "@milkdown/utils";
 import {PluginKey} from "prosemirror-state";
 import {Plugin} from "@milkdown/prose/state";
 import {Decoration, DecorationSet} from "prosemirror-view";
 import {getCellsInCol, getCellsInRow} from "@milkdown/preset-gfm";
 import {TableSelectorWidget} from "./table-selector-widget.component";
+import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 
-export function tableSelectorPlugin(provider: NgProsemirrorAdapterProvider) {
+export function tableSelectorPlugin(provider: NgMilkdownProvider) {
   return $prose(() => {
     const key = new PluginKey("MILKDOWN_TABLE_SELECTOR");
     return new Plugin({

@@ -1,5 +1,5 @@
 import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
-import {NgProsemirrorAdapterProvider} from "../../../ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
+import {NgProsemirrorAdapterProvider} from "ng-prosemirror-adapter";
 
 export type NgMilkdownPluginConfigAsync = Promise<(ctx: Ctx) => void>
 

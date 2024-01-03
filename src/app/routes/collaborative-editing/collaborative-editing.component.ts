@@ -2,9 +2,6 @@ import {Component, Inject, OnDestroy} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {
-  NgProsemirrorAdapterProvider
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/ng-prosemirror-adapter.component";
 import {NgMilkdown} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 import {HttpClientModule} from "@angular/common/http";
 import {ToolBarComponent} from "../../components/tool-bar.component";
@@ -26,6 +23,7 @@ import {
 import {MatButtonModule} from "@angular/material/button";
 import {Ctx} from "@milkdown/ctx";
 import {prism} from "@milkdown/plugin-prism";
+import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 
 export interface DialogData {
   roomName: string;
@@ -43,6 +41,12 @@ export interface DialogData {
               </button>
               <div>
                   <span [class]="['dot', 'mr-2']" [class.connecting]="connecting"></span>
+                  @if(editor) {
+                      <button [hidden]="connecting" (click)="openDialog()"
+                              class="bg-gray-200 dark:bg-green-600 hover:bg-green-300 dark:hover:bg-gray-500 px-2 py-1 rounded mr-2">
+                          <span class="material-symbols-outlined !text-xs">settings</span>
+                      </button>
+                  }
                   <button id="connect" [hidden]="connecting"
                           class="bg-gray-200 dark:bg-green-600 hover:bg-green-300 dark:hover:bg-gray-500 px-2 py-1 rounded">
                       Connect
@@ -54,7 +58,7 @@ export interface DialogData {
               </div>
               <div></div>
           </div>
-          <ng-prosemirror-adapter-provider #provider>
+          <ng-milkdown-provider #provider>
               <ng-milkdown
                       [editorConfig]="config"
                       [classList]="['border', 'border-nord4', 'mx-auto']"
@@ -62,7 +66,7 @@ export interface DialogData {
                       [(ngModel)]="value"
                       (onReady)="onReady($event)"
               />
-          </ng-prosemirror-adapter-provider>
+          </ng-milkdown-provider>
       </div>
   `,
   styles: [
@@ -93,7 +97,7 @@ export interface DialogData {
       }
     `
   ],
-  imports: [CommonModule, RouterOutlet, FormsModule, NgProsemirrorAdapterProvider, NgMilkdown, HttpClientModule, ToolBarComponent, RouterLink],
+  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdownProvider, NgMilkdown, HttpClientModule, ToolBarComponent, RouterLink],
   standalone: true
 })
 export class CollaborativeEditingComponent implements OnDestroy{
@@ -125,9 +129,9 @@ export class CollaborativeEditingComponent implements OnDestroy{
   connecting = false;
   wsProvider: WebsocketProvider;
   collabService: any;
+  editor: Editor;
 
-
-  onReady(editor: Editor) {
+  openDialog(): void {
     const dialogRef = this.dialog.open(CollabDialog, {
       data: {roomName: this.roomName, serverUrl: this.serverUrl},
     });
@@ -137,7 +141,7 @@ export class CollaborativeEditingComponent implements OnDestroy{
       this.serverUrl = result?.serverUrl || 'wss://ws.leinbo.com/ws';
       const doc = new Doc();
       this.wsProvider = new WebsocketProvider(this.serverUrl, this.roomName, doc);
-      editor.action((ctx) => {
+      this.editor.action((ctx) => {
         this.collabService = ctx.get(collabServiceCtx);
         this.collabService.bindDoc(doc).setAwareness(this.wsProvider.awareness);
         document.getElementById('connect').onclick = () => {
@@ -149,6 +153,12 @@ export class CollaborativeEditingComponent implements OnDestroy{
         };
       });
     });
+  }
+
+
+  onReady(editor: Editor) {
+    this.editor = editor;
+    this.openDialog();
   }
 
   connect(ctx: Ctx){
@@ -189,7 +199,7 @@ export class CollaborativeEditingComponent implements OnDestroy{
               <mat-label>Room name</mat-label>
               <input matInput [(ngModel)]="data.roomName" placeholder="ng-milkdown">
           </mat-form-field>
-          <p>this is a test server url, you can use it to test collab plugin, but <strong>DO NOT</strong> use it in production environment.</p>
+          <p>this is a test server url, you can use it to test collab plugin, <br/>but <strong>DO NOT</strong> use it in production environment.</p>
           <mat-form-field class="w-full">
               <mat-label>Server url</mat-label>
               <input matInput [(ngModel)]="data.serverUrl" placeholder="wss://ws.leinbo.com/ws">

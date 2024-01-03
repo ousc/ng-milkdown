@@ -7,29 +7,22 @@ import {
 import {Ctx} from '@milkdown/ctx';
 import {SlashPlugin, SlashProvider} from '@milkdown/plugin-slash';
 import {NgMilkdown} from '../../public-api';
-import {
-  NgProsemirrorPlugin
-} from "../../../../ng-prosemirror-adapter/src/lib/components/ng-prosemirror-plugin.component";
 import {editorViewCtx, rootDOMCtx} from "@milkdown/core";
 import {callCommand} from "@milkdown/utils";
 import {undoCommand} from "@milkdown/plugin-history";
-import {actionFactory} from "../actionFactory";
+import {NgMilkdownPlugin} from "./ng-milkdown-plugin.directive";
 
 @Directive({
   selector: 'ng-milkdown-slash',
   standalone: true
 })
-export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewInit {
+export class NgMilkdownSlash extends NgMilkdownPlugin implements AfterViewInit {
 
   constructor(override el: ElementRef) {
     super(el);
   }
 
   @Input() slash: SlashPlugin<any>;
-
-  get action() {
-    return actionFactory(this.provider.editor)
-  };
 
   list: any[] = [];
 
@@ -55,8 +48,6 @@ export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewIni
   trigger: string | string[] = '/';
 
   search = "";
-
-  loading = true;
 
   removeSlash = (ctx: Ctx) => {
     // remove slash
@@ -86,7 +77,7 @@ export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewIni
       e.preventDefault();
       setTimeout(() => {
         this.action(callCommand(undoCommand.key));
-        (this.provider.editor as NgMilkdown).editor?.action(this.onPick);
+        (this.provider.editor as unknown as NgMilkdown).editor?.action(this.onPick);
       });
       setTimeout(() => {
         this.action(ctx => {
@@ -105,13 +96,13 @@ export class NgMilkdownSlash extends NgProsemirrorPlugin implements AfterViewIni
 
   eventListener: any = null;
 
-  ngAfterViewInit(): void {
-    this.loading = false;
+  override ngAfterViewInit(): void {
+    super.ngAfterViewInit();
     this.eventListener = this.onKeyDown.bind(this);
   }
 
   get root(): HTMLElement {
-    return (this.provider.editor as NgMilkdown).editor.ctx.get(rootDOMCtx);
+    return (this.provider.editor as unknown as NgMilkdown).editor.ctx.get(rootDOMCtx);
   }
 
   override get pluginView() { //default pluginView

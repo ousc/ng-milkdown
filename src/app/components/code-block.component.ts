@@ -1,7 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {
-  NgProsemirrorNode
-} from "../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-node.component";
+import {NgMilkdownNode} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'code-block',
@@ -40,7 +38,7 @@ import {
   ],
   standalone: true
 })
-export class CodeBlock extends NgProsemirrorNode implements AfterViewInit {
+export class CodeBlock extends NgMilkdownNode implements AfterViewInit {
   language: string = 'text';
 
   override ngAfterViewInit(): void {

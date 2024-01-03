@@ -4,7 +4,7 @@
     <tool-bar class="opacity-80" [provider]="provider"/>
   }
   <div class="h-full overflow-auto overscroll-none ctn flex flex-col px-4">
-    <ng-prosemirror-adapter-provider #provider>
+    <ng-milkdown-provider #provider>
       <ng-milkdown
         *ngIf="value"
         [editorConfig]="config"
@@ -13,6 +13,6 @@
         (ngModelChange)="onChange($event)"
         (onReady)="editor = $event"
       />
-    </ng-prosemirror-adapter-provider>
+    </ng-milkdown-provider>
   </div>
 </div>

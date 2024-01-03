@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {
-  NgProsemirrorNode
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-node.component";
+import {NgMilkdownNode} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'footnote',
@@ -25,7 +23,7 @@ import {
   `],
   standalone: true
 })
-export class FootnoteDef extends NgProsemirrorNode {
+export class FootnoteDef extends NgMilkdownNode {
 
   get label() {
     return this.node.attrs?.label;

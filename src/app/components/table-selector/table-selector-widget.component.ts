@@ -1,7 +1,4 @@
 import {Component} from '@angular/core';
-import {
-  NgProsemirrorWidget
-} from "../../../../projects/ng-prosemirror-adapter/src/lib/components/ng-prosemirror-widget.component";
 import {actionFactory} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
 import {tableTooltipCtx} from "./table-tooltip.component";
 import {commandsCtx} from "@milkdown/core";
@@ -13,6 +10,7 @@ import {
   selectTableCommand
 } from "@milkdown/preset-gfm";
 import {Else, Is, when} from 'conditio';
+import {NgMilkdownWidget} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-widget.directive";
 
 @Component({
   selector: 'table-select-widget',
@@ -38,11 +36,7 @@ import {Else, Is, when} from 'conditio';
   styles: [],
   standalone: true
 })
-export class TableSelectorWidget extends NgProsemirrorWidget {
-  get action() {
-    return actionFactory(this.provider.editor)
-  };
-
+export class TableSelectorWidget extends NgMilkdownWidget {
   get type(): string {
     return this.context?.spec?.type;
   }
