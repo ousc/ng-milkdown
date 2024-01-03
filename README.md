@@ -69,7 +69,7 @@ npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @mil
 
 #### workGround.component.html
 ```html
-<ng-prosemirror-adapter-provider>
+<ng-milkdown-provider>
   <ng-milkdown
     [editorConfig]="config"
     [plugins]="plugins"
@@ -79,7 +79,7 @@ npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @mil
     (ngModelChange)="onChange($event)"
     (onReady)="editor = $event"
   />
-</ng-prosemirror-adapter-provider>
+</ng-milkdown-provider>
 ```
 #### workGround.component.ts
 
@@ -196,7 +196,7 @@ export class WorkGroundComponent {
   `,
   ...
 })
-export class ImageTooltipComponent extends NgMilkdownTooltip{
+export class ImageTooltipComponent extends NgMilkdownTooltip {
     setBold(e: MouseEvent) {
       e.preventDefault();
       this.action(callCommand(toggleStrongCommand.key));
