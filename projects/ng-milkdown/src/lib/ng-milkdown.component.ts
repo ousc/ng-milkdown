@@ -18,11 +18,7 @@ import {commonmark} from "@milkdown/preset-commonmark";
 import {NgMilkdownService} from "./ng-milkdown.service";
 import {NgTemplateOutlet} from "@angular/common";
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
-import {
-  NgMilkdownEditorConfig,
-  NgMilkdownPlugin,
-  NgMilkdownPluginConfig,
-} from "./ng-milkdown.type";
+import {NgMilkdownEditorConfig, NgMilkdownPlugin, NgMilkdownPluginConfig,} from "./ng-milkdown.type";
 import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
 
 
@@ -186,10 +182,8 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
       }
 
       editor = await editor.create();
-      setTimeout(()=>{
-        this.loading = false;
-        this.loadingChange.emit(false);
-      }, 10000)
+      this.loading = false;
+      this.loadingChange.emit(false);
       this.onReady.emit(editor);
       this.editor = editor;
     })
