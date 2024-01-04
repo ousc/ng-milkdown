@@ -1,6 +1,6 @@
 <article class="prose lg:prose-xl"></article>
 <div class="relative h-full pt-10">
-  @if (editor && !editor.loading) {
+  @if (editor && !loading) {
     <tool-bar class="opacity-80" [provider]="provider"/>
   }
   <div class="h-full overflow-auto overscroll-none ctn flex flex-col px-4">
@@ -10,9 +10,14 @@
         [editorConfig]="config"
         [plugins]="plugins"
         [(ngModel)]="value"
+        [(loading)]="loading"
         (ngModelChange)="onChange($event)"
         (onReady)="editor = $event"
+        [spinner]="spinner"
       />
+      <ng-template #spinner>
+        <spinner/>
+      </ng-template>
     </ng-milkdown-provider>
   </div>
 </div>

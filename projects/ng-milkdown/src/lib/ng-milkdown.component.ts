@@ -34,19 +34,10 @@ function isZoneAwarePromise(object: any) {
   selector: 'ng-milkdown',
   standalone: true,
   template: `
-      <div #editorRef class="milkdown-editor" [class]="classList"></div>
-      @if (loading && spinner) {
-          <ng-container *stringTemplateOutlet="spinner"></ng-container>
+      <div #editorRef [hidden]="loading" class="milkdown-editor" [class]="classList"></div>
+      @if (loading) {
+          <ng-container *stringTemplateOutlet="spinner">loading...</ng-container>
       }
-      <ng-template #spinner>
-          <div class="milkdown-spinner">
-              <div class="lds-grid">
-                  @for (i of [].constructor(9);track i) {
-                    <div></div>
-                  }
-              </div>
-          </div>
-      </ng-template>
   `,
   styles: [
     `
@@ -57,88 +48,6 @@ function isZoneAwarePromise(object: any) {
       :host {
         display: contents;
       }
-
-      .milkdown-spinner {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 999;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .lds-grid {
-        display: inline-block;
-        position: relative;
-        width: 80px;
-        height: 80px;
-      }
-      .lds-grid div {
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background: #81A1C1;
-        animation: lds-grid 1.2s linear infinite;
-      }
-      .lds-grid div:nth-child(1) {
-        top: 8px;
-        left: 8px;
-        animation-delay: 0s;
-      }
-      .lds-grid div:nth-child(2) {
-        top: 8px;
-        left: 32px;
-        animation-delay: -0.4s;
-      }
-      .lds-grid div:nth-child(3) {
-        top: 8px;
-        left: 56px;
-        animation-delay: -0.8s;
-      }
-      .lds-grid div:nth-child(4) {
-        top: 32px;
-        left: 8px;
-        animation-delay: -0.4s;
-      }
-      .lds-grid div:nth-child(5) {
-        top: 32px;
-        left: 32px;
-        animation-delay: -0.8s;
-      }
-      .lds-grid div:nth-child(6) {
-        top: 32px;
-        left: 56px;
-        animation-delay: -1.2s;
-      }
-      .lds-grid div:nth-child(7) {
-        top: 56px;
-        left: 8px;
-        animation-delay: -0.8s;
-      }
-      .lds-grid div:nth-child(8) {
-        top: 56px;
-        left: 32px;
-        animation-delay: -1.2s;
-      }
-      .lds-grid div:nth-child(9) {
-        top: 56px;
-        left: 56px;
-        animation-delay: -1.6s;
-      }
-      @keyframes lds-grid {
-        0%, 100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-      }
-
     `
   ],
   imports: [
@@ -173,16 +82,7 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   }
   @Output() loadingChange = new EventEmitter<boolean>();
 
-  @ViewChild('spinner') _defaultSpinner: TemplateRef<any>;
-  _spinner: TemplateRef<any> = null;
-
-  get spinner(): TemplateRef<any> {
-    return this._spinner || this._defaultSpinner;
-  }
-
-  @Input() set spinner(value) {
-    this._spinner = value;
-  }
+  @Input() spinner: TemplateRef<any> = null;
 
   get editor() {
     return this.ngMilkdownService.editor
@@ -286,8 +186,10 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
       }
 
       editor = await editor.create();
-      this.loading = false;
-      this.loadingChange.emit(false);
+      setTimeout(()=>{
+        this.loading = false;
+        this.loadingChange.emit(false);
+      }, 10000)
       this.onReady.emit(editor);
       this.editor = editor;
     })

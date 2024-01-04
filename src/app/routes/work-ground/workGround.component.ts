@@ -40,11 +40,12 @@ import {CopilotService} from "../../components/copilot/copilot.service";
 import {
   NgMilkdownProvider
 } from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
+import {Spinner} from "../../components/spinner.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdown, HttpClientModule, ToolBarComponent, NgMilkdownProvider],
+  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdown, HttpClientModule, ToolBarComponent, NgMilkdownProvider, Spinner],
   templateUrl: './workGround.component.html',
   styleUrl: './workGround.component.scss',
   providers: [CopilotService]
@@ -168,6 +169,7 @@ export class WorkGroundComponent implements OnInit {
 
   editor: any = null;
   value: string;
+  loading = true;
 
   tooltip = tooltipFactory('tooltipMenu');
   imageTooltip = tooltipFactory("imageTooltipMenu");
