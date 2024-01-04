@@ -189,7 +189,7 @@ export class WorkGroundComponent implements OnInit {
     });
 
     ctx.set(blockquoteAttr.key, () => ({
-      class: "border-l-4 border-nord10 pl-4 not-prose dark:border-nord8",
+      class: "border-l-4 border-nord10 pl-4 dark:border-nord8",
     }));
 
     ctx.set(inlineCodeAttr.key, () => ({
