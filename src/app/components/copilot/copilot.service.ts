@@ -12,6 +12,7 @@ export class CopilotService {
   constructor(private http: HttpClient) {
   }
 
+  enabled = false;
 
   initialState = {
     deco: DecorationSet.empty,
@@ -39,6 +40,7 @@ export class CopilotService {
     key: this.copilotPluginKey,
     props: {
       handleKeyDown: (view, event) => {
+        if (!this.enabled) return;
         this.keyDownHandler(ctx, event);
       },
       decorations:(state)=> {
@@ -50,6 +52,7 @@ export class CopilotService {
         return {...this.initialState};
       },
       apply:(tr, value, _prevState, state)=> {
+        if (!this.enabled) return value;
         const message = tr.getMeta(this.copilotPluginKey);
         console.log(message)
         if (typeof message !== 'string') return value;
@@ -124,7 +127,7 @@ export class CopilotService {
   }
 
   fetchAIHint(prompt: string) {
-    return this.http.post('https://api.openai.com/v1/completions', {
+    return this.http.post(localStorage.getItem('openai-api-url'), {
       model: 'davinci',
       prompt,
       "max_tokens": 7,
@@ -135,7 +138,7 @@ export class CopilotService {
       "logprobs": null
     }, {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
+        Authorization: 'Bearer ' + localStorage.getItem('openai-api-token')
       }
     });
   }

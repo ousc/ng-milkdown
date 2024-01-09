@@ -1,24 +1,256 @@
-# NgMilkdown
+<p align="center">
+  <a href="https://ousc.github.io/ng-milkdown">
+    <img src="milkdownLogo.png" width="230" style="vertical-align: middle;">
+  </a>
+</p>
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.0.
+<h1 align="center">
+NG-MILKDOWN
+</h1>
 
-## Code scaffolding
 
-Run `ng generate component component-name --project ng-milkdown` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-milkdown`.
-> Note: Don't forget to add `--project ng-milkdown` or else it will be added to the default project in your `angular.json` file. 
+WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [**Angular**](https://angular.dev/) out of box, only supports Angular **17**+.
 
-## Build
+## Example
 
-Run `ng build ng-milkdown` to build the project. The build artifacts will be stored in the `dist/` directory.
+You can run this example by:
 
-## Publishing
+```bash
+git clone https://github.com/ousc/ng-milkdown.git
+cd ng-milkdown
+npm install
+npm run start
+```
 
-After building your library with `ng build ng-milkdown`, go to the dist folder `cd dist/ng-milkdown` and run `npm publish`.
+## Online Demo
 
-## Running unit tests
+[https://ousc.github.io/ng-milkdown](https://ousc.github.io/ng-milkdown)
 
-Run `ng test ng-milkdown` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## ng-prosemirror-adapter
 
-## Further help
+Angular adapter for ProseMirror, only supports Angular 17+.(now this library is not published to npm, we will publish it soon)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[https://github.com/ousc/ng-prosemirror-adapter](https://github.com/ousc/ng-prosemirror-adapter)
+
+## Official plugins support on NgMilkdown:
+
+- [X]  `theme-nord`**(preset)**
+- [X]  `preset-commonmark`**(preset)**
+- [X]  `plugin-listener`**(preset)**
+- [X]  `preset-gfm`**(supported)**
+- [X]  `plugin-history`**(supported)**
+- [X]  `plugin-prism`**(supported)**
+- [X]  `plugin-clipboard`**(supported)**
+- [X]  `plugin-cursor`**(supported)**
+- [X]  `plugin-math`**(supported)**
+- [X]  `plugin-block`**(supported)**
+- [X]  `plugin-indent`**(supported)**
+- [X]  `plugin-tooltip`**(supported)**
+- [X]  `plugin-slash`**(supported)**
+- [X]  `plugin-diagram`**(supported)**
+- [X]  `plugin-emoji`**(supported)**
+- [X]  `plugin-cursor`**(supported)**
+- [X]  `plugin-trailing`**(supported)**
+- [X]  `plugin-upload`**(supported)**
+- [X]  `plugin-collab`**(supported)**
+- [ ]  `plugin-copilot`**(planned)**
+
+usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
+
+## Quick Start
+
+### Install
+
+```bash
+npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @milkdown/plugin-listener @milkdown/preset-commonmark @milkdown/theme-nord
+```
+
+### Example
+
+#### workGround.component.html
+```html
+<ng-milkdown-provider>
+  <ng-milkdown
+    [config]="config"
+    [plugins]="plugins"
+    [(ngModel)]="value"
+    [(loading)]="loading"
+    [spinner]="spinner"
+    (ngModelChange)="onChange($event)"
+    (onReady)="editor = $event"
+  />
+</ng-milkdown-provider>
+```
+#### workGround.component.ts
+
+```typescript
+import {NgMilkdownProvider} from "./ng-milkdown-provider.component";
+
+@Component({...})
+export class WorkGroundComponent {
+  @ViewChild(NgMilkdownProvider, {static: true}) provider: NgMilkdownProvider;
+
+  config = (ctx: any) => {
+    ctx.set(editorViewOptionsCtx, {
+      attributes: {
+        class: "prose dark:prose-invert outline-none mx-auto px-2 py-4 box-border milkdown-theme-nord editor",
+        spellcheck: "false",
+      },
+    });
+  }
+
+  tooltip = tooltipFactory('my-tooltip')
+  slash = slashFactory('my-slash')
+  plugins: NgMilkdownPlugin[] = [
+    gfm,
+    history,
+    prism,
+    clipboard,
+    cursor,
+    math,
+    emoji,
+    [
+      diagram, // diagram plugin
+      $view(diagramSchema.node, () =>
+        this.provider.createNodeView({ // create node view for diagram node
+          component: Diagram,
+          stopEvent: () => true,
+        })
+      )
+    ].flat(),
+    $view(listItemSchema.node, () =>
+      this.provider.createNodeView({component: ListItem}) // create node view for list item node
+    ),
+    {
+      plugin: block,
+      config: ctx => {
+        ctx.set(block.key, {
+          view: this.provider.createPluginView({ // create plugin view for block plugin
+            component: BlockComponent,
+            inputs: {ctx}
+          })
+        });
+      }
+    },
+    {
+      plugin: indent,
+      config: ctx => {
+        ctx.set(indentConfig.key as any, { // set indent config
+          type: 'space',
+          size: 4,
+        });
+      }
+    },
+    {
+      plugin: this.tooltip,
+      config: ctx => {
+        ctx.set(this.tooltip.key, {
+          view: this.provider.createPluginView({component: ImageTooltipComponent}) // create plugin view for tooltip plugin
+        })
+      }
+    },
+    {
+      plugin: this.slash,
+      config: ctx => {
+        ctx.set(this.slash.key, {
+          view: this.provider.createPluginView({component: SlashComponent}) // create plugin view for slash plugin
+        })
+      }
+    }
+  ];
+
+  value = 'Hello, World!';
+
+  editor: Editor;
+
+  onChange(markdownText: string) {
+    console.log({markdownText});
+  }
+}
+
+```
+
+### API
+
+| Property          | Description                                                       | Type                      | Default                |
+|-------------------|-------------------------------------------------------------------|---------------------------|------------------------|
+| `[classList]`     | editor element class names                                        | `string[]`                | `[]`                   |
+| `[config]`        | config before Editor.create()                                     | `NgMilkdownEditorConfig`  | `(ctx: Ctx) => void 0` |
+| `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`      | `[]`                   |
+| `[editor]`        | pass in a fully controlled editor object                          | `(HTMLElement) => Editor` | `[]`                   |
+| `[loading]`       | set the loading status of editor                                  | `boolean`                 | `true`                 |
+| `[spinner]`       | custom spinner                                                    | `TemplateRef<any>`        | -                      |
+| `[ngModel]`       | current value , double binding                                    | `DefaultValue`            | -                      |
+| `(ngModelChange)` | callback when markdown change                                     | `EventEmitter<string>`    | -                      |
+| `(onReady)`       | A callback function, can be executed when editor has bean created | `Editor`                  | -                      |
+
+## OutOfBox Plugins
+
+### ng-milkdown-tooltip
+
+```typescript
+@Component({
+  template: `
+      <button (click)="setBold($event)">
+        Bold
+      </button>
+  `,
+  ...
+})
+export class ImageTooltipComponent extends NgMilkdownTooltip {
+  setBold(e: MouseEvent) {
+    e.preventDefault();
+    this.action(callCommand(toggleStrongCommand.key));
+  }
+}
+```
+
+### ng-milkdown-slash
+
+```typescript
+@Component({
+  template: `
+      <button
+        [class]="selected === 0 ? ['selected'] : []"
+        (mousemove)="selected = $index"
+        (mousedown)="action(onPick)"
+      >
+        Code Block
+      </button>
+  `,
+  ...
+})
+export class SlashComponent extends NgMilkdownSlash {
+  override get onPick(): (ctx: Ctx) => void {
+    return (ctx: Ctx) => {
+      this.removeSlash(ctx);
+      ctx.get(commandsCtx).call(createCodeBlockCommand.key);
+      ctx.get(editorViewCtx).focus();
+    }
+  }
+}
+```
+
+### ng-milkdown-block
+
+```typescript
+@Component({
+  selector: 'block',
+  template: `
+      <div class="w-6 bg-slate-200 rounded hover:bg-slate-300 cursor-grab">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+          </svg>
+      </div>
+  `,
+  styles:[],
+  standalone: true
+})
+export class BlockComponent extends NgMilkdownBlock {}
+```
+
+More detailed examples and more plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
+
+## license
+
+[MIT](./LICENSE)

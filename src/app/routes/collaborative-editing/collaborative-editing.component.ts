@@ -60,7 +60,7 @@ export interface DialogData {
           </div>
           <ng-milkdown-provider #provider>
               <ng-milkdown
-                      [editorConfig]="config"
+                      [config]="config"
                       [classList]="['border', 'border-nord4', 'mx-auto']"
                       [plugins]="plugins"
                       [(ngModel)]="value"

@@ -80,22 +80,15 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
 
   @Input() spinner: TemplateRef<any> = null;
 
-  get editor() {
-    return this.ngMilkdownService.editor
+  get editor(): Editor {
+    return this.ngMilkdownService.editor;
   }
 
-  set editor(value) {
-    this.ngMilkdownService.editor = value
-  }
+  _editorFn: (element: HTMLElement) => Promise<Editor> = null;
 
-  _userEditor: (element: HTMLElement) => Promise<Editor> = null;
-
-  @Input() set userEditor(value: (element: HTMLElement) => Promise<Editor>) {
-    this._userEditor = value;
-  }
-
-  get userEditor() {
-    return this._userEditor;
+  @Input()
+  set editor(editorFn: ((element: HTMLElement) => Promise<Editor>)) {
+    this._editorFn = editorFn;
   }
 
   writeValue(value: any): void {
@@ -124,7 +117,7 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   @Output() onChanged = new EventEmitter<string>();
 
   @Input() plugins: NgMilkdownPlugin[] = [];
-  @Input() editorConfig: NgMilkdownEditorConfig = (ctx, provider) => null;
+  @Input() config: NgMilkdownEditorConfig = (ctx, provider) => null;
   @Output() onReady = new EventEmitter<Editor>();
   onTouched: () => void = () => {
   };
@@ -138,8 +131,8 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   disabled = false;
 
   async render(): Promise<void> {
-    if (this.userEditor) {
-      this.editor = await this.userEditor(this.editorRef.nativeElement);
+    if (this._editorFn) {
+      this.ngMilkdownService.editor = await this._editorFn(this.editorRef.nativeElement);
       this.onReady.emit(this.editor);
       return;
     }
@@ -154,10 +147,10 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
             this.onChange(md);
           });
 
-          if (isZoneAwarePromise(this.editorConfig)) {
-            await this.editorConfig(ctx, this.provider);
+          if (isZoneAwarePromise(this.config)) {
+            await this.config(ctx, this.provider);
           } else {
-            this.editorConfig(ctx, this.provider);
+            this.config(ctx, this.provider);
           }
         })
         .config(nord)
@@ -185,7 +178,7 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
       this.loading = false;
       this.loadingChange.emit(false);
       this.onReady.emit(editor);
-      this.editor = editor;
+      this.ngMilkdownService.editor = editor;
     })
   }
 

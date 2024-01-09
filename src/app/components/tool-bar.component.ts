@@ -17,6 +17,7 @@ import {insertDiagramCommand} from "@milkdown/plugin-diagram";
 import {CmdKey} from "@milkdown/core";
 import {RouterLink} from "@angular/router";
 import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
+import {CopilotService} from "./copilot/copilot.service";
 
 @Component({
   selector: 'tool-bar',
@@ -24,15 +25,18 @@ import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/componen
       <div class="absolute top-0 h-10 w-full border-b border-nord4 dark:divide-gray-600 dark:border-gray-600">
           <div class="prose mx-auto flex">
               @for (item of navBarItems;track $index) {
-                  <div class="flex h-10 w-10 cursor-pointer items-center justify-center rounded hover:bg-gray-100"
-                       [title]="item.title"
-                       (mousedown)="onMouseDown($event, item.slice, item.payload)"
-                       (touchstart)="onMouseDown($event, item.slice, item.payload)"
-                       [class]="item.className"
-                       [routerLink]="item.routerLink"
-                  >
-                      <span class="material-symbols-outlined !text-base">{{ item.icon }}</span>
-                  </div>
+                  @if (!item.hidden || !item.hidden()) {
+                      <div
+                              class="flex h-10 w-10 cursor-pointer items-center justify-center rounded hover:bg-gray-100"
+                              [title]="item.title"
+                              (mousedown)="onMouseDown($event, item.slice, item.payload, item.click)"
+                              (touchstart)="onMouseDown($event, item.slice, item.payload, item.click)"
+                              [class]="item.className"
+                              [routerLink]="item.routerLink"
+                      >
+                          <span class="material-symbols-outlined !text-base">{{ item.icon }}</span>
+                      </div>
+                  }
               }
           </div>
       </div>
@@ -57,6 +61,9 @@ import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/componen
 })
 export class ToolBarComponent {
   @Input() provider: NgMilkdownProvider;
+
+  constructor(private copilotService: CopilotService) {
+  }
 
   get action() {
     return actionFactory(this.provider.editor);
@@ -151,12 +158,28 @@ export class ToolBarComponent {
       icon: 'partner_exchange',
       className: ['hidden-sm'],
       routerLink: ['/collaborative-editing']
+    },
+    {
+      title: 'Open copilot',
+      icon: 'smart_toy',
+      className: ['hidden-sm'],
+      click: () => this.copilotService.enabled = true,
+      hidden: () => this.copilotService.enabled
+    },
+    {
+      title: 'Close copilot',
+      icon: 'smart_toy',
+      className: ['hidden-sm', 'text-red-500'],
+      click: () => this.copilotService.enabled = false,
+      hidden: () => !this.copilotService.enabled
     }
   ]
 
-  onMouseDown(e: MouseEvent | TouchEvent, slice: CmdKey<any>, payload?: any) {
+  onMouseDown(e: MouseEvent | TouchEvent, slice: CmdKey<any>, payload?: any, click?: () => void) {
     e.preventDefault();
     if (slice)
       this.action(callCommand(slice, payload));
+    if (click)
+      click();
   }
 }

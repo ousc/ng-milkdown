@@ -71,7 +71,7 @@ npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @mil
 ```html
 <ng-milkdown-provider>
   <ng-milkdown
-    [editorConfig]="config"
+    [config]="config"
     [plugins]="plugins"
     [(ngModel)]="value"
     [(loading)]="loading"
@@ -172,16 +172,17 @@ export class WorkGroundComponent {
 
 ### API
 
-| Property          | Description                                                       | Type                     | Default                |
-|-------------------|-------------------------------------------------------------------|--------------------------|------------------------|
-| `[classList]`     | editor element class names                                        | `string[]`               | `[]`                   |
-| `[editorConfig]`  | config before Editor.create()                                     | `NgMilkdownEditorConfig` | `(ctx: Ctx) => void 0` |
-| `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`     | `[]`                   |
-| `[loading]`       | set the loading status of editor                                  | `boolean`                | `true`                 |
-| `[spinner]`       | Custom spinner                                                    | `TemplateRef<any>`       | -                      |
-| `[ngModel]`       | current value , double binding                                    | `DefaultValue`           | -                      |
-| `(ngModelChange)` | callback when markdown change                                     | `EventEmitter<string>`   | -                      |
-| `(onReady)`       | A callback function, can be executed when editor has bean created | `Editor`                 | -                      |
+| Property          | Description                                                       | Type                      | Default                |
+|-------------------|-------------------------------------------------------------------|---------------------------|------------------------|
+| `[classList]`     | editor element class names                                        | `string[]`                | `[]`                   |
+| `[config]`        | config before Editor.create()                                     | `NgMilkdownEditorConfig`  | `(ctx: Ctx) => void 0` |
+| `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`      | `[]`                   |
+| `[editor]`        | pass in a fully controlled editor object                          | `(HTMLElement) => Editor` | `[]`                   |
+| `[loading]`       | set the loading status of editor                                  | `boolean`                 | `true`                 |
+| `[spinner]`       | custom spinner                                                    | `TemplateRef<any>`        | -                      |
+| `[ngModel]`       | current value , double binding                                    | `DefaultValue`            | -                      |
+| `(ngModelChange)` | callback when markdown change                                     | `EventEmitter<string>`    | -                      |
+| `(onReady)`       | A callback function, can be executed when editor has bean created | `Editor`                  | -                      |
 
 ## OutOfBox Plugins
 
