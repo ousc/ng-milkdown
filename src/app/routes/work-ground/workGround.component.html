@@ -1,7 +1,7 @@
 <article class="prose lg:prose-xl"></article>
 <div class="relative h-full pt-10">
   @if (editor && !loading) {
-    <tool-bar class="opacity-80" [provider]="provider"/>
+    <top-bar class="opacity-80" [provider]="provider"/>
   }
   <div class="h-full overflow-auto overscroll-none ctn flex flex-col px-4">
     <ng-milkdown-provider #provider>

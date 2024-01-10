@@ -35,7 +35,7 @@ import {upload} from "@milkdown/plugin-upload";
 import {tableSelectorPlugin} from "../../components/table-selector/tableSelectorPlugin";
 import {TableTooltip, tableTooltip, tableTooltipCtx} from '../../components/table-selector/table-tooltip.component';
 import {MathBlock} from "../../components/math-block.component";
-import {ToolBarComponent} from "../../components/tool-bar.component";
+import {TopBarComponent} from "../../components/top-bar.component";
 import {CopilotService} from "../../components/copilot/copilot.service";
 import {
   NgMilkdownProvider
@@ -45,7 +45,7 @@ import {Spinner} from "../../components/spinner.component";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdown, HttpClientModule, ToolBarComponent, NgMilkdownProvider, Spinner],
+  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdown, HttpClientModule, TopBarComponent, NgMilkdownProvider, Spinner],
   templateUrl: './workGround.component.html',
   styleUrl: './workGround.component.scss',
   providers: [CopilotService]
@@ -107,15 +107,6 @@ export class WorkGroundComponent implements OnInit {
           }
         },
         {
-          plugin: indent,
-          config: ctx => {
-            ctx.set(indentConfig.key as any, {
-              type: 'space',
-              size: 4,
-            });
-          }
-        },
-        {
           plugin: this.tooltip,
           config: ctx => {
             ctx.set(this.tooltip.key, {
@@ -149,7 +140,7 @@ export class WorkGroundComponent implements OnInit {
           }
         },
         linkPlugin(this.provider),
-        this.copilotService.copilotPlugin,
+        this.copilotService.copilotPlugin(this.provider),
         tableTooltip,
         {
           plugin: tableTooltipCtx,
@@ -162,6 +153,15 @@ export class WorkGroundComponent implements OnInit {
           }
         },
         tableSelectorPlugin(this.provider),
+        {
+          plugin: indent,
+          config: ctx => {
+            ctx.set(indentConfig.key as any, {
+              type: 'indent',
+              size: 4,
+            });
+          }
+        },
       ];
       this.value = markdown;
     });
@@ -179,7 +179,7 @@ export class WorkGroundComponent implements OnInit {
   plugins: NgMilkdownPlugin[] = null;
 
   onChange(markdownText: any) {
-    console.log('markdown changed!', {markdownText})
+    // console.log('markdown changed!', {markdownText})
   }
 
   config = (ctx: any) => {

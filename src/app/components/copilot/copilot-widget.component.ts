@@ -3,7 +3,7 @@ import {NgMilkdownWidgetComp} from "../../../../projects/ng-milkdown/src/lib/dir
 
 @Component({
   selector: 'copilot-widget',
-  template: `<span class="text-gray-50">[提示：{{message}}]</span>`,
+  template: `<span class="text-gray-400 dark:text-gray-50">{{ message }}</span>`,
   styles: [],
   standalone: true
 })

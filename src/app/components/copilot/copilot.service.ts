@@ -1,11 +1,14 @@
 import {$prose} from '@milkdown/utils';
 import {Plugin, PluginKey} from '@milkdown/prose/state';
-import {Decoration, DecorationSet} from "@milkdown/prose/view";
+import {DecorationSet} from "@milkdown/prose/view";
 import {Ctx} from "@milkdown/ctx";
 import {editorViewCtx, parserCtx, serializerCtx} from "@milkdown/core";
-import {DOMSerializer, DOMParser} from "prosemirror-model";
+import {DOMParser, DOMSerializer} from "prosemirror-model";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
+import {CopilotWidget} from "./copilot-widget.component";
+import {throttle} from "../../shared/debounce_throttle";
 
 @Injectable()
 export class CopilotService {
@@ -20,14 +23,13 @@ export class CopilotService {
   }
 
   keyDownHandler(ctx: Ctx, event: KeyboardEvent) {
-    if (event.key === 'Enter' || event.code === 'Space') {
+    if (event.key === 'Enter' || event.code === 'Space' || event.code === 'Backspace' || event.code === 'Delete') {
       this.getHint(ctx)
       return;
     }
     if (event.key === "Tab") {
       // prevent the browser from focusing on the next element.
       event.preventDefault();
-
       this.applyHint(ctx);
       return;
     }
@@ -36,7 +38,7 @@ export class CopilotService {
   }
 
   copilotPluginKey = new PluginKey('milkdown-copilot');
-  copilotPlugin = $prose((ctx) => new Plugin({
+  copilotPlugin = (provider: NgMilkdownProvider) => $prose((ctx) => new Plugin({
     key: this.copilotPluginKey,
     props: {
       handleKeyDown: (view, event) => {
@@ -54,7 +56,6 @@ export class CopilotService {
       apply:(tr, value, _prevState, state)=> {
         if (!this.enabled) return value;
         const message = tr.getMeta(this.copilotPluginKey);
-        console.log(message)
         if (typeof message !== 'string') return value;
 
         if (message.length === 0) {
@@ -62,23 +63,16 @@ export class CopilotService {
         }
 
         const {to} = tr.selection;
-        const widget = Decoration.widget(to + 1, () => this.renderHint(message));
-        console.log(widget)
+        const hint = provider.createWidgetView({as: "span", component: CopilotWidget});
         return {
-          deco: DecorationSet.create(state.doc, [widget]),
-          message,
+          deco: DecorationSet.create(tr.doc, [
+            hint(to, {message}),
+          ]),
+          message
         };
       }
     }
   }))
-
-  renderHint(message: string) {
-    const dom = document.createElement('pre');
-    dom.className = "copilot-hint"
-    dom.innerHTML = message;
-    console.log(dom)
-    return dom;
-  }
 
   getHint(ctx: Ctx) {
     const view = ctx.get(editorViewCtx);
@@ -92,12 +86,12 @@ export class CopilotService {
     if (!doc) return;
 
     const markdown = serializer(doc);
-    this.fetchAIHint(markdown).subscribe((hint: any) => {
-      const tr = view.state.tr;
-      console.log({hint: hint.choices[0].text})
-      console.log(tr);
-      view.dispatch(tr.setMeta(this.copilotPluginKey, hint.choices[0].text))
-    });
+    throttle(() => {
+      this.fetchAIHint(markdown).subscribe((hint: any) => {
+        const tr = view.state.tr;
+        view.dispatch(tr.setMeta(this.copilotPluginKey, hint.choices[0].text))
+      });
+    }, 2000);
   }
 
   applyHint(ctx: Ctx) {
@@ -127,18 +121,15 @@ export class CopilotService {
   }
 
   fetchAIHint(prompt: string) {
-    return this.http.post(localStorage.getItem('openai-api-url'), {
-      model: 'davinci',
-      prompt,
-      "max_tokens": 7,
-      "temperature": 0,
-      "top_p": 1,
-      "n": 1,
-      "stream": false,
-      "logprobs": null
+    const config = JSON.parse(localStorage.getItem('openai-api-config') ?? "{}"); // '{"model":"davinci-002","max_tokens":7,"temperature":0,"top_p":1,"n":1,"stream":false,"logprobs":null}'
+    const url = localStorage.getItem('openai-api-url');
+    const token = localStorage.getItem('openai-api-token');
+    return this.http.post(url, {
+      ...config,
+      prompt
     }, {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('openai-api-token')
+        Authorization: 'Bearer ' + token
       }
     });
   }

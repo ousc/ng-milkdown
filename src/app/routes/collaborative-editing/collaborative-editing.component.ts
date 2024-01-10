@@ -4,7 +4,7 @@ import {RouterLink, RouterOutlet} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {NgMilkdown} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 import {HttpClientModule} from "@angular/common/http";
-import {ToolBarComponent} from "../../components/tool-bar.component";
+import {TopBarComponent} from "../../components/top-bar.component";
 import {Editor, editorViewCtx, editorViewOptionsCtx} from "@milkdown/core";
 import {collab, collabServiceCtx} from "@milkdown/plugin-collab";
 import {WebsocketProvider} from 'y-websocket';
@@ -97,7 +97,7 @@ export interface DialogData {
       }
     `
   ],
-  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdownProvider, NgMilkdown, HttpClientModule, ToolBarComponent, RouterLink],
+  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdownProvider, NgMilkdown, HttpClientModule, TopBarComponent, RouterLink],
   standalone: true
 })
 export class CollaborativeEditingComponent implements OnDestroy{

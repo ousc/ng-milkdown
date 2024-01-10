@@ -20,7 +20,7 @@ import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/componen
 import {CopilotService} from "./copilot/copilot.service";
 
 @Component({
-  selector: 'tool-bar',
+  selector: 'top-bar',
   template: `
       <div class="absolute top-0 h-10 w-full border-b border-nord4 dark:divide-gray-600 dark:border-gray-600">
           <div class="prose mx-auto flex">
