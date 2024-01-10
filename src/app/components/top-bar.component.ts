@@ -59,7 +59,7 @@ import {CopilotService} from "./copilot/copilot.service";
   ],
   standalone: true
 })
-export class ToolBarComponent {
+export class TopBarComponent {
   @Input() provider: NgMilkdownProvider;
 
   constructor(private copilotService: CopilotService) {

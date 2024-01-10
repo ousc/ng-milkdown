@@ -1,5 +1,8 @@
 ## Example ng-milkdown components.
 
+Following are some examples of ng-milkdown components, they are all based on [milkdown](https://milkdown.dev)
+
+- copilot
 - footnote:
   - footnote-def
   - footnote-ref
@@ -22,4 +25,3 @@
 - list-item
 - math-block
 - top-bar
-- collab
