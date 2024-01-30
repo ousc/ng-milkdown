@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://ousc.github.io/ng-milkdown">
-    <img src="milkdownLogo.png" width="230" style="vertical-align: middle;">
+    <img src="https://github.com/ousc/ng-milkdown/raw/main/milkdownLogo.png" width="230" style="vertical-align: middle;">
   </a>
 </p>
 
@@ -28,7 +28,7 @@ npm run start
 
 ## ng-prosemirror-adapter
 
-Angular adapter for ProseMirror, only supports Angular 17+.(now this library is not published to npm, we will publish it soon)
+Angular adapter for ProseMirror, only supports Angular 17+.
 
 [https://github.com/ousc/ng-prosemirror-adapter](https://github.com/ousc/ng-prosemirror-adapter)
 
@@ -53,7 +53,7 @@ Angular adapter for ProseMirror, only supports Angular 17+.(now this library is 
 - [X]  `plugin-trailing`**(supported)**
 - [X]  `plugin-upload`**(supported)**
 - [X]  `plugin-collab`**(supported)**
-- [ ]  `plugin-copilot`**(planned)**
+- [X]  `plugin-copilot`**(supported)**
 
 usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
 

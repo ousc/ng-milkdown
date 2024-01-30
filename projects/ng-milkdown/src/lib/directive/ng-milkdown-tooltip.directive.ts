@@ -1,7 +1,19 @@
-import {AfterViewInit, Directive} from '@angular/core';
+import {Directive} from '@angular/core';
 import {TooltipProvider} from "@milkdown/plugin-tooltip";
-import {actionFactory} from "../actionFactory";
 import {NgMilkdownPluginComp} from "./ng-milkdown-plugin.directive";
+
+export const hiddenDiv = () => {
+  const container = document.querySelector('#ng-milkdown-tooltip-container') as HTMLElement;
+  if (container) {
+    return container
+  } else {
+    const tooltipContainer = document.createElement('div');
+    tooltipContainer.id = `ng-milkdown-tooltip-container`;
+    tooltipContainer.style.display = 'none';
+    document.body.appendChild(tooltipContainer);
+    return tooltipContainer
+  }
+}
 
 @Directive({
   selector: 'ng-milkdown-tooltip',
@@ -10,6 +22,10 @@ import {NgMilkdownPluginComp} from "./ng-milkdown-plugin.directive";
 export class NgMilkdownTooltip extends NgMilkdownPluginComp {
   get tooltipProvider(): TooltipProvider {
     return this.provider?.service?.pluginView[this.key] as unknown as TooltipProvider;
+  }
+
+  override get parentView() {
+    return hiddenDiv();
   }
 
   override get pluginView() {

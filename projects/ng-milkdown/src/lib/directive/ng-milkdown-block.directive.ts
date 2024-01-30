@@ -1,7 +1,6 @@
 import {AfterViewInit, Directive, Input} from '@angular/core';
 import {Ctx} from '@milkdown/ctx';
 import {BlockProvider, BlockProviderOptions} from "@milkdown/plugin-block";
-import {actionFactory} from "../actionFactory";
 import {NgMilkdownPluginComp} from "./ng-milkdown-plugin.directive";
 
 @Directive({

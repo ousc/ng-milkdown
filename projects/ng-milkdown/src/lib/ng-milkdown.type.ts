@@ -1,5 +1,6 @@
 import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
 import {NgProsemirrorAdapterProvider} from "ng-prosemirror-adapter";
+import {NgMilkdownProvider} from "./component/ng-milkdown-provider.component";
 
 export type NgMilkdownPluginConfigAsync = Promise<(ctx: Ctx) => void>
 
@@ -15,5 +16,14 @@ export type NgMilkdownEditorConfigSync =
 
 export type NgMilkdownEditorConfig = NgMilkdownEditorConfigAsync | NgMilkdownEditorConfigSync
 
-export type NgMilkdownPlugin = (MilkdownPlugin | MilkdownPlugin[] | (MilkdownPlugin[] | MilkdownPlugin)[] ) |
-  { plugin: (MilkdownPlugin | MilkdownPlugin[]), config: NgMilkdownPluginConfig }
+export type MilkdownPlugins = MilkdownPlugin | MilkdownPlugin[] | (MilkdownPlugin[] | MilkdownPlugin)[]
+
+export type MilkdownPluginsConfigurable = {
+  plugin: MilkdownPlugins,
+  config?: NgMilkdownPluginConfig
+}
+export type MilkdownPluginsFactory = (provider: NgMilkdownProvider) => MilkdownPlugins
+
+export type NgMilkdownPluginFactory = { factory: MilkdownPluginsFactory }
+
+export type NgMilkdownPlugin = MilkdownPlugins | MilkdownPluginsConfigurable | NgMilkdownPluginFactory

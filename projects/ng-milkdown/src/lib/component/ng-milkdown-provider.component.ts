@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NgProsemirrorAdapterProvider, NgProsemirrorAdapterService} from "ng-prosemirror-adapter";
+import {NgProsemirrorAdapterProvider, NgProsemirrorAdapterService } from 'ng-prosemirror-adapter';
 
 @Component({
   selector: 'ng-milkdown-provider',

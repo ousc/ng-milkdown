@@ -1,15 +1,15 @@
 {
   "name": "ng-milkdown",
-  "version": "0.0.1",
+  "version": "0.0.1-beta.1",
   "peerDependencies": {
     "@angular/common": "^17.0.0",
     "@angular/core": "^17.0.0",
-    "@milkdown/core": "^7.3.2",
-    "@milkdown/ctx": "^7.3.2",
-    "@milkdown/plugin-listener": "^7.3.2",
-    "@milkdown/preset-commonmark": "^7.3.2",
-    "@milkdown/theme-nord": "^7.3.2",
-    "ng-prosemirror-adapter": "^0.0.1-beta.0"
+    "@milkdown/core": "^7.3.3",
+    "@milkdown/ctx": "^7.3.3",
+    "@milkdown/plugin-listener": "^7.3.3",
+    "@milkdown/preset-commonmark": "^7.3.3",
+    "@milkdown/theme-nord": "^7.3.3",
+    "ng-prosemirror-adapter": "^0.0.1-beta.2"
   },
   "dependencies": {
     "tslib": "^2.3.0"

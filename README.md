@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://ousc.github.io/ng-milkdown">
-    <img src="milkdownLogo.png" width="230" style="vertical-align: middle;">
+    <img src="https://github.com/ousc/ng-milkdown/raw/main/milkdownLogo.png" width="230" style="vertical-align: middle;">
   </a>
 </p>
 
@@ -28,7 +28,7 @@ npm run start
 
 ## ng-prosemirror-adapter
 
-Angular adapter for ProseMirror, only supports Angular 17+.(now this library is not published to npm, we will publish it soon)
+Angular adapter for ProseMirror, only supports Angular 17+.
 
 [https://github.com/ousc/ng-prosemirror-adapter](https://github.com/ousc/ng-prosemirror-adapter)
 
@@ -177,7 +177,7 @@ export class WorkGroundComponent {
 | `[classList]`     | editor element class names                                        | `string[]`                | `[]`                   |
 | `[config]`        | config before Editor.create()                                     | `NgMilkdownEditorConfig`  | `(ctx: Ctx) => void 0` |
 | `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`      | `[]`                   |
-| `[editor]`        | pass in a fully controlled editor object                          | `(HTMLElement) => Editor` | `[]`                   |
+| `[editor]`        | pass in a fully controlled editor object                          | `(HTMLElement) => Editor` | -                      |
 | `[loading]`       | set the loading status of editor                                  | `boolean`                 | `true`                 |
 | `[spinner]`       | custom spinner                                                    | `TemplateRef<any>`        | -                      |
 | `[ngModel]`       | current value , double binding                                    | `DefaultValue`            | -                      |

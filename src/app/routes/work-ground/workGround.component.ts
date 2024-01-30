@@ -37,10 +37,14 @@ import {TableTooltip, tableTooltip, tableTooltipCtx} from '../../components/tabl
 import {MathBlock} from "../../components/math-block.component";
 import {TopBarComponent} from "../../components/top-bar.component";
 import {CopilotService} from "../../components/copilot/copilot.service";
-import {
-  NgMilkdownProvider
-} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
+import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../components/spinner.component";
+import {$provide} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
+
+export const tooltip = tooltipFactory('tooltipMenu');
+export const imageTooltip = tooltipFactory("imageTooltipMenu");
+export const slash = slashFactory('slashMenu');
+export const emojiSlash = slashFactory("emojiMenu");
 
 @Component({
   selector: 'app-root',
@@ -58,111 +62,6 @@ export class WorkGroundComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get('assets/markdown.md', {responseType: 'text'}).subscribe((markdown) => {
-      this.plugins = [
-        gfm,
-        history,
-        prism,
-        clipboard,
-        cursor,
-        [
-          math,
-          $view(mathBlockSchema.node, () =>
-            this.provider.createNodeView({
-              component: MathBlock,
-              stopEvent: () => true,
-            })
-          )
-        ],
-        diagram,
-        upload,
-        $view(diagramSchema.node, () =>
-          this.provider.createNodeView({
-            component: Diagram,
-            stopEvent: () => true,
-          })
-        ),
-        $view(listItemSchema.node, () =>
-          this.provider.createNodeView({component: ListItem})
-        ),
-        [
-          $view(footnoteDefinitionSchema.node, () =>
-            this.provider.createNodeView({component: FootnoteDef})
-          ),
-          $view(footnoteReferenceSchema.node, () =>
-            this.provider.createNodeView({component: FootnoteRef})
-          )
-        ],
-        $view(codeBlockSchema.node, () =>
-          this.provider.createNodeView({component: CodeBlock})
-        ),
-        {
-          plugin: block,
-          config: ctx => {
-            ctx.set(block.key, {
-              view: this.provider.createPluginView({
-                component: Block,
-                inputs: {ctx}
-              })
-            });
-          }
-        },
-        {
-          plugin: this.tooltip,
-          config: ctx => {
-            ctx.set(this.tooltip.key, {
-              view: this.provider.createPluginView({component: Tooltip})
-            })
-          }
-        },
-        {
-          plugin: this.slash,
-          config: ctx => {
-            ctx.set(this.slash.key, {
-              view: this.provider.createPluginView({component: Slash, inputs: {slash: this.slash}}),
-            })
-          }
-        },
-        emoji,
-        {
-          plugin: this.emojiSlash,
-          config: ctx => {
-            ctx.set(this.emojiSlash.key, {
-              view: this.provider.createPluginView({component: EmojiMenu, inputs: {slash: this.emojiSlash}}),
-            })
-          }
-        },
-        {
-          plugin: this.imageTooltip,
-          config: ctx => {
-            ctx.set(this.imageTooltip.key, {
-              view: this.provider.createPluginView({component: ImageTooltip})
-            })
-          }
-        },
-        linkPlugin(this.provider),
-        this.copilotService.copilotPlugin(this.provider),
-        tableTooltip,
-        {
-          plugin: tableTooltipCtx,
-          config: ctx => {
-            ctx.set(tableTooltip.key, {
-              view: this.provider.createPluginView({
-                component: TableTooltip,
-              }),
-            })
-          }
-        },
-        tableSelectorPlugin(this.provider),
-        {
-          plugin: indent,
-          config: ctx => {
-            ctx.set(indentConfig.key as any, {
-              type: 'indent',
-              size: 4,
-            });
-          }
-        },
-      ];
       this.value = markdown;
     });
   }
@@ -171,15 +70,114 @@ export class WorkGroundComponent implements OnInit {
   value: string;
   loading = true;
 
-  tooltip = tooltipFactory('tooltipMenu');
-  imageTooltip = tooltipFactory("imageTooltipMenu");
-  slash = slashFactory('slashMenu');
-  emojiSlash = slashFactory("emojiMenu");
-
-  plugins: NgMilkdownPlugin[] = null;
+  plugins: NgMilkdownPlugin[] = [
+    gfm,
+    history,
+    prism,
+    clipboard,
+    cursor,
+    [
+      math,
+      $view(mathBlockSchema.node, () =>
+        this.provider.createNodeView({
+          component: MathBlock,
+          stopEvent: () => true,
+        })
+      )
+    ],
+    diagram,
+    upload,
+    $view(diagramSchema.node, () =>
+      this.provider.createNodeView({
+        component: Diagram,
+        stopEvent: () => true,
+      })
+    ),
+    $view(listItemSchema.node, () =>
+      this.provider.createNodeView({component: ListItem})
+    ),
+    [
+      $view(footnoteDefinitionSchema.node, () =>
+        this.provider.createNodeView({component: FootnoteDef})
+      ),
+      $view(footnoteReferenceSchema.node, () =>
+        this.provider.createNodeView({component: FootnoteRef})
+      )
+    ],
+    $view(codeBlockSchema.node, () =>
+      this.provider.createNodeView({component: CodeBlock})
+    ),
+    {
+      plugin: block,
+      config: ctx => {
+        ctx.set(block.key, {
+          view: this.provider.createPluginView({
+            component: Block,
+            inputs: {ctx}
+          })
+        });
+      }
+    },
+    {
+      plugin: tooltip,
+      config: ctx => {
+        ctx.set(tooltip.key, {
+          view: this.provider.createPluginView({component: Tooltip})
+        })
+      }
+    },
+    {
+      plugin: slash,
+      config: ctx => {
+        ctx.set(slash.key, {
+          view: this.provider.createPluginView({component: Slash, inputs: {slash: slash}}),
+        })
+      }
+    },
+    emoji,
+    {
+      plugin: emojiSlash,
+      config: ctx => {
+        ctx.set(emojiSlash.key, {
+          view: this.provider.createPluginView({component: EmojiMenu, inputs: {slash: emojiSlash}}),
+        })
+      }
+    },
+    {
+      plugin: imageTooltip,
+      config: ctx => {
+        ctx.set(imageTooltip.key, {
+          view: this.provider.createPluginView({component: ImageTooltip})
+        })
+      }
+    },
+    $provide(linkPlugin),
+    $provide(this.copilotService.copilotPlugin),
+    tableTooltip,
+    {
+      plugin: tableTooltipCtx,
+      config: ctx => {
+        ctx.set(tableTooltip.key, {
+          view: this.provider.createPluginView({
+            component: TableTooltip,
+          }),
+        })
+      }
+    },
+    $provide(tableSelectorPlugin),
+    {
+      plugin: indent,
+      config: ctx => {
+        ctx.set(indentConfig.key as any, {
+          type: 'indent',
+          size: 4,
+        });
+      }
+    },
+  ];
 
   onChange(markdownText: any) {
-    // console.log('markdown changed!', {markdownText})
+    console.log('markdown changed!', {markdownText})
   }
 
   config = (ctx: any) => {
