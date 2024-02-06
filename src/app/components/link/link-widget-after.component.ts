@@ -42,7 +42,22 @@ import {NgMilkdownWidgetComp} from "../../../../projects/ng-milkdown/src/lib/dir
   standalone: true
 })
 export class LinkWidgetAfter extends NgMilkdownWidgetComp {
-  href = '';
+  get href() {
+    return this.spec.href;
+  }
+
+  get title() {
+    return this.spec.title;
+  }
+
+  set href(href: string) {
+    this.spec.href = href;
+  }
+
+  set title(title: string) {
+    this.spec.title = title;
+  }
+
 
   onHrefBlur(e: FocusEvent) {
     this.action((ctx) => {
@@ -52,8 +67,6 @@ export class LinkWidgetAfter extends NgMilkdownWidgetComp {
       });
     });
   }
-
-  title = '';
 
   onTitleBlur(e: FocusEvent) {
     this.action((ctx) => {
