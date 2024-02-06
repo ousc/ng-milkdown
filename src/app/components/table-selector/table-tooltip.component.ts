@@ -26,7 +26,7 @@ export const tableTooltip = tooltipFactory("TABLE");
       <div class="flex">
           @for (button of buttons;track $index) {
               @if (button.iif()) {
-                  <table-tooltip-button [icon]="button.icon" [title]="button.title" (onClick)="onClick($index)" [style]="button.style"/>
+                  <table-tooltip-button [icon]="button.icon" [title]="button.title" (onClick)="onClick($index)" [icon-style]="button.style"/>
               }
           }
       </div>
@@ -35,6 +35,7 @@ export const tableTooltip = tooltipFactory("TABLE");
     `
       :host ::ng-deep table-tooltip-button:not(:first-child):not(:last-child) button {
         border-left: none;
+        border-right: none;
         border-radius: 0;
       }
 
@@ -44,7 +45,8 @@ export const tableTooltip = tooltipFactory("TABLE");
       }
 
       :host ::ng-deep table-tooltip-button:first-child button {
-        border-radius: 0 .25rem .25rem 0;
+        border-right: none;
+        border-radius: .25rem 0 0 .25rem;
       }
     `
   ],

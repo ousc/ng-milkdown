@@ -8,6 +8,8 @@ import {
 } from "@milkdown/preset-commonmark";
 import {NgMilkdownSlash} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-slash.directive";
 import {Ctx} from "@milkdown/ctx";
+import {insertDiagramCommand} from '@milkdown/plugin-diagram';
+import {createMathBlockCommand} from "../enhance";
 
 @Component({
   selector: 'slash',
@@ -37,21 +39,31 @@ export class Slash extends NgMilkdownSlash {
       payload: 3,
     },
     {
+      label: 'Quote Block',
+      icon: 'format_quote',
+      slice: wrapInBlockquoteCommand.key,
+    },
+    {
       label: 'Code Block',
       icon: 'code_blocks',
       slice: createCodeBlockCommand.key,
     },
     {
-      label: 'Quote Block',
-      icon: 'format_quote',
-      slice: wrapInBlockquoteCommand.key,
+      label: 'Diagram',
+      icon: 'rebase',
+      slice: insertDiagramCommand.key,
+    },
+    {
+      label: 'Math Block',
+      icon: 'functions',
+      slice: createMathBlockCommand.key
     },
     {
       label: 'Divider',
       icon: 'horizontal_rule',
       slice: insertHrCommand.key,
       payload: {mode: 'horizontal'},
-    }
+    },
   ];
 
   override get onPick(): (ctx: Ctx) => void {

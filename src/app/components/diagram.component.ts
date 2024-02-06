@@ -11,9 +11,10 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
   template: `
       <mat-tab-group contenteditable="false" [animationDuration]="150" [(selectedIndex)]="selectedIndex" preserveContent>
           <mat-tab label="Preview">
-              <div [style.min-height.px]="100" class="cursor-pointer border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100 diagram-ref">
+              <div [style.min-height.px]="100" #contentRef
+                   class="cursor-pointer border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100">
                   @if (!code || !rendering) {
-                      <span> (˚Δ˚)b</span>
+                      <span class="text-gray-300">Mermaid diagram support</span>
                   }
               </div>
           </mat-tab>
@@ -40,11 +41,6 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
 })
 export class Diagram extends NgMilkdownNodeComp implements AfterViewInit {
   selectedIndex= 0;
-
-  override get container(): any {
-    return super.container.children[0];
-  }
-
   rendering = true;
   code: string = null;
 
@@ -65,8 +61,8 @@ export class Diagram extends NgMilkdownNodeComp implements AfterViewInit {
       });
 
       const {svg, bindFunctions} = await mermaid.render(id, this.code);
-      bindFunctions?.(this.el.nativeElement);
-      this.container.querySelector(".diagram-ref").innerHTML = svg;
+      this.container.innerHTML = svg;
+      bindFunctions?.(this.container);
     }
     requestAnimationFrame(async () => {
       await renderMermaid();
@@ -74,8 +70,7 @@ export class Diagram extends NgMilkdownNodeComp implements AfterViewInit {
     this.rendering = false;
   }
 
-  override ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.render();
-    super.ngAfterViewInit();
   }
 }

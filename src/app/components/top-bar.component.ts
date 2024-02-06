@@ -30,6 +30,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
+import {createMathBlockCommand, insertTaskListCommand} from './enhance';
 
 @Component({
   selector: 'top-bar',
@@ -156,6 +157,11 @@ export class TopBarComponent {
       slice: wrapInOrderedListCommand.key,
     },
     {
+      title: 'Task List',
+      icon: 'checklist',
+      slice: insertTaskListCommand.key,
+    },
+    {
       title: 'Code Block',
       icon: 'code_blocks',
       slice: createCodeBlockCommand.key,
@@ -164,6 +170,11 @@ export class TopBarComponent {
       title: 'Quote Block',
       icon: 'format_quote',
       slice: wrapInBlockquoteCommand.key,
+    },
+    {
+      title: 'Math Block',
+      icon: 'functions',
+      slice: createMathBlockCommand.key,
     },
     {
       title: 'Test collaborative Editing',

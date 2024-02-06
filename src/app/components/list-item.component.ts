@@ -15,7 +15,7 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
                   <span class="text-nord8">{{ label }}</span>
               }
           </span>
-          <div class="min-w-0 list-item-ref"></div>
+          <div class="min-w-0" #contentRef></div>
       </li>
   `,
   styles: [],
@@ -32,9 +32,5 @@ export class ListItem extends NgMilkdownNodeComp {
 
   get label() {
     return this.node.attrs?.label;
-  }
-
-  override get container() {
-    return this.el.nativeElement.querySelector('.list-item-ref') as HTMLElement;
   }
 }

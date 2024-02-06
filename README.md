@@ -86,6 +86,8 @@ npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @mil
 ```typescript
 import {NgMilkdownProvider} from "./ng-milkdown-provider.component";
 
+const tooltip = tooltipFactory('my-tooltip')
+const slash = slashFactory('my-slash')
 @Component({...})
 export class WorkGroundComponent {
   @ViewChild(NgMilkdownProvider, {static: true}) provider: NgMilkdownProvider;
@@ -99,8 +101,6 @@ export class WorkGroundComponent {
     });
   }
 
-  tooltip = tooltipFactory('my-tooltip')
-  slash = slashFactory('my-slash')
   plugins: NgMilkdownPlugin[] = [
     gfm,
     history,
@@ -117,7 +117,7 @@ export class WorkGroundComponent {
           stopEvent: () => true,
         })
       )
-    ].flat(),
+    ],
     $view(listItemSchema.node, () =>
       this.provider.createNodeView({component: ListItem}) // create node view for list item node
     ),
@@ -132,6 +132,7 @@ export class WorkGroundComponent {
         });
       }
     },
+    $provide(linkPlugin), // $provide is an alias of `provider => MilkdownPlugin`, allow you create your own plugin without waiting for `provider` initialization
     {
       plugin: indent,
       config: ctx => {
@@ -142,17 +143,17 @@ export class WorkGroundComponent {
       }
     },
     {
-      plugin: this.tooltip,
+      plugin: tooltip,
       config: ctx => {
-        ctx.set(this.tooltip.key, {
+        ctx.set(tooltip.key, {
           view: this.provider.createPluginView({component: ImageTooltipComponent}) // create plugin view for tooltip plugin
         })
       }
     },
     {
-      plugin: this.slash,
+      plugin: slash,
       config: ctx => {
-        ctx.set(this.slash.key, {
+        ctx.set(slash.key, {
           view: this.provider.createPluginView({component: SlashComponent}) // create plugin view for slash plugin
         })
       }
@@ -210,13 +211,15 @@ export class ImageTooltipComponent extends NgMilkdownTooltip {
 ```typescript
 @Component({
   template: `
+  @for (item of list;track item) {
       <button
-        [class]="selected === 0 ? ['selected'] : []"
+        [class]="selected === $index ? ['selected'] : []"
         (mousemove)="selected = $index"
         (mousedown)="action(onPick)"
       >
-        Code Block
+        {{item.label}}
       </button>
+  }
   `,
   ...
 })
@@ -248,6 +251,57 @@ export class SlashComponent extends NgMilkdownSlash {
 })
 export class BlockComponent extends NgMilkdownBlock {}
 ```
+
+## How to create a nodeView in ng-milkdown
+
+It's very easy to create a nodeView in ng-milkdown, you can use the following example
+```html
+@Component({
+  selector: 'list-item',
+  template: `
+      <li [class]="['flex-column', 'flex', 'items-start', 'gap-2', selected ? 'ProseMirror-selectednode' : '']">
+          <span class="flex h-6 items-center">
+              @if (isBullet && checked != null) {
+                  <input class="form-checkbox rounded" (change)="checked = !checked" type="checkbox"
+                         checked="checked"/>
+              } @else if (isBullet) {
+                  <span class="h-2 w-2 rounded-full bg-nord-10 dark:bg-nord9"></span>
+              } @else {
+                  <span class="text-nord-10">{{ label }}</span>
+              }
+          </span>
+          <div class="min-w-0" #contentRef></div>
+      </li>
+  `,
+  styles: [`
+    :host {
+      display: contents;
+    }
+  `],
+  standalone: true
+})
+export class ListItem extends NgMilkdownNodeComp {
+  get checked() {
+    return this.node.attrs?.checked;
+  }
+
+  set checked(checked){
+    this.setAttrs({checked})
+  }
+
+  get isBullet() {
+    return this.node.attrs?.listType === "bullet";
+  }
+
+  get label() {
+    return this.node.attrs?.label;
+  }
+}
+```
+
+Firstly, you should make your nodeView class inherit from `NgMilkdownNodeComp`.
+To additionally, you should add `#contentRef` ElementRef in your nodeView, which will be used to render the content of the node.
+
 
 More detailed examples and more plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
 

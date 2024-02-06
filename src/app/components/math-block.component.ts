@@ -1,5 +1,4 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory";
 import {MatTabsModule} from "@angular/material/tabs";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -13,10 +12,10 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
       <mat-tab-group contenteditable="false" [animationDuration]="150" [(selectedIndex)]="selectedIndex"
                      preserveContent>
           <mat-tab label="Preview">
-              <div [style.min-height.px]="100"
-                   class="cursor-pointer border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100 math-block-ref">
+              <div [style.min-height.px]="100" #contentRef
+                   class="cursor-pointer border-2 border-gray-300 rounded-md p-2 flex justify-center items-center hover:bg-gray-100">
                   @if (!code || !rendering) {
-                      <span> (˚Δ˚)b</span>
+                      <span class="text-gray-300">Katex math block support</span>
                   }
               </div>
           </mat-tab>
@@ -43,11 +42,6 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
 })
 export class MathBlock extends NgMilkdownNodeComp implements AfterViewInit {
   selectedIndex = 0;
-
-  override get container(): any {
-    return super.container.children[0];
-  }
-
   rendering = true;
   code: string = null;
 
@@ -65,7 +59,7 @@ export class MathBlock extends NgMilkdownNodeComp implements AfterViewInit {
         try {
           katex.render(
             this.code,
-            this.container.querySelector(".math-block-ref"),
+            this.contentRef.nativeElement,
             ctx.get(katexOptionsCtx.key)
           );
         } catch(err) {
@@ -79,8 +73,7 @@ export class MathBlock extends NgMilkdownNodeComp implements AfterViewInit {
     this.rendering = false;
   }
 
-  override ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.render();
-    super.ngAfterViewInit();
   }
 }

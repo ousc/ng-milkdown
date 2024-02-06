@@ -40,6 +40,7 @@ import {CopilotService} from "../../components/copilot/copilot.service";
 import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../components/spinner.component";
 import {$provide} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
+import {enhance} from "../../components/enhance";
 
 export const tooltip = tooltipFactory('tooltipMenu');
 export const imageTooltip = tooltipFactory("imageTooltipMenu");
@@ -76,6 +77,7 @@ export class WorkGroundComponent implements OnInit {
     prism,
     clipboard,
     cursor,
+    enhance,
     [
       math,
       $view(mathBlockSchema.node, () =>

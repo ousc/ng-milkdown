@@ -1,6 +1,6 @@
 {
   "name": "ng-milkdown",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "peerDependencies": {
     "@angular/common": "^17.0.0",
     "@angular/core": "^17.0.0",
@@ -9,7 +9,7 @@
     "@milkdown/plugin-listener": "^7.3.3",
     "@milkdown/preset-commonmark": "^7.3.3",
     "@milkdown/theme-nord": "^7.3.3",
-    "ng-prosemirror-adapter": "^0.0.2"
+    "ng-prosemirror-adapter": "^0.0.6"
   },
   "dependencies": {
     "tslib": "^2.3.0"

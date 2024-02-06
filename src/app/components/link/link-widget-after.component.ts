@@ -42,14 +42,6 @@ import {NgMilkdownWidgetComp} from "../../../../projects/ng-milkdown/src/lib/dir
   standalone: true
 })
 export class LinkWidgetAfter extends NgMilkdownWidgetComp {
-  constructor(override el: ElementRef) {
-    super(el);
-    this.onUpdate.subscribe((context) => {
-      this.href = this.spec?.href || "";
-      this.title = this.spec?.title || "";
-    });
-  }
-
   href = '';
 
   onHrefBlur(e: FocusEvent) {

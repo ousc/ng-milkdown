@@ -25,7 +25,7 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
               </button>
           </div>
           <pre spellCheck="false" class="flex !m-0 !mb-4">
-                <code class="code-block-ref"></code>
+                <code #contentRef></code>
           </pre>
       </div>
   `,
@@ -41,8 +41,7 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
 export class CodeBlock extends NgMilkdownNodeComp implements AfterViewInit {
   language: string = 'text';
 
-  override ngAfterViewInit(): void {
-    super.ngAfterViewInit();
+  ngAfterViewInit(): void {
     setTimeout(() => {
       this.language = this.node.attrs?.language;
     });
@@ -78,14 +77,9 @@ export class CodeBlock extends NgMilkdownNodeComp implements AfterViewInit {
     }, 2000);
   }
 
-  override get container() {
-    return this.el.nativeElement.querySelector('.code-block-ref') as HTMLElement;
-  }
-
   onChange(e: Event) {
     const {value} = e.target as HTMLSelectElement;
     this.setAttrs({language: value});
-    this.contentRef(this.container)
   }
 
   copiedSuccessfully = false;
