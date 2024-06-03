@@ -15,7 +15,6 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
 import {defaultValueCtx, Editor, rootCtx} from "@milkdown/core";
 import {listener, listenerCtx} from "@milkdown/plugin-listener";
-import {nord} from "@milkdown/theme-nord";
 import {commonmark} from "@milkdown/preset-commonmark";
 import {NgMilkdownService} from "./ng-milkdown.service";
 import {NgTemplateOutlet} from "@angular/common";
@@ -55,10 +54,6 @@ function flatPlugins(plugins: MilkdownPlugins): (MilkdownPlugin | MilkdownPlugin
   `,
   styles: [
     `
-      @import "tailwindcss/base";
-      @import "tailwindcss/components";
-      @import "tailwindcss/utilities";
-
       :host {
         display: contents;
       }
@@ -176,7 +171,6 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
               this.config(ctx, this.provider);
             }
           })
-          .config(nord)
           .use(commonmark)
           .use(listener)
 

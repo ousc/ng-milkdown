@@ -24,6 +24,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {Ctx} from "@milkdown/ctx";
 import {prism} from "@milkdown/plugin-prism";
 import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
+import {nord} from "@milkdown/theme-nord";
 
 export interface DialogData {
   roomName: string;
@@ -116,6 +117,7 @@ export class CollaborativeEditingComponent implements OnDestroy{
         spellcheck: "false",
       },
     });
+    nord(ctx);
   }
   plugins = [
     prism, collab
