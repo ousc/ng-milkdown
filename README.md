@@ -12,6 +12,7 @@ NG-MILKDOWN
 
 
 WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [**Angular**](https://angular.dev/) out of box, only supports Angular **17**+.
+Allow you to use native Angular components to create nodeView/pluginView/widgetView, and provide corresponding examples.
 
 ## Example
 
