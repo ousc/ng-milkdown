@@ -8,6 +8,8 @@
 NG-MILKDOWN
 </h1>
 
+[![NPM version](https://img.shields.io/npm/v/ng-milkdown.svg)](https://www.npmjs.com/package/ng-milkdown)
+
 
 WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [**Angular**](https://angular.dev/) out of box, only supports Angular **17**+.
 
