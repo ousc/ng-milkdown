@@ -41,6 +41,7 @@ import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/compo
 import {Spinner} from "../../components/spinner.component";
 import {$provide} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
 import {enhance} from "../../components/enhance";
+import { nord } from '@milkdown/theme-nord';
 
 export const tooltip = tooltipFactory('tooltipMenu');
 export const imageTooltip = tooltipFactory("imageTooltipMenu");
@@ -204,5 +205,6 @@ export class WorkGroundComponent implements OnInit {
         class: "w-[1em] h-[1em] inline align-text-top",
       },
     }));
+    nord(ctx);
   }
 }
