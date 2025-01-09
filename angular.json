@@ -95,7 +95,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@milkdown/theme-nord/lib/theme-nord.css"
             ],
             "scripts": []
           }

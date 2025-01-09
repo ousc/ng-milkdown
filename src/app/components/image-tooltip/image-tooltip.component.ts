@@ -41,10 +41,7 @@ export class ImageTooltip extends NgMilkdownTooltip {
   override get pluginView(): any {
     return new TooltipProvider({
       content: this.container,
-      tippyOptions: {
-        zIndex: 9999,
-        appendTo: document.body,
-      },
+      debounce: 50,
       shouldShow: (view) => {
         const {selection} = view.state;
         const {empty, from} = selection;

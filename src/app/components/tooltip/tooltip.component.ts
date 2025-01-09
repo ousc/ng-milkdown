@@ -64,7 +64,6 @@ export class Tooltip extends NgMilkdownTooltip {
         const {from, to} = view.state.selection;
         return from !== to && view.state.doc.nodeAt(from)?.type.name === "text";
       },
-      tippyOptions: {appendTo: document.body}
     }) as any;
   }
 }

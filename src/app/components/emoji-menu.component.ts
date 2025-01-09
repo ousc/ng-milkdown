@@ -59,17 +59,6 @@ export class EmojiMenu extends NgMilkdownSlash {
         _this.list = _this.emojis;
         return true;
       },
-      tippyOptions: {
-        onShow: () => {
-          this.opened = true;
-          this.root.addEventListener('keydown', this.eventListener);
-        },
-        onHide: () => {
-          this.selected = 0;
-          this.opened = false;
-          this.root.removeEventListener('keydown', this.eventListener);
-        },
-      },
     }) as any;
   }
 

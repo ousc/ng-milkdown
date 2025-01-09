@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {actionFactory} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
 import {tableTooltipCtx} from "./table-tooltip.component";
 import {commandsCtx} from "@milkdown/core";
 import {
@@ -54,11 +53,11 @@ export class TableSelectorWidget extends NgMilkdownWidgetComp {
       if (this.type === "left") commands.call(selectRowCommand.key, this.index);
       else if (this.type === "top") commands.call(selectColCommand.key, this.index);
       else commands.call(selectTableCommand.key);
-      const bcr = (e.target as HTMLElement).getBoundingClientRect();
+      // const bcr = (e.target as HTMLElement).getBoundingClientRect();
       const tooltip = ctx.get(tableTooltipCtx.key);
-      tooltip.getInstance().props.getReferenceClientRect = () => {
-        return bcr;
-      };
+      // tooltip.getInstance().props.getReferenceClientRect = () => {
+      //   return bcr;
+      // };
       setTimeout(() => {
         tooltip.show();
       }, 50);

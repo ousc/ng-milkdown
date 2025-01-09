@@ -113,18 +113,7 @@ export class NgMilkdownSlash extends NgMilkdownPluginComp implements AfterViewIn
     return new SlashProvider({
       content: this.el.nativeElement,
       debounce: 50,
-      trigger: this.trigger,
-      tippyOptions: {
-        onShow: () => {
-          this.opened = true;
-          this.root.addEventListener('keydown', this.eventListener);
-        },
-        onHide: () => {
-          this.selected = 0;
-          this.opened = false;
-          this.root.removeEventListener('keydown', this.eventListener);
-        },
-      },
+      trigger: this.trigger
     }) as any;
   }
 }

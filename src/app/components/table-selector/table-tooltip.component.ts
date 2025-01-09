@@ -172,10 +172,6 @@ export class TableTooltip extends NgMilkdownTooltip {
   override get pluginView() {
     return new TooltipProvider({
       content: this.container,
-      tippyOptions: {
-        zIndex: 30,
-        appendTo: document.body,
-      },
       shouldShow: () => false,
       debounce: 50,
     }) as any;

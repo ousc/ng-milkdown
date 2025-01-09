@@ -29,6 +29,6 @@ export class NgMilkdownTooltip extends NgMilkdownPluginComp {
   }
 
   override get pluginView() {
-    return new TooltipProvider({content: this.container, debounce: 50, tippyOptions: {appendTo: document.body}}) as any;
+    return new TooltipProvider({content: this.container, debounce: 50}) as any;
   }
 }
