@@ -3,5 +3,12 @@
   "dest": "../../dist/ng-milkdown",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": [
+    "@milkdown/core",
+    "@milkdown/ctx",
+    "@milkdown/plugin-listener",
+    "@milkdown/preset-commonmark",
+    "ng-prosemirror-adapter"
+  ]
 }
