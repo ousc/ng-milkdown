@@ -96,7 +96,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/@milkdown/theme-nord/lib/theme-nord.css"
+              "node_modules/@milkdown/crepe/lib/theme/common/style.css"
             ],
             "scripts": []
           }

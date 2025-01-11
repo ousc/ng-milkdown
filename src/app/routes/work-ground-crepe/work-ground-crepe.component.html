@@ -1,18 +1,21 @@
 <article class="prose lg:prose-xl"></article>
 <div class="relative h-full pt-10">
-  @if (editor && !loading) {
+  @if(!loading) {
     <top-bar class="opacity-80" [provider]="provider"/>
   }
+  <div id="size" class="fixed top-0 right-10 h-10 leading-10"></div>
   <div class="h-full overflow-auto overscroll-none ctn flex flex-col px-4">
-    <ng-milkdown-provider #provider>
-      <ng-milkdown
-        [config]="config"
-        [plugins]="plugins"
+    <ng-milkdown-provider>
+      <ng-milkdown-crepe
         [(ngModel)]="value"
         [(loading)]="loading"
         (ngModelChange)="onChange($event)"
-        (onReady)="editor = $event"
+        [features]="features"
+        [featureConfigs]="featureConfigs"
+        [plugins]="plugins"
         [spinner]="spinner"
+        (beforeReady)="beforeReady($event)"
+        (onReady)="onReady($event)"
       />
       <ng-template #spinner>
         <spinner/>

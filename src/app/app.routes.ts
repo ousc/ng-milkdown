@@ -1,7 +1,7 @@
-import {Routes} from '@angular/router';
-import {WorkGroundComponent} from "./routes/work-ground/workGround.component";
-import {CollaborativeEditingComponent} from "./routes/collaborative-editing/collaborative-editing.component";
 import {AppComponent} from "./app.component";
+import {Routes} from '@angular/router';
+import {WorkGroundComponent} from "./routes/work-ground/work-ground.component";
+import {WorkGroundCrepComponent} from "./routes/work-ground-crepe/work-ground-crepe.component";
 
 export const routes: Routes = [
   {
@@ -10,7 +10,7 @@ export const routes: Routes = [
     children: [
       {path: '', redirectTo: 'work-ground', pathMatch: 'full'},
       {path: 'work-ground', component: WorkGroundComponent},
-      {path: 'collaborative-editing', component: CollaborativeEditingComponent}
+      {path: 'work-ground-crepe', component: WorkGroundCrepComponent},
     ]
   },
 ];
