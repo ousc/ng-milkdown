@@ -16,6 +16,7 @@ import {Editor} from "@milkdown/core";
 import {NgTemplateOutlet} from "@angular/common";
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 import {
+  NgMilkdownCrepeEditor,
   NgMilkdownPlugin,
 } from "./ng-milkdown.type";
 import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
@@ -23,6 +24,7 @@ import {Crepe, CrepeFeature} from "@milkdown/crepe";
 import {CrepeFeatureConfig} from "@milkdown/crepe/lib/types/feature";
 import {listener, listenerCtx} from "@milkdown/plugin-listener";
 import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
+import type {DefaultValue} from "@milkdown/kit/lib/core";
 
 @Component({
   selector: 'ng-milkdown-crepe',
@@ -58,12 +60,13 @@ import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
 export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnDestroy, OnChanges {
   constructor(public override el: ElementRef, private ngZone: NgZone) {
     super(el);
-    this.beforeReady.subscribe(crepe=>{
+    this.beforeReady.subscribe(({crepe}) => {
       crepe.editor.config(async (ctx) => {
         ctx.get(listenerCtx).markdownUpdated((ctx, markdown, prevMarkdown) => {
           if (markdown !== prevMarkdown) {
             this.value = markdown;
             this.onChange(markdown);
+            console.log(markdown)
           }
         });
       });
@@ -108,13 +111,13 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
     this.disabled = isDisabled;
   }
 
-  @Input() value: string = null;
+  @Input() value: DefaultValue = null;
   @Output() onChanged = new EventEmitter<string>();
 
   defaultPlugins: NgMilkdownPlugin[] = [listener];
   @Input() plugins: NgMilkdownPlugin[] = [];
-  @Output() beforeReady = new EventEmitter<Crepe>();
-  @Output() onReady = new EventEmitter<Crepe>();
+  @Output() beforeReady = new EventEmitter<NgMilkdownCrepeEditor>();
+  @Output() onReady = new EventEmitter<NgMilkdownCrepeEditor>();
 
   get editor(): Editor {
     return this.crepe.editor
@@ -133,6 +136,9 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
   async render(): Promise<void> {
     this.loading = true;
     if (this.value) {
+      if(this.crepe){
+        await this.crepe.destroy();
+      }
       const crepe = new Crepe({
         root: this.editorRef.nativeElement,
         defaultValue: this.value,
@@ -144,14 +150,12 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
           ...getPlugins(this.defaultPlugins, this.provider),
           ...getPlugins(this.plugins, this.provider)]
         );
-        this.beforeReady.emit(crepe);
-      });
-      await this.ngZone.run(async () => {
+        this.beforeReady.emit({crepe, provider: this.provider});
         this.crepe = crepe;
         await crepe.create();
         this.loading = false;
         this.loadingChange.emit(false);
-        this.onReady.emit(crepe);
+        this.onReady.emit({crepe, provider: this.provider});
       });
     }
   }

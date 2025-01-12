@@ -49,7 +49,7 @@ export function linkPlugin(provider: NgMilkdownProvider) {
       },
       props: {
         decorations(state) {
-          return this.getState(state);
+          return this.decorations(state);
         },
       },
     })

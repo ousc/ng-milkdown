@@ -23,7 +23,7 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
                 <textarea [(ngModel)]="code"
                           class="block h-48 w-full bg-slate-800 font-mono text-gray-50"
                 ></textarea>
-              <button (click)="preview()"
+              <button (click)="demo()"
                       class="absolute right-1 top-1 mb-1 inline-flex items-center justify-center rounded border border-gray-600 bg-nord8 px-6 py-2 text-base font-medium leading-6 text-gray-50 shadow-sm hover:bg-blue-200 focus:ring-2 focus:ring-offset-2 dark:bg-nord9"
               >OK
               </button>
@@ -45,7 +45,7 @@ export class MathBlock extends NgMilkdownNodeComp implements AfterViewInit {
   rendering = true;
   code: string = null;
 
-  preview() {
+  demo() {
     this.setAttrs({value: this.code});
     this.render();
     this.selectedIndex = 0;

@@ -19,5 +19,12 @@
   "slashMenuImageLabel": "图片",
   "language": {
     "en": "zh-CN"
-  }
+  },
+  "menu": {
+    "overview": "概览",
+    "using_crepe": "使用 Crepe",
+    "ng_milkdown_crepe": "ng-milkdown-crepe",
+    "ng_milkdown_crepe_playground": "ng-milkdown-crepe 演示"
+  },
+  "demo": "预览"
 }

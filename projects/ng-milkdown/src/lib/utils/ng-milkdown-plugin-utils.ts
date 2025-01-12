@@ -7,11 +7,6 @@ import {
 import {MilkdownPlugin} from "@milkdown/ctx";
 import {NgMilkdownProvider} from "../component/ng-milkdown-provider.component";
 
-
-export function isZoneAwarePromise(object: any) {
-  return object instanceof Promise;
-}
-
 export function flatPlugins(plugins: MilkdownPlugins): MilkdownPlugin[] {
   let convertedPlugins: MilkdownPlugin | MilkdownPlugin[];
   if (Array.isArray(plugins)) {

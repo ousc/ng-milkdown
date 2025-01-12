@@ -84,7 +84,7 @@ npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @mil
   />
 </ng-milkdown-provider>
 ```
-#### work-ground-crepe.component.ts
+#### crepe-example-basic.component.ts
 
 ```typescript
 import {NgMilkdownProvider} from "./ng-milkdown-provider.component";

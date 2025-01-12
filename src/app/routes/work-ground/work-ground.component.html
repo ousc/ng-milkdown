@@ -9,7 +9,7 @@
         [(ngModel)]="value"
         [(loading)]="loading"
         (ngModelChange)="onChange($event)"
-        (onReady)="editor = $event"
+        (onReady)="editor = $event.editor"
         [spinner]="spinner"
       />
       <ng-template #spinner>

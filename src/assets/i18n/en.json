@@ -19,5 +19,12 @@
   "slashMenuImageLabel": "Image",
   "language": {
     "en": "English"
-  }
+  },
+  "menu": {
+    "overview": "Overview",
+    "using_crepe": "Using Crepe",
+    "ng_milkdown_crepe": "ng-milkdown-crepe",
+    "ng_milkdown_crepe_playground": "ng-milkdown-crepe Playground"
+  },
+  "demo": "Demo"
 }

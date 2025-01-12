@@ -18,10 +18,12 @@ import {commonmark} from "@milkdown/preset-commonmark";
 import {NgTemplateOutlet} from "@angular/common";
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 import {
+  NgMilkdownEditor,
   NgMilkdownPlugin,
 } from "./ng-milkdown.type";
-import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
+import { NgProsemirrorEditor} from "ng-prosemirror-adapter";
 import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
+import type {DefaultValue} from "@milkdown/kit/lib/core";
 
 @Component({
   selector: 'ng-milkdown',
@@ -57,7 +59,7 @@ import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
 export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnChanges {
   constructor(public override el: ElementRef, private ngZone: NgZone) {
     super(el);
-    this.beforeReady.subscribe(editor => {
+    this.beforeReady.subscribe(({editor}) => {
       editor.config(async (ctx) => {
         ctx.set(rootCtx, this.editorRef.nativeElement);
         ctx.set(defaultValueCtx, this.value);
@@ -105,12 +107,12 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
     this.disabled = isDisabled;
   }
 
-  @Input() value: string = null;
+  @Input() value: DefaultValue = null;
   @Output() onChanged = new EventEmitter<string>();
 
   @Input() plugins: NgMilkdownPlugin[] = [];
-  @Output() beforeReady = new EventEmitter<Editor>();
-  @Output() onReady = new EventEmitter<Editor>();
+  @Output() beforeReady = new EventEmitter<NgMilkdownEditor>();
+  @Output() onReady = new EventEmitter<NgMilkdownEditor>();
   onTouched: () => void = () => {
   };
 
@@ -131,14 +133,14 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
           ...getPlugins(this.defaultPlugins, this.provider),
           ...getPlugins(this.plugins, this.provider)
         ]);
-        this.beforeReady.emit(editor);
+        this.beforeReady.emit({editor, provider: this.provider});
       });
       await this.ngZone.run(async () => {
         this.editor = editor;
         await editor.create();
         this.loading = false;
         this.loadingChange.emit(false);
-        this.onReady.emit(editor);
+        this.onReady.emit({editor, provider: this.provider});
       });
     }
   }

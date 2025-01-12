@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {NgTemplateOutlet} from "@angular/common";
 import {AppService} from "../app.service";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
@@ -49,7 +49,7 @@ interface MenuItem {
                   } @else {
                       <div class="flex h-10 w-full cursor-pointer items-center px-4 border-b border-nord4 dark:divide-gray-600 dark:border-gray-600">
                           <span class="material-symbols-outlined !text-base">FOLDER_OPEN</span>
-                          <span class="ml-2 text-md">{{ item.title }}</span>
+                          <span class="ml-2 text-md">{{ item.title | transloco }}</span>
                       </div>
                       @for (data of item.children;track data) {
                           <ng-container *ngTemplateOutlet="menu; context: { data: data }"></ng-container>
@@ -61,7 +61,7 @@ interface MenuItem {
               <router-outlet/>
           </div>
       </div>
-      @if (collapsed) {
+      @if (collapsed && !embed) {
           <div class="fixed top-1/2 left-0 -translate-y-1/2 border border-nord4">
               <ng-container *ngTemplateOutlet="button"></ng-container>
           </div>
@@ -80,7 +80,7 @@ interface MenuItem {
           <div class="p-4 text-gray-600 text-sm">
               <a class="flex items-center cursor-pointer" routerLinkActive="active" [routerLink]="data.routerLink">
                   <span class="material-symbols-outlined !text-base">MARKDOWN</span>
-                  <span class="ml-2">{{ data.title }}</span>
+                  <span class="ml-2">{{ data.title | transloco }}</span>
               </a>
           </div>
       </ng-template>
@@ -104,15 +104,36 @@ interface MenuItem {
   standalone: true
 })
 export class LayoutComponent {
-  constructor(public appService: AppService, private translocoService: TranslocoService) {
+  embed = false;
+  constructor(
+    public appService: AppService,
+    private translocoService: TranslocoService,
+    private activatedRoute: ActivatedRoute) {
+    activatedRoute.queryParams.subscribe((params) => {
+      if(params.embed) {
+        this.collapsed = true;
+        this.embed = true;
+      }
+    })
   }
   collapsed = false;
 
   menus: MenuItem [] = [
     {
-      title: 'Overview',
+      title: 'menu.overview',
       routerLink: '/overview',
       isLeaf: true
+    },
+    {
+      title: 'menu.using_crepe',
+      children: [
+        {
+          title: 'menu.ng_milkdown_crepe',
+          routerLink: '/ng-milkdown-crepe',
+          isLeaf: true
+        },
+      ],
+      isLeaf: false
     },
     {
       title: "ng-milkdown",
@@ -124,17 +145,8 @@ export class LayoutComponent {
         }
       ],
       isLeaf: false
-    }, {
-      title: 'ng-milkdown-crepe',
-      children: [
-        {
-          title: 'Work Ground Crepe',
-          routerLink: '/work-ground-crepe',
-          isLeaf: true
-        }
-      ],
-      isLeaf: false
-    },{
+    },
+    {
       title: "components",
       children: [
         {

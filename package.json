@@ -28,7 +28,8 @@
     "@milkdown/crepe": "^7.5.9",
     "@uiw/codemirror-theme-xcode": "^4.23.7",
     "conditio": "^2.3.4",
-    "ng-prosemirror-adapter": "^0.0.7",
+    "ng-prosemirror-adapter": "^0.0.8",
+    "remark-directive": "^3.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
