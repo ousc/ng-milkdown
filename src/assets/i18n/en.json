@@ -1,0 +1,23 @@
+{
+  "slashMenuTextGroupLabel": "Text",
+  "slashMenuListGroupLabel": "List",
+  "slashMenuAdvancedGroupLabel": "Advanced",
+  "slashMenuTextLabel": "Text",
+  "slashMenuH1Label": "Heading 1",
+  "slashMenuH2Label": "Heading 2",
+  "slashMenuH3Label": "Heading 3",
+  "slashMenuH4Label": "Heading 4",
+  "slashMenuH5Label": "Heading 5",
+  "slashMenuH6Label": "Heading 6",
+  "slashMenuQuoteLabel": "Quote",
+  "slashMenuDividerLabel": "Divider",
+  "slashMenuOrderedListLabel": "Ordered List",
+  "slashMenuBulletListLabel": "Unordered List",
+  "slashMenuTaskListLabel": "Task List",
+  "slashMenuCodeBlockLabel": "Code Block",
+  "slashMenuTableLabel": "Table",
+  "slashMenuImageLabel": "Image",
+  "language": {
+    "en": "English"
+  }
+}

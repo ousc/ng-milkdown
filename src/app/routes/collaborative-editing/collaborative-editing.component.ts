@@ -1,9 +1,9 @@
 // import {Component, Inject, OnDestroy} from '@angular/core';
-// import {CommonModule} from "@angular/common";
+// import {CommonModule} from "@angular/normal";
 // import {RouterLink, RouterOutlet} from "@angular/router";
 // import {FormsModule} from "@angular/forms";
 // import {NgMilkdown} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
-// import {HttpClientModule} from "@angular/common/http";
+// import {HttpClientModule} from "@angular/normal/http";
 // import {TopBarComponent} from "../../components/top-bar.component";
 // import {Editor, editorViewCtx, editorViewOptionsCtx} from "@milkdown/core";
 // import {collab, collabServiceCtx} from "@milkdown/plugin-collab";

@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
     "@codemirror/state": "^6.4.1",
+    "@jsverse/transloco": "^7.5.1",
     "@milkdown/crepe": "^7.5.9",
     "@uiw/codemirror-theme-xcode": "^4.23.7",
     "conditio": "^2.3.4",

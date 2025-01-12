@@ -22,7 +22,7 @@ import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
 import {Crepe, CrepeFeature} from "@milkdown/crepe";
 import {CrepeFeatureConfig} from "@milkdown/crepe/lib/types/feature";
 import {listener, listenerCtx} from "@milkdown/plugin-listener";
-import {flatPlugins, getPlugins} from "./utils/ng-milkdown-plugin-utils";
+import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
 
 @Component({
   selector: 'ng-milkdown-crepe',
@@ -134,7 +134,7 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
     this.loading = true;
     if (this.value) {
       const crepe = new Crepe({
-        root: this.el.nativeElement,
+        root: this.editorRef.nativeElement,
         defaultValue: this.value,
         features: this.features || {},
         featureConfigs: this.featureConfigs || {},

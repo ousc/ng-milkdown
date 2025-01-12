@@ -4,7 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Input,
+  Input, NgZone,
   OnChanges,
   Output,
   SimpleChanges,
@@ -12,22 +12,16 @@ import {
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
 import {defaultValueCtx, Editor, rootCtx} from "@milkdown/core";
 import {listener, listenerCtx} from "@milkdown/plugin-listener";
+import {commonmark} from "@milkdown/preset-commonmark";
 import {NgTemplateOutlet} from "@angular/common";
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 import {
-  MilkdownPlugins,
-  MilkdownPluginsConfigurable,
-  NgMilkdownEditorConfig,
   NgMilkdownPlugin,
-  NgMilkdownPluginFactory,
 } from "./ng-milkdown.type";
 import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
-import {Crepe} from "@milkdown/crepe";
-import {xcodeDark} from "@uiw/codemirror-theme-xcode";
-import {flatPlugins, isZoneAwarePromise} from "./utils/ng-milkdown-plugin-utils";
+import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
 
 @Component({
   selector: 'ng-milkdown',
@@ -58,14 +52,23 @@ import {flatPlugins, isZoneAwarePromise} from "./utils/ng-milkdown-plugin-utils"
       provide: NgProsemirrorEditor,
       useExisting: forwardRef(() => NgMilkdown)
     },
-    ]
+  ]
 })
 export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnChanges {
-  @Input() loading = true;
-  @Output() loadingChange = new EventEmitter<boolean>();
-  editor: Editor = undefined;
-  constructor(public override el: ElementRef) {
+  constructor(public override el: ElementRef, private ngZone: NgZone) {
     super(el);
+    this.beforeReady.subscribe(editor => {
+      editor.config(async (ctx) => {
+        ctx.set(rootCtx, this.editorRef.nativeElement);
+        ctx.set(defaultValueCtx, this.value);
+        ctx.get(listenerCtx).markdownUpdated((ctx, markdown, prevMarkdown) => {
+          if (markdown !== prevMarkdown) {
+            this.value = markdown;
+            this.onChange(markdown);
+          }
+        });
+      });
+    })
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
@@ -76,9 +79,12 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
 
   @Input() classList: string[] = [];
 
+  @Input() loading = true;
+  @Output() loadingChange = new EventEmitter<boolean>();
+
   @Input() spinner: TemplateRef<any> = null;
 
-  crepe: Crepe;
+  editor: Editor;
 
   async writeValue(value: any): Promise<void> {
     if (value !== undefined && value !== null) {
@@ -103,7 +109,7 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   @Output() onChanged = new EventEmitter<string>();
 
   @Input() plugins: NgMilkdownPlugin[] = [];
-  @Input() config: NgMilkdownEditorConfig = (ctx, provider) => null;
+  @Output() beforeReady = new EventEmitter<Editor>();
   @Output() onReady = new EventEmitter<Editor>();
   onTouched: () => void = () => {
   };
@@ -114,56 +120,26 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
 
   @ViewChild('editorRef') editorRef: ElementRef;
   disabled = false;
+  defaultPlugins: NgMilkdownPlugin[] = [commonmark, listener];
 
   async render(): Promise<void> {
     this.loading = true;
     if (this.value) {
+      let editor = Editor.make()
       setTimeout(async () => {
-        this.crepe = new Crepe({
-          root: this.el.nativeElement,
-          defaultValue: this.value,
-          featureConfigs: {
-            [Crepe.Feature.CodeMirror]: {
-              theme: xcodeDark
-            }
-          },
-        });
-        let editor = await this.crepe.create();
-        editor
-          .use(listener)
-          .config(async (ctx) => {
-            const listener = ctx.get(listenerCtx);
-            listener.markdownUpdated((_, md) => {
-              this.value = md;
-              this.onChange(md);
-            });
-
-            if (isZoneAwarePromise(this.config)) {
-              await this.config(ctx, this.provider);
-            } else {
-              this.config(ctx, this.provider);
-            }
-          });
-        for (const ngMilkdownPlugin of this.plugins) {
-          if ((ngMilkdownPlugin as any).plugin && (ngMilkdownPlugin as any).config) {
-            const {plugin, config} = ngMilkdownPlugin as unknown as MilkdownPluginsConfigurable;
-            editor = editor.use(flatPlugins(plugin));
-            if (isZoneAwarePromise(config)) {
-              editor = editor.config((await config) as (ctx: Ctx) => void)
-            } else {
-              editor = editor.config(config as (ctx: Ctx) => void)
-            }
-          } else if ((ngMilkdownPlugin as any).factory) {
-            editor = editor.use(flatPlugins((ngMilkdownPlugin as NgMilkdownPluginFactory).factory(this.provider)));
-          } else {
-            editor = editor.use(flatPlugins(ngMilkdownPlugin as (MilkdownPlugins)));
-          }
-        }
+        editor.use([
+          ...getPlugins(this.defaultPlugins, this.provider),
+          ...getPlugins(this.plugins, this.provider)
+        ]);
+        this.beforeReady.emit(editor);
+      });
+      await this.ngZone.run(async () => {
+        this.editor = editor;
+        await editor.create();
         this.loading = false;
         this.loadingChange.emit(false);
         this.onReady.emit(editor);
-        this.editor = editor;
-      })
+      });
     }
   }
 

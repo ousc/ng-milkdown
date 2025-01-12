@@ -7,7 +7,7 @@ import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/componen
 @Component({
   selector: 'size',
   template: `
-      <small class="select-none text-indigo-800">Statistic: {{size}}</small>
+      <small class="select-none text-indigo-800">Words: {{size}}</small>
   `,
   styles: [
     `

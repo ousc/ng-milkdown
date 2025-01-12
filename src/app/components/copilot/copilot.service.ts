@@ -5,7 +5,7 @@
 // import {editorViewCtx, parserCtx, serializerCtx} from "@milkdown/core";
 // import {DOMParser, DOMSerializer} from "prosemirror-model";
 // import {Injectable} from "@angular/core";
-// import {HttpClient} from "@angular/common/http";
+// import {HttpClient} from "@angular/normal/http";
 // import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 // import {CopilotWidget} from "./copilot-widget.component";
 // import {throttle} from "../../shared/debounce_throttle";

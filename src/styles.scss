@@ -5,22 +5,29 @@
 @tailwind utilities;
 
 milkdown-code-block {
-  --crepe-color-surface: #292A30!important;
+  --crepe-color-surface: #292A30 !important;
 }
 
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 
 .prose table {
-  width: calc(100% - 2rem)!important;
+  width: calc(100% - 2rem) !important;
 }
 
 li p {
-  margin: 0!important;
-  line-height: 1.5rem!important;
+  margin: 0 !important;
+  line-height: 1.5rem !important;
+}
+
+// 若是sm 或者 xs 就不显示
+@media screen and (max-width: 640px) {
+  .milkdown .ProseMirror {
+    padding: 2rem !important;
+  }
 }
