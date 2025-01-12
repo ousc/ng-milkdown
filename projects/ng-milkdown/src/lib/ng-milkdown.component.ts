@@ -126,6 +126,9 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
 
   async render(): Promise<void> {
     this.loading = true;
+    if(this.editor){
+      await this.editor.destroy();
+    }
     if (this.value) {
       let editor = Editor.make()
       setTimeout(async () => {

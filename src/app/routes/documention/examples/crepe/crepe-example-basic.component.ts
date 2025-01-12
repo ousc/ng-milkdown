@@ -28,7 +28,7 @@ import {AppService} from "../../../../app.service";
           <div [class.p-24]="selected === 'demo'"
                class="h-full overflow-auto overscroll-none ctn flex flex-col mt-4">
               @if (selected === 'demo') {
-                  <textarea  class="w-full p-4 outline-1" [(ngModel)]="value"></textarea>
+                  <textarea contenteditable="false"  class="w-full p-4 outline-1" [(ngModel)]="value"></textarea>
               }
               <ng-milkdown-provider>
                   <ng-milkdown-crepe

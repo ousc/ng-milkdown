@@ -135,10 +135,10 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
 
   async render(): Promise<void> {
     this.loading = true;
+    if(this.crepe){
+      await this.crepe.destroy();
+    }
     if (this.value) {
-      if(this.crepe){
-        await this.crepe.destroy();
-      }
       const crepe = new Crepe({
         root: this.editorRef.nativeElement,
         defaultValue: this.value,
