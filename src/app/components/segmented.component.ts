@@ -16,7 +16,7 @@ import {TranslocoPipe} from "@jsverse/transloco";
                   class="segmented-button"
           >
               @if(icons[i]) {
-                  <span class="material-symbols-outlined !text-base align-middle">{{ icons[i] }}</span>
+                  <span class="material-symbols-outlined !text-base align-middle bg-blue-500 text-white w-6 h-6 rounded-md">{{ icons[i] }}</span>
               }
               <span class="ml-2">{{ option | transloco }}</span>
           </button>
