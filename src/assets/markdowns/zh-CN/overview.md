@@ -1,6 +1,6 @@
 # ![Logo](../../../assets/milkdownLogo.png "ng-milkdown") ng-milkdown 编辑器
 
-> 轻松将`milkdown`集成到`Angular`应用中！让`milkdown`与`Angular`更好的结合！
+> 轻松将`milkdown`集成到`Angular`应用中，快速支持使用`Angular`组件创建`milkdown`插件！
 
 ## 什么是 ng-milkdown
 

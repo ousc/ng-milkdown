@@ -9,7 +9,7 @@ import {
 } from "../../../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../../../components/spinner.component";
 import {NgMilkdownCrepe} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown-crepe.component";
-import {SegmentedComponent} from "../../../../components/segmented.component";
+import {SegmentedComponent} from "../../../../components/documentation/segmented.component";
 import {AppService} from "../../../../app.service";
 import {imageInlineComponent} from "@milkdown/kit/component/image-inline";
 import {sizePlugin} from "../../../../components/size.component";
@@ -28,7 +28,7 @@ import {sizePlugin} from "../../../../components/size.component";
           />
           <div id="size" class="fixed bottom-4 left-4 h-10 leading-10 pointer-events-none"></div>
           <div [class.px-24]="selected === 'demo'"
-               class="h-full overflow-auto overscroll-none ctn flex flex-col mt-4">
+               class="h-full overflow-auto overscroll-none ctn flex flex-col mt-10">
               <ng-milkdown-provider>
                   <ng-milkdown-crepe
                           [(ngModel)]="value"

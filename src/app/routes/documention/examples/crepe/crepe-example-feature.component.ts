@@ -1,15 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {TopBarComponent} from "../../../../components/top-bar.component";
 import {
   NgMilkdownProvider
 } from "../../../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../../../components/spinner.component";
 import {NgMilkdownCrepe} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown-crepe.component";
-import {SegmentedComponent} from "../../../../components/segmented.component";
+import {SegmentedComponent} from "../../../../components/documentation/segmented.component";
 import {Crepe} from "@milkdown/crepe";
 import {BlockEditFeatureConfig} from "@milkdown/crepe/lib/types/feature/block-edit";
 import {CrepeFeatureConfig} from "@milkdown/crepe/lib/types/feature";
@@ -17,9 +15,9 @@ import {TranslocoService} from "@jsverse/transloco";
 import {AppService} from "../../../../app.service";
 
 @Component({
-  selector: 'work-ground-crepe-feature',
+  selector: 'crepe-example-feature',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdownCrepe, TopBarComponent, NgMilkdownProvider, Spinner, SegmentedComponent],
+  imports: [CommonModule, FormsModule, NgMilkdownCrepe, NgMilkdownProvider, Spinner, SegmentedComponent],
   template: `
       <article class="prose lg:prose-xl"></article>
       <div class="relative h-full">
@@ -30,7 +28,7 @@ import {AppService} from "../../../../app.service";
           />
           <div id="size" class="fixed bottom-4 left-4 h-10 leading-10 pointer-events-none"></div>
           <div [class.px-24]="selected === 'demo'"
-               class="h-full overflow-auto overscroll-none ctn flex flex-col">
+               class="h-full overflow-auto overscroll-none ctn flex flex-col mt-10">
               <ng-milkdown-provider>
                   <ng-milkdown-crepe
                           [(ngModel)]="value"

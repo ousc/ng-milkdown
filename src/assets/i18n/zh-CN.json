@@ -23,8 +23,10 @@
   "menu": {
     "overview": "概览",
     "using_crepe": "使用 Crepe",
-    "ng_milkdown_crepe": "ng-milkdown-crepe",
-    "ng_milkdown_crepe_playground": "ng-milkdown-crepe 演示"
+    "ng_milkdown_crepe": "ng-milkdown-crepe 编辑器",
+    "ng_milkdown_crepe_playground": "ng-milkdown-crepe 演示",
+    "using_milkdown": "使用 Milkdown",
+    "ng_milkdown": "ng-milkdown 编辑器"
   },
   "demo": "预览"
 }

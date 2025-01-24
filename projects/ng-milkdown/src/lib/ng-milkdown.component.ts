@@ -15,7 +15,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {defaultValueCtx, Editor, rootCtx} from "@milkdown/core";
 import {listener, listenerCtx} from "@milkdown/plugin-listener";
 import {commonmark} from "@milkdown/preset-commonmark";
-import {NgTemplateOutlet} from "@angular/common";
+import { gfm } from '@milkdown/kit/preset/gfm';
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 import {
   NgMilkdownEditor,
@@ -42,7 +42,7 @@ import type {DefaultValue} from "@milkdown/kit/lib/core";
     `
   ],
   imports: [
-    NgTemplateOutlet, StringTemplateOutletDirective
+    StringTemplateOutletDirective
   ],
   providers: [
     {
@@ -56,7 +56,7 @@ import type {DefaultValue} from "@milkdown/kit/lib/core";
     },
   ]
 })
-export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnChanges {
+export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit {
   constructor(public override el: ElementRef, private ngZone: NgZone) {
     super(el);
     this.beforeReady.subscribe(({editor}) => {
@@ -71,12 +71,6 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
         });
       });
     })
-  }
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes.config || changes.plugins || changes.editor) {
-      await this.render();
-    }
   }
 
   @Input() classList: string[] = [];
@@ -107,10 +101,21 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
     this.disabled = isDisabled;
   }
 
+
   @Input() value: DefaultValue = null;
   @Output() onChanged = new EventEmitter<string>();
 
-  @Input() plugins: NgMilkdownPlugin[] = [];
+  defaultPlugins: NgMilkdownPlugin[] = [commonmark, listener, gfm];
+  loadedPlugins: NgMilkdownPlugin[] = [];
+  pluginsToLoad: NgMilkdownPlugin[] = [];
+  pluginsToUnload: NgMilkdownPlugin[] = [];
+
+  @Input() set plugins(plugins: NgMilkdownPlugin[]) {
+    plugins = plugins.filter((plugin) => !this.defaultPlugins.includes(plugin));
+    this.pluginsToLoad = plugins.filter((plugin) => !this.loadedPlugins.includes(plugin));
+    this.pluginsToUnload = this.loadedPlugins.filter((plugin) => !plugins.includes(plugin));
+    this.loadedPlugins = plugins;
+  }
   @Output() beforeReady = new EventEmitter<NgMilkdownEditor>();
   @Output() onReady = new EventEmitter<NgMilkdownEditor>();
   onTouched: () => void = () => {
@@ -122,23 +127,22 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
 
   @ViewChild('editorRef') editorRef: ElementRef;
   disabled = false;
-  defaultPlugins: NgMilkdownPlugin[] = [commonmark, listener];
 
   async render(): Promise<void> {
-    this.loading = true;
+    if(!this.editor){
+      this.loading = true;
+    }
     if(this.editor){
       await this.editor.destroy();
     }
-    if (this.value) {
+    if (this.value || this.editor) {
       let editor = Editor.make()
       setTimeout(async () => {
         editor.use([
           ...getPlugins(this.defaultPlugins, this.provider),
-          ...getPlugins(this.plugins, this.provider)
+          ...getPlugins(this.pluginsToLoad, this.provider)
         ]);
         this.beforeReady.emit({editor, provider: this.provider});
-      });
-      await this.ngZone.run(async () => {
         this.editor = editor;
         await editor.create();
         this.loading = false;

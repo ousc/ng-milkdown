@@ -5,15 +5,13 @@ import {
   EventEmitter,
   forwardRef,
   Input, NgZone,
-  OnChanges, OnDestroy,
+  OnDestroy,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Editor} from "@milkdown/core";
-import {NgTemplateOutlet} from "@angular/common";
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 import {
   NgMilkdownCrepeEditor,
@@ -30,10 +28,10 @@ import type {DefaultValue} from "@milkdown/kit/lib/core";
   selector: 'ng-milkdown-crepe',
   standalone: true,
   template: `
-      <div #editorRef [hidden]="loading" class="milkdown-editor" [class]="classList"></div>
-      @if (loading) {
-          <ng-container *stringTemplateOutlet="spinner">loading...</ng-container>
-      }
+    <div #editorRef [hidden]="loading" class="milkdown-editor" [class]="classList"></div>
+    @if (loading) {
+      <ng-container *stringTemplateOutlet="spinner">loading...</ng-container>
+    }
   `,
   styles: [
     `
@@ -43,7 +41,7 @@ import type {DefaultValue} from "@milkdown/kit/lib/core";
     `
   ],
   imports: [
-    NgTemplateOutlet, StringTemplateOutletDirective
+    StringTemplateOutletDirective
   ],
   providers: [
     {
@@ -57,7 +55,7 @@ import type {DefaultValue} from "@milkdown/kit/lib/core";
     },
   ]
 })
-export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnDestroy, OnChanges {
+export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnDestroy {
   constructor(public override el: ElementRef, private ngZone: NgZone) {
     super(el);
     this.beforeReady.subscribe(({crepe}) => {
@@ -71,12 +69,6 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
         });
       });
     })
-  }
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes.config || changes.plugins || changes.editor) {
-      await this.render();
-    }
   }
 
   @Input() classList: string[] = []
@@ -115,12 +107,22 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
   @Output() onChanged = new EventEmitter<string>();
 
   defaultPlugins: NgMilkdownPlugin[] = [listener];
-  @Input() plugins: NgMilkdownPlugin[] = [];
+  loadedPlugins: NgMilkdownPlugin[] = [];
+  pluginsToLoad: NgMilkdownPlugin[] = [];
+  pluginsToUnload: NgMilkdownPlugin[] = [];
+
+  @Input() set plugins(plugins: NgMilkdownPlugin[]) {
+    plugins = plugins.filter((plugin) => !this.defaultPlugins.includes(plugin));
+    this.pluginsToLoad = plugins.filter((plugin) => !this.loadedPlugins.includes(plugin));
+    this.pluginsToUnload = this.loadedPlugins.filter((plugin) => !plugins.includes(plugin));
+    this.loadedPlugins = plugins;
+
+  }
   @Output() beforeReady = new EventEmitter<NgMilkdownCrepeEditor>();
   @Output() onReady = new EventEmitter<NgMilkdownCrepeEditor>();
 
   get editor(): Editor {
-    return this.crepe.editor
+    return this.crepe?.editor
   }
 
   onTouched: () => void = () => {
@@ -134,30 +136,33 @@ export class NgMilkdownCrepe extends NgProsemirrorEditor implements ControlValue
   disabled = false;
 
   async render(): Promise<void> {
-    this.loading = true;
-    if(this.crepe){
-      await this.crepe.destroy();
-    }
-    if (this.value) {
-      const crepe = new Crepe({
-        root: this.editorRef.nativeElement,
-        defaultValue: this.value,
-        features: this.features || {},
-        featureConfigs: this.featureConfigs || {},
-      });
-      setTimeout(async () => {
-        crepe.editor.use([
-          ...getPlugins(this.defaultPlugins, this.provider),
-          ...getPlugins(this.plugins, this.provider)]
-        );
-        this.beforeReady.emit({crepe, provider: this.provider});
-        this.crepe = crepe;
-        await crepe.create();
-        this.loading = false;
-        this.loadingChange.emit(false);
-        this.onReady.emit({crepe, provider: this.provider});
-      });
-    }
+      if(!this.editor){
+        this.loading = true;
+      }
+      if (this.crepe) {
+        await this.crepe.destroy();
+      }
+      if (this.value || this.editor) {
+        const crepe = new Crepe({
+          root: this.editorRef.nativeElement,
+          defaultValue: this.value,
+          features: this.features || {},
+          featureConfigs: this.featureConfigs || {},
+        });
+        setTimeout(async () => {
+          crepe.editor.use([
+            ...getPlugins(this.defaultPlugins, this.provider),
+            ...getPlugins(this.pluginsToLoad, this.provider)]
+          );
+          await crepe.editor.remove([...getPlugins(this.pluginsToUnload, this.provider)]);
+          this.beforeReady.emit({crepe, provider: this.provider});
+          this.crepe = crepe;
+          await crepe.create();
+          this.loading = false;
+          this.loadingChange.emit(false);
+          this.onReady.emit({crepe, provider: this.provider});
+        });
+      }
   }
 
   async ngAfterViewInit(): Promise<void> {

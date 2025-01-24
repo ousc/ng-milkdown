@@ -25,6 +25,9 @@ html, body {
   .milkdown .ProseMirror {
     padding: 2rem !important;
   }
+  .github-fork-ribbon {
+    display: none;
+  }
 }
 
 milkdown-image-inline {

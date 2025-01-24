@@ -47,7 +47,7 @@ interface MenuItem {
                   @if (item.isLeaf) {
                       <ng-container *ngTemplateOutlet="menu; context: { data: item }"></ng-container>
                   } @else {
-                      <div class="flex h-10 w-full cursor-pointer items-center px-4 border-b border-nord4 dark:divide-gray-600 dark:border-gray-600">
+                      <div class="flex h-10 w-full items-center px-4 border-b border-nord4 dark:divide-gray-600 dark:border-gray-600">
                           <span class="material-symbols-outlined !text-base">FOLDER_OPEN</span>
                           <span class="ml-2 text-md">{{ item.title | transloco }}</span>
                       </div>
@@ -77,8 +77,8 @@ interface MenuItem {
       </ng-template>
 
       <ng-template #menu let-data="data">
-          <div class="p-4 text-gray-600 text-sm">
-              <a class="flex items-center cursor-pointer" routerLinkActive="active" [routerLink]="data.routerLink">
+          <div class="menu p-4 text-gray-600 text-sm">
+              <a class="flex items-center cursor-pointer hover:border-indigo-50" routerLinkActive="active" [routerLink]="data.routerLink">
                   <span class="material-symbols-outlined !text-base">MARKDOWN</span>
                   <span class="ml-2">{{ data.title | transloco }}</span>
               </a>
@@ -86,13 +86,20 @@ interface MenuItem {
       </ng-template>
   `,
   styles: `
-  .active {
-    @apply text-indigo-800
-  }
+    div.menu:hover {
+      @apply bg-indigo-50;
+    }
+    div.menu:has(> .active) {
+      @apply bg-indigo-100;
+    }
 
-  .hidden {
-    display: none;
-  }
+    .active {
+      @apply text-indigo-800;
+    }
+
+    .hidden {
+      display: none;
+    }
   `,
   imports: [
     RouterOutlet,
@@ -136,11 +143,11 @@ export class LayoutComponent {
       isLeaf: false
     },
     {
-      title: "ng-milkdown",
+      title: "menu.using_milkdown",
       children: [
         {
-          title: 'Work Ground',
-          routerLink: '/work-ground',
+          title: 'menu.ng_milkdown',
+          routerLink: '/ng-milkdown-d',
           isLeaf: true
         }
       ],

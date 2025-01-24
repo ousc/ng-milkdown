@@ -23,8 +23,10 @@
   "menu": {
     "overview": "Overview",
     "using_crepe": "Using Crepe",
-    "ng_milkdown_crepe": "ng-milkdown-crepe",
-    "ng_milkdown_crepe_playground": "ng-milkdown-crepe Playground"
+    "ng_milkdown_crepe": "ng-milkdown-crepe editor",
+    "ng_milkdown_crepe_playground": "ng-milkdown-crepe Playground",
+    "using_milkdown": "Using Milkdown",
+    "ng_milkdown": "ng-milkdown editor"
   },
   "demo": "Demo"
 }

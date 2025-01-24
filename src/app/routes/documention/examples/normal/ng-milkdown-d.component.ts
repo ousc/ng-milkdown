@@ -16,7 +16,7 @@ import "@milkdown/crepe/theme/nord.css";
 import {iframeComponent} from "../../../../components/iframe.component";
 
 @Component({
-  selector: 'crepe',
+  selector: 'ng-milkdown-d',
   template: `
       <div class="relative h-full">
           <div class="h-full overflow-auto overscroll-none ctn flex flex-col px-4">
@@ -44,12 +44,12 @@ import {iframeComponent} from "../../../../components/iframe.component";
   ],
   standalone: true
 })
-export class CrepeComponent {
+export class NgMilkdownDComponent {
   constructor(private http: HttpClient, private appService: AppService) {
   }
   value: string = null;
   async ngOnInit(): Promise<void> {
-    this.http.get(`assets/markdowns/${this.appService.language}/ng-milkdown-crepe.md`, {responseType: 'text'}).subscribe((markdown) => {
+    this.http.get(`assets/markdowns/${this.appService.language}/ng-milkdown.md`, {responseType: 'text'}).subscribe((markdown) => {
       this.value = markdown;
     });
   }

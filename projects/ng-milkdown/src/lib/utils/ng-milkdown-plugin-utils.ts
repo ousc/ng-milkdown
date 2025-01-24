@@ -32,3 +32,33 @@ export function getPlugins(plugins: NgMilkdownPlugin[], provider: NgMilkdownProv
   }
   return result;
 }
+
+
+let timer: number = null;
+let startTime = Date.now();
+
+export const debounce = (fn: Function, delay = 200, ...args: any[]) => {
+  let context: any = this
+  if (timer !== null) {
+    clearTimeout(timer)
+  }
+  timer = setTimeout(() => {
+    fn.call(context, args);
+    timer = null
+  }, delay) as any;
+}
+
+export const throttle = (func: Function, wait = 200, ...args: any[]) => {
+  let curTime = Date.now();
+  let remaining = wait - (curTime - startTime);
+  let context: any = this;
+
+  clearTimeout(timer);
+
+  if (remaining <= 0) {
+    func.apply(context, args);
+    startTime = Date.now();
+  } else {
+    timer = setTimeout(func, remaining);  // 如果小于wait 保证在差值时间后执行
+  }
+}

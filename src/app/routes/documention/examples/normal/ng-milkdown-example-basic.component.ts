@@ -6,14 +6,14 @@ import {
   NgMilkdownProvider
 } from "../../../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../../../components/spinner.component";
-import {NgMilkdownCrepe} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown-crepe.component";
 import {SegmentedComponent} from "../../../../components/documentation/segmented.component";
 import {AppService} from "../../../../app.service";
+import {NgMilkdown} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 
 @Component({
-  selector: 'crepe-example-basic',
+  selector: 'ng-milkdown-example-basic',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgMilkdownCrepe, NgMilkdownProvider, Spinner, SegmentedComponent],
+  imports: [CommonModule, FormsModule, NgMilkdown, NgMilkdownProvider, Spinner, SegmentedComponent],
   template: `
       <article class="prose lg:prose-xl"></article>
       <div class="relative h-full">
@@ -29,7 +29,7 @@ import {AppService} from "../../../../app.service";
                   <textarea contenteditable="false"  class="w-full p-8 outline-1" [(ngModel)]="value"></textarea>
               }
               <ng-milkdown-provider>
-                  <ng-milkdown-crepe
+                  <ng-milkdown
                           [(ngModel)]="value"
                           [(loading)]="loading"
                           (ngModelChange)="onChange($event)"
@@ -49,7 +49,7 @@ import {AppService} from "../../../../app.service";
   }
   `
 })
-export class CrepeExampleBasicComponent implements OnInit {
+export class NgMilkdownExampleBasicComponent implements OnInit {
   constructor(private http: HttpClient, private appService: AppService) {
   }
 

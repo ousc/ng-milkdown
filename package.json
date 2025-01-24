@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 2024",
+    "start": "ng serve --port 2025",
     "build": "ng build --configuration production --base-href /ng-milkdown/",
     "watch": "ng build --watch --configuration development",
     "build:lib": "ng build ng-milkdown --configuration production",
