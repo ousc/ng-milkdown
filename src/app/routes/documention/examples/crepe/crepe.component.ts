@@ -1,24 +1,19 @@
-import {Component} from "@angular/core";
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {NgTemplateOutlet} from "@angular/common";
+import {Component, ViewEncapsulation} from "@angular/core";
 import {AppService} from "../../../../app.service";
-import {TranslocoPipe} from "@jsverse/transloco";
 import {NgMilkdownCrepe} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown-crepe.component";
 import {NgMilkdownProvider} from "../../../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../../../components/spinner.component";
-import {TopBarComponent} from "../../../../components/top-bar.component";
 import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {NgMilkdownCrepeEditor} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown.type";
 import { imageInlineComponent } from '@milkdown/kit/component/image-inline'
-import "@milkdown/crepe/theme/common/style.css";
-import "@milkdown/crepe/theme/nord.css";
-import {iframeComponent} from "../../../../components/iframe.component";
+import {iframeComponent} from "../../../../components/milkdown-plugins/iframe.component";
+import {styleUrls} from "../../../../shared/style-urls";
 
 @Component({
-  selector: 'crepe',
+  selector: 'crepe-example',
   template: `
-      <div class="relative h-full">
+      <div class="relative h-full overflow-auto">
           <div class="h-full overflow-auto overscroll-none ctn flex flex-col px-4">
               <ng-milkdown-provider>
                   <ng-milkdown-crepe
@@ -42,6 +37,8 @@ import {iframeComponent} from "../../../../components/iframe.component";
     Spinner,
     FormsModule
   ],
+  encapsulation: ViewEncapsulation.ShadowDom,
+  styleUrls,
   standalone: true
 })
 export class CrepeComponent {

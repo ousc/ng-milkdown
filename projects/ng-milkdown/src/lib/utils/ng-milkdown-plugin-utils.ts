@@ -1,11 +1,12 @@
 import {
-  MilkdownPlugins,
-  MilkdownPluginsConfigurable,
+  MilkdownPlugins, NgMilkdownNodeViewFactory,
   NgMilkdownPlugin,
-  NgMilkdownPluginFactory
+  NgMilkdownPluginFactory, NgMilkdownPluginViewFactory
 } from "../ng-milkdown.type";
-import {MilkdownPlugin} from "@milkdown/ctx";
+import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
+import {$view} from "@milkdown/utils";
 import {NgMilkdownProvider} from "../component/ng-milkdown-provider.component";
+import {tableTooltip} from "../../../../../src/app/components/table-selector/table-tooltip.component";
 
 export function flatPlugins(plugins: MilkdownPlugins): MilkdownPlugin[] {
   let convertedPlugins: MilkdownPlugin | MilkdownPlugin[];
@@ -21,9 +22,23 @@ export function getPlugins(plugins: NgMilkdownPlugin[], provider: NgMilkdownProv
   if (!plugins) return [];
   let result: MilkdownPlugin[] = [];
   for (const ngMilkdownPlugin of plugins) {
-    if ((ngMilkdownPlugin as any).plugin && (ngMilkdownPlugin as any).config) {
-      const {plugin, config} = ngMilkdownPlugin as unknown as MilkdownPluginsConfigurable;
-      result = [...result, ...flatPlugins(plugin)];
+    if ((ngMilkdownPlugin as any).$plugin) {
+      result = [
+        ...result,
+        (ctx: Ctx) => {
+          const plugin = (ngMilkdownPlugin as NgMilkdownPluginViewFactory);
+          plugin.options.inputs = plugin.options.inputs || {ctx};
+          ctx.set(plugin.$plugin, {
+              view: (ngMilkdownPlugin as NgMilkdownPluginViewFactory).factory(provider, plugin.options)
+            }
+          )
+          ;
+          return void 0;
+        }
+      ];
+    } else if ((ngMilkdownPlugin as any).$node) {
+      const plugin = (ngMilkdownPlugin as NgMilkdownNodeViewFactory);
+      result = [...result, ...flatPlugins($view(plugin.$node, () => plugin.factory(provider, plugin.options)))];
     } else if ((ngMilkdownPlugin as any).factory) {
       result = [...result, ...flatPlugins((ngMilkdownPlugin as NgMilkdownPluginFactory).factory(provider))];
     } else {

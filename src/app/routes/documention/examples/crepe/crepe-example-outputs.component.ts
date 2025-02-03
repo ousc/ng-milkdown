@@ -1,9 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {TopBarComponent} from "../../../../components/top-bar.component";
 import {
   NgMilkdownProvider
 } from "../../../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
@@ -15,11 +13,12 @@ import {editorViewCtx} from "@milkdown/core";
 import {insert} from "@milkdown/kit/utils";
 import {TextSelection} from "prosemirror-state";
 import {AppService} from "../../../../app.service";
+import {styleUrls} from "../../../../shared/style-urls";
 
 @Component({
   selector: 'work-ground-crepe-outputs',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdownCrepe, TopBarComponent, NgMilkdownProvider, Spinner, SegmentedComponent],
+  imports: [CommonModule, FormsModule, NgMilkdownCrepe, NgMilkdownProvider, Spinner, SegmentedComponent],
   template: `
       <article class="prose lg:prose-xl"></article>
       <div class="relative h-full">
@@ -28,7 +27,6 @@ import {AppService} from "../../../../app.service";
                      [icons]="['preview', 'html', 'code']"
                      (ngModelChange)="handleSegmentedChange()"
           />
-          <div id="size" class="fixed bottom-4 left-4 h-10 leading-10 pointer-events-none"></div>
           <div [class.px-24]="selected === 'demo'"
                class="h-full overflow-auto overscroll-none ctn flex flex-col mt-10">
               <ng-milkdown-provider>
@@ -47,6 +45,8 @@ import {AppService} from "../../../../app.service";
           </div>
       </div>
   `,
+  encapsulation: ViewEncapsulation.ShadowDom,
+  styleUrls,
   styles:
   `
   ::ng-deep .milkdown .ProseMirror {

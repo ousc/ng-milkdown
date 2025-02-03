@@ -17,7 +17,7 @@ export class CrepeExampleBasicComponent {
   constructor(private http: HttpClient) {
   }
 
-  value: string = 'hello, world!';
+  value: string = 'hello, ng-milkdown!';
   loading = true;
 
   onChange(markdownText: any) {

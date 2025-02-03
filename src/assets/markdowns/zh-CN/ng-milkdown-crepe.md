@@ -1,5 +1,7 @@
 # ![Logo](../../../assets/milkdownLogo.png "ng-milkdown") ng-milkdown-crepe 组件
 
+> 您当前查看的文档是使用`ng-milkdown-crepe`组件渲染的。
+
 `ng-milkdown-crepe` 是基于 🍼[milkdown](https://milkdown.dev) 的 [crepe](https://milkdown.dev/docs/guide/using-crepe)实现的[Angular](https://angular.dev/) 编辑器组件，开箱即用，且支持自定义配置。
 
 ## 代码演示
@@ -8,7 +10,7 @@
 
 最简单的用法，使用`ng-milkdown-crepe`组件即可，支持`[(ngModel)]`双向绑定。
 
-::iframe{src="/#/crepe-example-basic"}
+::iframe{src="/#/crepe-example-basic" height="500px"}
 
 --------------
 

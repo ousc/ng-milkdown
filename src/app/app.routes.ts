@@ -9,7 +9,13 @@ import {CrepeExamplePluginComponent} from "./routes/documention/examples/crepe/c
 import {
   NgMilkdownExampleBasicComponent
 } from "./routes/documention/examples/normal/ng-milkdown-example-basic.component";
-import {NgMilkdownDComponent} from "./routes/documention/examples/normal/ng-milkdown-d.component";
+import {NgMilkdownExampleComponent} from "./routes/documention/examples/normal/ng-milkdown-example.component";
+import {
+  NgMilkdownExampleOutputsComponent
+} from "./routes/documention/examples/normal/ng-milkdown-example-outputs.component";
+import {
+  NgMilkdownExamplePluginComponent
+} from "./routes/documention/examples/normal/ng-milkdown-example-plugin.component";
 
 export const routes: Routes = [
   {
@@ -23,8 +29,10 @@ export const routes: Routes = [
       {path: 'crepe-example-outputs', component: CrepeExampleOutputsComponent},
       {path: 'crepe-example-plugin', component: CrepeExamplePluginComponent},
 
-      {path: 'ng-milkdown-d', component: NgMilkdownDComponent},
+      {path: 'ng-milkdown-example', component: NgMilkdownExampleComponent},
       {path: 'ng-milkdown-example-basic', component: NgMilkdownExampleBasicComponent},
+      {path: 'ng-milkdown-example-outputs', component: NgMilkdownExampleOutputsComponent},
+      {path: 'ng-milkdown-example-plugin', component: NgMilkdownExamplePluginComponent},
 
       {path: 'work-ground', component: WorkGroundComponent},
       { path: '**', redirectTo: 'work-ground' }

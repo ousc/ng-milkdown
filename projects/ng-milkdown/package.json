@@ -5,7 +5,7 @@
     "tslib": "^2.3.0",
     "@angular/common": "^18.1.0",
     "@angular/core": "^18.1.0",
-    "@milkdown/crepe": "^7.5.9",
+    "@milkdown/crepe": "^7.6.2",
     "ng-prosemirror-adapter": "^0.0.8"
   },
   "devDependencies": {

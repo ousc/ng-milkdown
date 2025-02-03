@@ -95,8 +95,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/@milkdown/crepe/lib/theme/common/style.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }

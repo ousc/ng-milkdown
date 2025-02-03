@@ -34,7 +34,7 @@ export class CrepeExampleBasicComponent implements OnInit {
     }
 
     features = {
-        [Crepe.Feature.CodeMirror]: false
+        [Crepe.Feature.Placeholder]: false
     }
 
     featureOptions = {

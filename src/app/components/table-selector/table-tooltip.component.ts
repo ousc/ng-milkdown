@@ -26,7 +26,7 @@ export const tableTooltip = tooltipFactory("TABLE");
       <div class="flex">
           @for (button of buttons;track $index) {
               @if (button.iif()) {
-                  <table-tooltip-button [icon]="button.icon" [title]="button.title" (onClick)="onClick($index)" [icon-style]="button.style"/>
+                  <table-tooltip-button [icon]="button.icon" [title]="button.title" (onClick)="onClick($index)" [icon-style]="button['style'] || {}"/>
               }
           }
       </div>
@@ -150,12 +150,12 @@ export class TableTooltip extends NgMilkdownTooltip {
 
   onClick(index: number) {
     const {slice, payload, hide} = this.buttons[index]
-    this.tooltipProvider?.hide();
+    this.pluginView?.hide();
     this.action((ctx) => {
       ctx.get(commandsCtx).call(slice, payload);
     });
     if (hide) {
-      this.tooltipProvider?.hide();
+      this.pluginView?.hide();
     }
     this.action(ctx => {
       ctx.get(editorViewCtx).focus();
@@ -165,7 +165,7 @@ export class TableTooltip extends NgMilkdownTooltip {
   override ngAfterViewInit() {
     super.ngAfterViewInit();
     this.action(ctx => {
-      ctx.set(tableTooltipCtx.key, this.tooltipProvider);
+      ctx.set(tableTooltipCtx.key, this.pluginView);
     });
   }
 

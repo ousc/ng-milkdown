@@ -1,5 +1,7 @@
 # ![Logo](../../../assets/milkdownLogo.png "ng-milkdown") ng-milkdown-crepe component
 
+> The document you are currently viewing is rendered using the `ng-milkdown-crepe` component.
+
 `ng-milkdown-crepe` is based on 🍼[milkdown](https://milkdown.dev)'s [crepe](https://milkdown.dev/docs/guide/using-crepe) implementation of [ Angular](https://angular.dev/) editor component that works out-of-the-box and supports custom configurations.
 
 ## Examples

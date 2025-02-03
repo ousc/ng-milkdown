@@ -1,5 +1,5 @@
 import {Component, Inject, Input} from '@angular/core';
-import {actionFactory} from "../../../projects/ng-milkdown/src/lib/actionFactory";
+import {actionFactory} from "../../../../projects/ng-milkdown/src/lib/actionFactory";
 import {
   createCodeBlockCommand,
   insertHrCommand,
@@ -13,7 +13,7 @@ import {
 import {callCommand} from '@milkdown/utils';
 import {CmdKey} from "@milkdown/core";
 import {RouterLink} from "@angular/router";
-import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
+import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 
 @Component({
   selector: 'top-bar',

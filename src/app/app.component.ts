@@ -15,9 +15,6 @@ import {TranslocoService} from "@jsverse/transloco";
     }
   `,
   imports: [
-    RouterOutlet,
-    RouterLinkActive,
-    RouterLink,
     LayoutComponent
   ],
   standalone: true

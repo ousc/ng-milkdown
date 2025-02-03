@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
@@ -13,6 +13,7 @@ import {BlockEditFeatureConfig} from "@milkdown/crepe/lib/types/feature/block-ed
 import {CrepeFeatureConfig} from "@milkdown/crepe/lib/types/feature";
 import {TranslocoService} from "@jsverse/transloco";
 import {AppService} from "../../../../app.service";
+import {styleUrls} from "../../../../shared/style-urls";
 
 @Component({
   selector: 'crepe-example-feature',
@@ -26,7 +27,6 @@ import {AppService} from "../../../../app.service";
                      [icons]="['preview', 'html', 'code']"
                      (ngModelChange)="handleSegmentedChange()"
           />
-          <div id="size" class="fixed bottom-4 left-4 h-10 leading-10 pointer-events-none"></div>
           <div [class.px-24]="selected === 'demo'"
                class="h-full overflow-auto overscroll-none ctn flex flex-col mt-10">
               <ng-milkdown-provider>
@@ -45,6 +45,8 @@ import {AppService} from "../../../../app.service";
           </div>
       </div>
   `,
+  encapsulation: ViewEncapsulation.ShadowDom,
+  styleUrls,
   styles:
   `
   ::ng-deep .milkdown .ProseMirror {
@@ -108,7 +110,7 @@ export class CrepeExampleFeatureComponent implements OnInit {
   }
 
   features = {
-    [Crepe.Feature.CodeMirror]: false
+    [Crepe.Feature.Placeholder]: false
   }
   featureConfigs: CrepeFeatureConfig = null;
 
@@ -118,17 +120,14 @@ export class CrepeExampleFeatureComponent implements OnInit {
 
   handleSegmentedChange() {
     if (this.selected === 'example.component.html') {
-      this.features = {[Crepe.Feature.CodeMirror]: true};
       this.http.get('assets/markdowns/crepe-example-feature/template.md', {responseType: 'text'}).subscribe((markdown) => {
         this.value = markdown;
       })
     } else if (this.selected === 'example.component.ts') {
-      this.features = {[Crepe.Feature.CodeMirror]: true};
       this.http.get('assets/markdowns/crepe-example-feature/typescript.md', {responseType: 'text'}).subscribe((markdown) => {
         this.value = markdown;
       })
     } else {
-      this.features = {[Crepe.Feature.CodeMirror]: false};
       this.http.get(`assets/markdowns/${this.appService.language}/overview.md`, {responseType: 'text'}).subscribe((markdown) => {
         this.value = markdown;
       })

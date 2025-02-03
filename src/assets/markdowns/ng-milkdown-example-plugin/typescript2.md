@@ -1,14 +1,13 @@
+```typescript
 import {Component, ElementRef} from '@angular/core';
 import {$ctx, $prose} from "@milkdown/utils";
 import {Plugin} from "@milkdown/prose/state";
-import {NgMilkdownPluginComp} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-plugin.directive";
-import {NgMilkdownProvider} from "../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
-import {$provide} from "../../../projects/ng-milkdown/src/lib/actionFactory";
+import {$provide, NgMilkdownPluginComp, NgMilkdownProvider} from "ng-milkdown";
 
 @Component({
   selector: 'size',
   template: `
-      <small class="select-none text-indigo-800">Words: {{ size }}</small>
+      <small class="select-none text-indigo-800">Words: {{size}}</small>
   `,
   styles: [
     `
@@ -37,3 +36,5 @@ export const sizePlugin = $provide((provider: NgMilkdownProvider) => $prose(ctx 
     view: provider.createPluginView({component: Size}),
   })
 ));
+
+```

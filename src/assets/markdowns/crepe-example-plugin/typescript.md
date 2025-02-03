@@ -9,12 +9,12 @@ import {Spinner} from "./spinner.component";
 import {sizePlugin} from "./size.component";
 
 @Component({
-  selector: 'crepe-example-basic',
+  selector: 'crepe-example-plugin',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, NgMilkdownCrepe, NgMilkdownProvider, Spinner],
   templateUrl: './crepe-example-basic.component.html',
 })
-export class CrepeExampleBasicComponent implements OnInit {
+export class CrepeExamplePluginComponent implements OnInit {
   constructor(private http: HttpClient) {
   }
 

@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
+import {NgMilkdownNodeComp} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-node.directive";
 
 @Component({
   selector: 'list-item',
   template: `
-      <li [class]="['flex-column', 'flex', 'items-start', 'gap-2', selected ? 'ProseMirror-selectednode' : '']">
-          <span class="flex h-6 items-center">
+      <li [class]="['flex-column', 'flex', 'items-baseline', 'gap-2', selected ? 'ProseMirror-selectednode' : '']">
+          <span class="flex h-6">
               @if (isBullet && checked != null) {
                   <input class="form-checkbox rounded" (change)="setAttrs({ checked: !checked })" type="checkbox"
                          checked="checked"/>
@@ -18,7 +18,13 @@ import {NgMilkdownNodeComp} from "../../../projects/ng-milkdown/src/lib/directiv
           <div class="min-w-0" #contentRef></div>
       </li>
   `,
-  styles: [],
+  styles: [
+    `
+      :host::ng-deep .min-w-0 p {
+        margin: 0 !important;
+      }
+    `
+  ],
   standalone: true
 })
 export class ListItem extends NgMilkdownNodeComp {
@@ -32,5 +38,9 @@ export class ListItem extends NgMilkdownNodeComp {
 
   get label() {
     return this.node.attrs?.label;
+  }
+
+  ngAfterViewInit() {
+    console.log(this.node);
   }
 }

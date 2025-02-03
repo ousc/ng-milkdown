@@ -4,7 +4,7 @@ import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {NgMilkdown} from "../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 import {HttpClient} from "@angular/common/http";
-import {TopBarComponent} from "../../components/top-bar.component";
+import {TopBarComponent} from "../../components/documentation/top-bar.component";
 import {NgMilkdownProvider} from "../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {Spinner} from "../../components/spinner.component";
 import {editorViewOptionsCtx} from "@milkdown/core";

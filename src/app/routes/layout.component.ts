@@ -120,6 +120,7 @@ export class LayoutComponent {
       if(params.embed) {
         this.collapsed = true;
         this.embed = true;
+        (document.querySelector(".github-fork-ribbon") as HTMLElement).style.display = 'none';
       }
     })
   }
@@ -147,7 +148,7 @@ export class LayoutComponent {
       children: [
         {
           title: 'menu.ng_milkdown',
-          routerLink: '/ng-milkdown-d',
+          routerLink: '/ng-milkdown-example',
           isLeaf: true
         }
       ],

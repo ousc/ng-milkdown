@@ -5,9 +5,7 @@ import {
   EventEmitter,
   forwardRef,
   Input, NgZone,
-  OnChanges,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -22,7 +20,7 @@ import {
   NgMilkdownPlugin,
 } from "./ng-milkdown.type";
 import { NgProsemirrorEditor} from "ng-prosemirror-adapter";
-import {getPlugins} from "./utils/ng-milkdown-plugin-utils";
+import {debounce, getPlugins} from "./utils/ng-milkdown-plugin-utils";
 import type {DefaultValue} from "@milkdown/kit/lib/core";
 
 @Component({
@@ -38,6 +36,10 @@ import type {DefaultValue} from "@milkdown/kit/lib/core";
     `
       :host {
         display: contents;
+      }
+
+      .milkdown-editor {
+        position: relative;
       }
     `
   ],
@@ -85,7 +87,9 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   async writeValue(value: any): Promise<void> {
     if (value !== undefined && value !== null) {
       this.value = value;
-      await this.render();
+      debounce(async ()=>{
+        await this.render();
+      });
     }
   }
 
@@ -136,23 +140,31 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
       await this.editor.destroy();
     }
     if (this.value || this.editor) {
+      const provider = this.provider;
       let editor = Editor.make()
       setTimeout(async () => {
         editor.use([
-          ...getPlugins(this.defaultPlugins, this.provider),
-          ...getPlugins(this.pluginsToLoad, this.provider)
+          ...getPlugins(this.defaultPlugins, provider),
+          ...getPlugins(this.pluginsToLoad, provider)
         ]);
-        this.beforeReady.emit({editor, provider: this.provider});
+        await editor.remove([...getPlugins(this.pluginsToUnload, provider)]);
+        this.beforeReady.emit({editor, provider});
         this.editor = editor;
         await editor.create();
         this.loading = false;
         this.loadingChange.emit(false);
-        this.onReady.emit({editor, provider: this.provider});
+        this.onReady.emit({editor, provider});
       });
     }
   }
 
   async ngAfterViewInit(): Promise<void> {
-    await this.render();
+    debounce(async ()=>{
+      await this.render();
+    });
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    await this.editor.destroy();
   }
 }
