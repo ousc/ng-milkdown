@@ -154,17 +154,6 @@ export class LayoutComponent {
       ],
       isLeaf: false
     },
-    {
-      title: "components",
-      children: [
-        {
-          title: 'Work Ground',
-          routerLink: '/work-ground',
-          isLeaf: true
-        }
-      ],
-      isLeaf: false
-    },
   ];
 
   get language() {

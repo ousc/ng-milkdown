@@ -5,4 +5,21 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   width: fit-content;
+
+  ::ng-deep {
+    input {
+      background-color: transparent;
+      border: var(--color-nord-7) solid 1px;
+      color: #000;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    input:focus {
+      outline: none;
+    }
+  }
 }
+

@@ -6,7 +6,6 @@ import {
 import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
 import {$view} from "@milkdown/utils";
 import {NgMilkdownProvider} from "../component/ng-milkdown-provider.component";
-import {tableTooltip} from "../../../../../src/app/components/table-selector/table-tooltip.component";
 
 export function flatPlugins(plugins: MilkdownPlugins): MilkdownPlugin[] {
   let convertedPlugins: MilkdownPlugin | MilkdownPlugin[];

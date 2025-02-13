@@ -1,15 +1,20 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, TemplateRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  StringTemplateOutletDirective
+} from "../../../../projects/ng-milkdown/src/lib/directive/string-template-outlet.directive";
 
 @Component({
   selector: 'modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, StringTemplateOutletDirective],
   template: `
     <div *ngIf="visible" (click)="close()">
       <div class="modal" (click)="$event.stopPropagation()">
         <div class="header">
-          <h3>{{ header }}</h3>
+          <h3>
+            <ng-container *stringTemplateOutlet="header">{{ header }}</ng-container>
+          </h3>
           <button class="close-btn" (click)="close()">&times;</button>
         </div>
         <div class="content">
@@ -61,7 +66,7 @@ import { CommonModule } from '@angular/common';
 export class ModalComponent {
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
-  @Input() header = '';
+  @Input() header: string| TemplateRef<any> = '';
 
   close() {
     this.visibleChange.emit(false);

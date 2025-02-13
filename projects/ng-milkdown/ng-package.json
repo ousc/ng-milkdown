@@ -5,10 +5,7 @@
     "entryFile": "src/public-api.ts"
   },
   "allowedNonPeerDependencies": [
-    "@milkdown/core",
-    "@milkdown/ctx",
-    "@milkdown/plugin-listener",
-    "@milkdown/preset-commonmark",
+    "@milkdown/crepe",
     "ng-prosemirror-adapter"
   ]
 }

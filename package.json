@@ -1,6 +1,6 @@
 {
   "name": "ng-milkdown",
-  "version": "0.0.3",
+  "version": "0.1.0-beta.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 2025",
@@ -28,7 +28,7 @@
     "@milkdown/theme-nord": "^7.6.2",
     "@uiw/codemirror-theme-xcode": "^4.23.7",
     "conditio": "^2.3.4",
-    "ng-prosemirror-adapter": "^0.0.8",
+    "ng-prosemirror-adapter": "^0.0.9",
     "prism-themes": "^1.9.0",
     "remark-directive": "^3.0.0",
     "rxjs": "~7.8.0",

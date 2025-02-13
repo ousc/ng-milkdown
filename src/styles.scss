@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 @import "assets/github-fork-ribbon.min.css";
+@import "katex/dist/katex.min.css";
 
 /* fallback */
 @font-face {
@@ -39,8 +40,8 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Inter var", sans-serif!important;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11"!important;
+  font-family: "Inter var", sans-serif !important;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11" !important;
   font-size: 1rem;
   font-weight: normal;
   overflow: hidden;
@@ -256,4 +257,27 @@ code .first::before, code .ProseMirror-trailingBreak::before {
 code .first:last-child:empty::before {
   content: none;
   counter-increment: none;
+}
+
+.katex-html {
+  display: none;
+}
+
+span[data-type="math_inline"] {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: 1rem;
+  font-weight: normal;
+  font-style: normal;
+  font-family: "Inter var", sans-serif !important;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11" !important;
+  overflow: hidden;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
 }

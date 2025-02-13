@@ -6,7 +6,7 @@ import {$prose} from "@milkdown/utils";
 import {NgMilkdownProvider} from "../../../../../projects/ng-milkdown/src/lib/component/ng-milkdown-provider.component";
 import {$provide} from "../../../../../projects/ng-milkdown/src/lib/actionFactory";
 
-export const linkPlugin = $provide((provider: NgMilkdownProvider) => {
+export const link = $provide((provider: NgMilkdownProvider) => {
   return $prose(
     () => {
       return new Plugin({

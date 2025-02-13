@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {NgMilkdownBlock} from "../../../../projects/ng-milkdown/src/lib/directive/ng-milkdown-block.directive";
 import {editorViewCtx} from "@milkdown/core";
+import {paragraphSchema} from '@milkdown/kit/preset/commonmark'
+import {TextSelection} from "prosemirror-state";
 
 @Component({
   selector: 'block',
@@ -49,9 +51,14 @@ export class Block extends NgMilkdownBlock {
     event.stopPropagation();
     const view = this.ctx.get(editorViewCtx)
     if (!view.hasFocus()) view.focus()
+
     const {state, dispatch} = view;
     const {from, to} = state.selection;
-    const tr = state.tr.insertText('Please input something.\n\n', to, to + 1);
+
+    const pos = from === to ? from : to;
+    let tr = state.tr.insert(pos, paragraphSchema.type(this.ctx).create())
+    tr = tr.setSelection(TextSelection.near(tr.doc.resolve(pos)))
+    dispatch(tr.scrollIntoView())
     dispatch(tr);
   }
 }

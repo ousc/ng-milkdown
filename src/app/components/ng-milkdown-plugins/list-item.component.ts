@@ -8,7 +8,7 @@ import {NgMilkdownNodeComp} from "../../../../projects/ng-milkdown/src/lib/direc
           <span class="flex h-6">
               @if (isBullet && checked != null) {
                   <input class="form-checkbox rounded" (change)="setAttrs({ checked: !checked })" type="checkbox"
-                         checked="checked"/>
+                         [checked]="checked"/>
               } @else if (isBullet) {
                   <span class="h-2 w-2 rounded-full bg-nord8 dark:bg-nord9"></span>
               } @else {

@@ -47,7 +47,7 @@ function getDecorations(ctx: Ctx, doc: Node, highlighter: Highlighter) {
 export const milkShiki = $proseAsync(async (ctx) => {
   const highlighter = await createHighlighter({
     themes: ['nord'],
-    langs: ['javascript', 'tsx', 'markdown', "css", "html", "angular-html", "typescript", "bash"]
+    langs: ['javascript', 'tsx', 'markdown', "css", "html", "angular-html", "typescript", "bash", "latex"]
   });
   const key = new PluginKey('shiki');
 

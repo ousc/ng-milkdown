@@ -1,58 +1,47 @@
-<div class="flex p-2 w-max" [hidden]="hidden">
-  <ng-template>
-    @if (isLink) {
-      <div class="p-card-title">
-          <span class="ml-2">
-            @if (!titlePanelVisible) {
-              {{ form.getRawValue().title }}
-              <i title="修改链接标题"
-                 class="ml-0.5 pi pi-pencil text-blue-400 hover:text-blue-200 text-sm cursor-pointer"
-                 (click)="$event.preventDefault();titlePanelVisible = true"></i>
-            } @else {
-              <form [formGroup]="form" class="inline-flex w-48">
-                <div class="flex items-center w-full gap-2">
-                  <input class="p-inputtext-sm w-full" formControlName="title" id="link-title"/>
-                  <button size="small"
-                          (click)="confirm($event)">确认修改链接标题</button>
-                  <button size="small" (click)="$event.preventDefault();titlePanelVisible = false;">
-                    取消修改
-                  </button>
-                </div>
-              </form>
-            }
-          </span>
-        <a class="ml-2 text-sm" [href]="form.getRawValue().href" target="_blank">
-          <i title="访问链接" class="material-symbols-outlined">link</i>
-        </a>
+<div class="flex p-2 w-max flex-col" [hidden]="hidden">
+  @if (isLink() || visible) {
+    <div class="flex items-center flex-1">
+      <div class="ml-2">
+        @if (!visible) {
+          <span>{{ form.getRawValue().title }}</span>
+          <a class="ml-2 text-sm" [href]="form.getRawValue().href" target="_blank">
+            <i title="修改链接标题" class="material-symbols-outlined"
+               (click)="$event.preventDefault();visible = true">edit</i>
+          </a>
+        } @else {
+          <form [formGroup]="form" class="inline-flex w-48">
+            <div>
+              <input class="w-full" formControlName="title" id="link-title"/>
+              <input class="w-full" formControlName="href" id="link-href"/>
+            </div>
+            <div class="flex items-center w-full gap-2">
+              <button size="small"
+                      (click)="confirm($event)">
+                <i title="确认修改链接标题" class="material-symbols-outlined">check</i>
+              </button>
+              <button size="small" (click)="$event.preventDefault();visible = false;">
+                <i title="取消修改" class="material-symbols-outlined">close</i>
+              </button>
+            </div>
+          </form>
+        }
       </div>
-      <form [formGroup]="form">
-        <div class="flex items-center w-full gap-2 px-2">
-            <textarea formControlName="href" id="link-href"
-                      class="w-full p-inputtext-sm min-h-[30px] max-h-[50px] overflow-x-hidden break-all" rows="1"
-                      cols="20"></textarea>
-          <button title="确认修改链接地址" size="small"
-                  (click)="confirm($event)">
-            <i class="material-symbols-outlined">check</i>
-          </button>
-        </div>
-      </form>
-    }
-  </ng-template>
+      <a class="ml-2 text-sm" [href]="form.getRawValue().href" target="_blank">
+        <i title="访问链接" class="material-symbols-outlined">open_in_new</i>
+      </a>
+    </div>
+  }
   @for (line of buttons; track line) {
-    <span class="gap-2 flex-1 flex items-center">
+    <div class="gap-2 flex-1 flex items-center">
       @for (button of line; track button) {
         <button size="small" [title]="button.title"
+                [class]="getClassList(button)"
                 class="flex-1 text-gray-600 text-xs px-2 py-1 hover:shadow-slate-400 hover:bg-slate-400 bg-opacity-50 rounded-lg hover:text-gray-900"
                 (mousedown)="mousedown($event, button)"
                 (touchstart)="mousedown($event, button)">
           <span class="material-symbols-outlined">{{ button.icon }}</span>
         </button>
       }
-    </span>
+    </div>
   }
 </div>
-
-@if (visible) {
-  <link-create-dialog [(visible)]="visible" header="传送门" [selectedText]="selectedText"
-                      (onConfirm)="createLink($event)"/>
-}

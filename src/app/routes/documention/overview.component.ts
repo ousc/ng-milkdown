@@ -33,7 +33,7 @@ import {imageInlineComponent} from '@milkdown/kit/component/image-inline'
   styleUrls: [
     "../../../styles.scss",
     "../../../../node_modules/@milkdown/crepe/lib/theme/common/style.css",
-    "../../../../node_modules/@milkdown/crepe/lib/theme/nord/style.css"
+    "../../../../node_modules/@milkdown/crepe/lib/theme/crepe/style.css"
   ],
   styles: `
     .active {

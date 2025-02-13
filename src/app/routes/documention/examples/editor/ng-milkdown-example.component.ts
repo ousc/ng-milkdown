@@ -16,16 +16,18 @@ import {indent} from '@milkdown/kit/plugin/indent';
 import {NgMilkdown} from "../../../../../../projects/ng-milkdown/src/lib/ng-milkdown.component";
 import {commonmark} from '@milkdown/kit/preset/commonmark';
 import {ListItem} from "../../../../components/ng-milkdown-plugins/list-item.component";
-import {blockquoteAttr, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
+import {blockquoteAttr, codeBlockSchema, inlineCodeAttr, listItemSchema} from "@milkdown/preset-commonmark";
 import {$nodeView, $pluginView, $prosePlugin} from "../../../../../../projects/ng-milkdown/src/lib/actionFactory";
 import {editorViewOptionsCtx} from "@milkdown/core";
 import '@milkdown/theme-nord/style.css';
-import {linkPlugin} from "../../../../components/ng-milkdown-plugins/link-widget/linkPlugin";
+import {link} from "../../../../components/ng-milkdown-plugins/link-widget/linkPlugin";
 import {tooltipFactory} from "@milkdown/plugin-tooltip";
-import {tableTooltip} from "../../../../components/table-selector/table-tooltip.component";
 import {Tooltip} from "../../../../components/ng-milkdown-plugins/tooltip/tooltip.component";
 import {Block} from "../../../../components/ng-milkdown-plugins/block.component";
 import {Size} from "../../../../components/ng-milkdown-plugins/size.component";
+import {milkShiki} from "../../../../components/milkdown-plugins/shiki";
+import {CodeBlock} from "../../../../components/ng-milkdown-plugins/code-block.component";
+import {latex} from "../../../../components/milkdown-plugins/latex";
 
 
 const tooltip = tooltipFactory('text-tooltip');
@@ -80,23 +82,26 @@ export class NgMilkdownExampleComponent implements OnInit {
 
   plugins = [
     commonmark,
-    linkPlugin,
+    link,
     history,
     imageInlineComponent,
     iframeComponent,
     trailing,
     block,
     indent,
+    milkShiki,
+    $nodeView(codeBlockSchema.node, {component: CodeBlock}),
     $pluginView(block.key, {component: Block}),
     $nodeView(listItemSchema.node, {component: ListItem}),
     tooltip,
     $pluginView(tooltip.key, {component: Tooltip}),
-    $prosePlugin({component: Size})
+    $prosePlugin({component: Size}),
+    latex,
   ];
 
   loading = true;
 
-  beforeReady({editor, provider}: NgMilkdownEditor) {
+  beforeReady({editor}: NgMilkdownEditor) {
     editor.config(ctx => {
       ctx.set(editorViewOptionsCtx, {
         attributes: {
