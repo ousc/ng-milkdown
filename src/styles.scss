@@ -1,40 +1,283 @@
 /* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
-@include mat.core();
-$theme-primary: mat.define-palette(mat.$blue-gray-palette);
-$theme-accent: mat.define-palette(mat.$gray-palette, A200, A100, A400);
-$theme-warn: mat.define-palette(mat.$red-palette);
-$theme: mat.define-light-theme((
-  color: (
-    primary: $theme-primary,
-    accent: $theme-accent,
-    warn: $theme-warn,
-  ),
-  typography: mat.define-typography-config(),
-));
-@include mat.all-component-themes($theme);
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-@import 'prism-themes/themes/prism-nord.css';
-@import '@milkdown/theme-nord/style.css';
-@import 'katex/dist/katex.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "assets/github-fork-ribbon.min.css";
+@import "katex/dist/katex.min.css";
+
+/* fallback */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v226/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1n-q_4MrImHCIJIZrDCvHOejbd5zrDAt.woff2) format('woff2');
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+milkdown-code-block {
+  --crepe-color-surface: #292A30 !important;
+}
 
 
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
+  font-family: "Inter var", sans-serif !important;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11" !important;
+  font-size: 1rem;
+  font-weight: normal;
+  overflow: hidden;
 }
 
 
 .prose table {
-  width: calc(100% - 2rem)!important;
+  width: calc(100% - 2rem) !important;
 }
 
-li p {
-  margin: 0!important;
-  line-height: 1.5rem!important;
+// 若是sm 或者 xs 就不显示
+@media screen and (max-width: 640px) {
+  .milkdown .ProseMirror {
+    padding: 2rem !important;
+  }
+  .github-fork-ribbon {
+    display: none;
+  }
+}
+
+milkdown-image-inline {
+  display: inline-block !important;
+  vertical-align: bottom;
+}
+
+milkdown-image-inline > .image-inline {
+  display: block;
+  height: 100%;
+  max-height: 40px;
+}
+
+milkdown-image-inline.selected > .image-inline {
+  outline: 2px solid fuchsia;
+  vertical-align: bottom;
+}
+
+milkdown-image-inline.selected > .empty-image-inline {
+  outline: 2px solid fuchsia;
+}
+
+milkdown-image-inline > .empty-image-inline {
+  align-items: center;
+  padding: 0 8px;
+  gap: 8px;
+  background: oldlace;
+  border-radius: 4px;
+}
+
+milkdown-image-inline > .empty-image-inline .image-icon {
+  color: darkgray;
+}
+
+milkdown-image-inline > .empty-image-inline .image-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .placeholder {
+  color: darkgray;
+  font-size: 12px;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .link-input-area {
+  line-height: 16px;
+  font-size: 12px;
+  padding: 8px 0;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .placeholder .uploader {
+  gap: 8px;
+  color: fuchsia;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer.focus .placeholder .uploader {
+  color: unset;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .placeholder .uploader:hover {
+  color: fuchsia;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .placeholder .text {
+  margin-left: 8px;
+}
+
+milkdown-image-inline > .empty-image-inline .confirm {
+  background: darkgray;
+  color: antiquewhite;
+  line-height: 28px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+milkdown-image-inline {
+  outline: none;
+  display: inline;
+}
+
+milkdown-image-inline input {
+  background: transparent;
+  outline: none;
+  border: 0;
+}
+
+milkdown-image-inline.empty {
+  vertical-align: bottom;
+}
+
+milkdown-image-inline > .empty-image-inline {
+  display: inline-flex;
+}
+
+milkdown-image-inline > .empty-image-inline .confirm {
+  cursor: pointer;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer {
+  position: relative;
+  flex: 1;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer > .link-input-area {
+  width: 208px;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  cursor: text;
+}
+
+milkdown-image-inline > .empty-image-inline .link-importer .placeholder .uploader {
+  cursor: pointer;
+  display: flex;
+}
+
+milkdown-image-inline .hidden {
+  display: none !important;
+}
+
+// 滚动条样式：灰色半透明，hover时不透明
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  width: 6px;
+  height: 6px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+hr {
+  padding: 20px 0 !important;
+  height: 41px !important;
+}
+
+.menu-groups {
+  max-height: 50vh !important;
+}
+
+.iframe-plugin {
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+  border-width: 0 1px 1px;
+  border-color: rgba(73, 78, 89, .1);
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px -1px rgba(0, 0, 0, .1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+code {
+  counter-reset: step;
+  counter-increment: step calc(var(--start, 1) - 1);
+}
+
+code .first::before, code .ProseMirror-trailingBreak::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 2rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: rgba(115, 138, 148, .4)
+}
+
+code .first:last-child:empty::before {
+  content: none;
+  counter-increment: none;
+}
+
+.katex-html {
+  display: none;
+}
+
+span[data-type="math_inline"] {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: 1rem;
+  font-weight: normal;
+  font-style: normal;
+  font-family: "Inter var", sans-serif !important;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11" !important;
+  overflow: hidden;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
 }

@@ -10,9 +10,19 @@ NG-MILKDOWN
 
 [![NPM version](https://img.shields.io/npm/v/ng-milkdown.svg)](https://www.npmjs.com/package/ng-milkdown)
 
-
 WYSIWYG markdown Editor 🍼 [**Milkdown**](https://github.com/Milkdown/milkdown) for [**Angular**](https://angular.dev/) out of box, only supports Angular **17**+.
 Allow you to use native Angular components to create nodeView/pluginView/widgetView, and provide corresponding examples.
+
+## Version
+`ng-milkdown` is only supported by `Angular` version `>=17.0.0`.
+
+`ng-milkdown-crepe` only supports `Angular` version `>=18.0.0`.
+
+| Angular | ng-milkdown |
+|---------|-------------|
+| 17.0.0+ | 0.0.3       |
+| 18.0.0+ | 0.1.0-beta0 |
+
 
 ## Example
 
@@ -25,11 +35,11 @@ npm install
 npm run start
 ```
 
-## Online Demo
+## Online Demo And Documentation
 
 [https://ousc.github.io/ng-milkdown](https://ousc.github.io/ng-milkdown)
 
-## ng-prosemirror-adapter
+## ng-prosemirror-adapter(Latest Version 0.0.9)
 
 Angular adapter for ProseMirror, only supports Angular 17+.
 
@@ -42,21 +52,21 @@ Angular adapter for ProseMirror, only supports Angular 17+.
 - [X]  `plugin-listener`**(preset)**
 - [X]  `preset-gfm`**(supported)**
 - [X]  `plugin-history`**(supported)**
-- [X]  `plugin-prism`**(supported)**
+- [X]  `plugin-shiki`**(supported)**
 - [X]  `plugin-clipboard`**(supported)**
 - [X]  `plugin-cursor`**(supported)**
-- [X]  `plugin-math`**(supported)**
+- [X]  `plugin-latex`**(supported)**
 - [X]  `plugin-block`**(supported)**
 - [X]  `plugin-indent`**(supported)**
 - [X]  `plugin-tooltip`**(supported)**
-- [X]  `plugin-slash`**(supported)**
-- [X]  `plugin-diagram`**(supported)**
-- [X]  `plugin-emoji`**(supported)**
+- [ ]  `plugin-slash`**(working)**
+- [ ]  `plugin-diagram`**(working)**
+- [ ]  `plugin-emoji`**(working)**
 - [X]  `plugin-cursor`**(supported)**
 - [X]  `plugin-trailing`**(supported)**
 - [X]  `plugin-upload`**(supported)**
-- [X]  `plugin-collab`**(supported)**
-- [X]  `plugin-copilot`**(supported)**
+- [ ]  `plugin-collab`**(working)**
+- [ ]  `plugin-copilot`**(working)**
 
 usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
 
@@ -65,107 +75,125 @@ usage of plugins can be found in [example](https://github.com/ousc/ng-milkdown/t
 ### Install
 
 ```bash
-npm install ng-milkdown ng-prosemirror-adapter @milkdown/core @milkdown/ctx @milkdown/plugin-listener @milkdown/preset-commonmark @milkdown/theme-nord
+npm install ng-milkdown -S
 ```
 
-### Example
-
-#### workGround.component.html
+### Crepe
+#### crepe-editor.component.html
 ```html
 <ng-milkdown-provider>
-  <ng-milkdown
-    [config]="config"
-    [plugins]="plugins"
+  <ng-milkdown-crepe
     [(ngModel)]="value"
+    [plugins]="plugins"
+    [features]="features"
+    [featureConfigs]="featureConfigs"
     [(loading)]="loading"
     [spinner]="spinner"
+    (beforeReady)="beforeReady($event)"
     (ngModelChange)="onChange($event)"
-    (onReady)="editor = $event"
   />
 </ng-milkdown-provider>
 ```
-#### workGround.component.ts
+
+#### crepe-editor.component.ts
 
 ```typescript
-import {NgMilkdownProvider} from "./ng-milkdown-provider.component";
+import "@milkdown/crepe/theme/common/style.css";
+import "@milkdown/crepe/theme/nord.css";
+import {NgMilkdownCrepeEditor} from "./ng-milkdown.type";
 
-const tooltip = tooltipFactory('my-tooltip')
-const slash = slashFactory('my-slash')
+@Component({...})
+export class CrepeEditorComponent {
+  features = {
+    [Crepe.Feature.Placeholder]: false
+  }
+  
+  beforeReady({crepe}: NgMilkdownCrepeEditor) {
+    editor.config(ctx => {
+      ctx.set(blockquoteAttr.key, () => ({
+        class: "border-l-4 border-nord10 pl-4 dark:border-nord8",
+      }));
+
+      ctx.set(inlineCodeAttr.key, () => ({
+        class: "font-mono text-nord10 tracking-tight dark:text-nord8",
+      }));
+    });
+  }
+
+  plugins = [imageInlineComponent];
+
+  value = 'Hello, World!';
+
+  onChange(markdownText: string) {
+    console.log({markdownText});
+  }
+}
+
+```
+### Milkdown Editor
+#### editor.component.html
+```html
+<ng-milkdown-provider>
+  <ng-milkdown
+    [(ngModel)]="value"
+    [plugins]="plugins"
+    [(loading)]="loading"
+    [spinner]="spinner"
+    (beforeReady)="beforeReady($event)"
+    (ngModelChange)="onChange($event)"
+  />
+</ng-milkdown-provider>
+```
+
+#### editor.component.ts
+
+```typescript
+
+const tooltip = tooltipFactory('text-tooltip')
+
 @Component({...})
 export class WorkGroundComponent {
   @ViewChild(NgMilkdownProvider, {static: true}) provider: NgMilkdownProvider;
 
-  config = (ctx: any) => {
-    ctx.set(editorViewOptionsCtx, {
-      attributes: {
-        class: "prose dark:prose-invert outline-none mx-auto px-2 py-4 box-border milkdown-theme-nord editor",
-        spellcheck: "false",
-      },
+  beforeReady({editor}: NgMilkdownEditor) {
+    editor.config(ctx => {
+      ctx.set(editorViewOptionsCtx, {
+        attributes: {
+          class: "prose dark:prose-invert outline-none mx-auto px-2 py-4 max-w-full box-border milkdown-theme-nord editor",
+          spellcheck: "false",
+        },
+      });
+
+      ctx.set(blockquoteAttr.key, () => ({
+        class: "border-l-4 border-nord10 pl-4 dark:border-nord8",
+      }));
+
+      ctx.set(inlineCodeAttr.key, () => ({
+        class: "font-mono text-nord10 tracking-tight dark:text-nord8",
+      }));
     });
   }
 
-  plugins: NgMilkdownPlugin[] = [
-    gfm,
+  plugins = [
+    commonmark,
+    link,
     history,
-    prism,
-    clipboard,
-    cursor,
-    math,
-    emoji,
-    [
-      diagram, // diagram plugin
-      $view(diagramSchema.node, () =>
-        this.provider.createNodeView({ // create node view for diagram node
-          component: Diagram,
-          stopEvent: () => true,
-        })
-      )
-    ],
-    $view(listItemSchema.node, () =>
-      this.provider.createNodeView({component: ListItem}) // create node view for list item node
-    ),
-    {
-      plugin: block,
-      config: ctx => {
-        ctx.set(block.key, {
-          view: this.provider.createPluginView({ // create plugin view for block plugin
-            component: BlockComponent,
-            inputs: {ctx}
-          })
-        });
-      }
-    },
-    $provide(linkPlugin), // $provide is an alias of `provider => MilkdownPlugin`, allow you create your own plugin without waiting for `provider` initialization
-    {
-      plugin: indent,
-      config: ctx => {
-        ctx.set(indentConfig.key as any, { // set indent config
-          type: 'space',
-          size: 4,
-        });
-      }
-    },
-    {
-      plugin: tooltip,
-      config: ctx => {
-        ctx.set(tooltip.key, {
-          view: this.provider.createPluginView({component: ImageTooltipComponent}) // create plugin view for tooltip plugin
-        })
-      }
-    },
-    {
-      plugin: slash,
-      config: ctx => {
-        ctx.set(slash.key, {
-          view: this.provider.createPluginView({component: SlashComponent}) // create plugin view for slash plugin
-        })
-      }
-    }
+    imageInlineComponent,
+    iframeComponent,
+    trailing,
+    block,
+    indent,
+    milkShiki,
+    $nodeView(codeBlockSchema.node, {component: CodeBlock}),
+    $pluginView(block.key, {component: Block}),
+    $nodeView(listItemSchema.node, {component: ListItem}),
+    tooltip,
+    $pluginView(tooltip.key, {component: Tooltip}),
+    $prosePlugin({component: Size}),
+    latex,
   ];
 
   value = 'Hello, World!';
-
-  editor: Editor;
 
   onChange(markdownText: string) {
     console.log({markdownText});
@@ -179,7 +207,6 @@ export class WorkGroundComponent {
 | Property          | Description                                                       | Type                      | Default                |
 |-------------------|-------------------------------------------------------------------|---------------------------|------------------------|
 | `[classList]`     | editor element class names                                        | `string[]`                | `[]`                   |
-| `[config]`        | config before Editor.create()                                     | `NgMilkdownEditorConfig`  | `(ctx: Ctx) => void 0` |
 | `[plugins]`       | milkdown plugin to use                                            | `NgMilkdownPlugin[]`      | `[]`                   |
 | `[editor]`        | pass in a fully controlled editor object                          | `(HTMLElement) => Editor` | -                      |
 | `[loading]`       | set the loading status of editor                                  | `boolean`                 | `true`                 |
@@ -209,33 +236,6 @@ export class ImageTooltipComponent extends NgMilkdownTooltip {
 }
 ```
 
-### ng-milkdown-slash
-
-```typescript
-@Component({
-  template: `
-  @for (item of list;track item) {
-      <button
-        [class]="selected === $index ? ['selected'] : []"
-        (mousemove)="selected = $index"
-        (mousedown)="action(onPick)"
-      >
-        {{item.label}}
-      </button>
-  }
-  `,
-  ...
-})
-export class SlashComponent extends NgMilkdownSlash {
-  override get onPick(): (ctx: Ctx) => void {
-    return (ctx: Ctx) => {
-      this.removeSlash(ctx);
-      ctx.get(commandsCtx).call(createCodeBlockCommand.key);
-      ctx.get(editorViewCtx).focus();
-    }
-  }
-}
-```
 
 ### ng-milkdown-block
 
@@ -254,57 +254,6 @@ export class SlashComponent extends NgMilkdownSlash {
 })
 export class BlockComponent extends NgMilkdownBlock {}
 ```
-
-## How to create a nodeView in ng-milkdown
-
-It's very easy to create a nodeView in ng-milkdown, you can use the following example
-```html
-@Component({
-  selector: 'list-item',
-  template: `
-      <li [class]="['flex-column', 'flex', 'items-start', 'gap-2', selected ? 'ProseMirror-selectednode' : '']">
-          <span class="flex h-6 items-center">
-              @if (isBullet && checked != null) {
-                  <input class="form-checkbox rounded" (change)="checked = !checked" type="checkbox"
-                         checked="checked"/>
-              } @else if (isBullet) {
-                  <span class="h-2 w-2 rounded-full bg-nord-10 dark:bg-nord9"></span>
-              } @else {
-                  <span class="text-nord-10">{{ label }}</span>
-              }
-          </span>
-          <div class="min-w-0" #contentRef></div>
-      </li>
-  `,
-  styles: [`
-    :host {
-      display: contents;
-    }
-  `],
-  standalone: true
-})
-export class ListItem extends NgMilkdownNodeComp {
-  get checked() {
-    return this.node.attrs?.checked;
-  }
-
-  set checked(checked){
-    this.setAttrs({checked})
-  }
-
-  get isBullet() {
-    return this.node.attrs?.listType === "bullet";
-  }
-
-  get label() {
-    return this.node.attrs?.label;
-  }
-}
-```
-
-Firstly, you should make your nodeView class inherit from `NgMilkdownNodeComp`.
-To additionally, you should add `#contentRef` ElementRef in your nodeView, which will be used to render the content of the node.
-
 
 More detailed examples and more plugins can be found in [example](https://github.com/ousc/ng-milkdown/tree/main/src/app/components);
 

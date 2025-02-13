@@ -1,0 +1,32 @@
+{
+  "slashMenuTextGroupLabel": "文本",
+  "slashMenuListGroupLabel": "列表",
+  "slashMenuAdvancedGroupLabel": "高级",
+  "slashMenuTextLabel": "文本",
+  "slashMenuH1Label": "一级标题",
+  "slashMenuH2Label": "二级标题",
+  "slashMenuH3Label": "三级标题",
+  "slashMenuH4Label": "四级标题",
+  "slashMenuH5Label": "五级标题",
+  "slashMenuH6Label": "六级标题",
+  "slashMenuQuoteLabel": "引用",
+  "slashMenuDividerLabel": "分割线",
+  "slashMenuOrderedListLabel": "有序列表",
+  "slashMenuBulletListLabel": "无序列表",
+  "slashMenuTaskListLabel": "任务列表",
+  "slashMenuCodeBlockLabel": "代码块",
+  "slashMenuTableLabel": "表格",
+  "slashMenuImageLabel": "图片",
+  "language": {
+    "en": "zh-CN"
+  },
+  "menu": {
+    "overview": "概览",
+    "using_crepe": "使用 Crepe",
+    "ng_milkdown_crepe": "ng-milkdown-crepe 编辑器",
+    "ng_milkdown_crepe_playground": "ng-milkdown-crepe 演示",
+    "using_milkdown": "使用 Milkdown",
+    "ng_milkdown": "ng-milkdown 编辑器"
+  },
+  "demo": "预览"
+}

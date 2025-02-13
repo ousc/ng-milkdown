@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import {Ctx} from '@milkdown/ctx';
 import {SlashPlugin, SlashProvider} from '@milkdown/plugin-slash';
-import {hiddenDiv, NgMilkdown} from '../../public-api';
+import {NgMilkdown} from '../../public-api';
 import {editorViewCtx, rootDOMCtx} from "@milkdown/core";
 import {callCommand} from "@milkdown/utils";
 import {undoCommand} from "@milkdown/plugin-history";
@@ -105,26 +105,11 @@ export class NgMilkdownSlash extends NgMilkdownPluginComp implements AfterViewIn
     return (this.provider.editor as unknown as NgMilkdown).editor.ctx.get(rootDOMCtx);
   }
 
-  override get parentView() {
-    return hiddenDiv();
-  }
-
   override get pluginView() { //default pluginView
     return new SlashProvider({
       content: this.el.nativeElement,
       debounce: 50,
-      trigger: this.trigger,
-      tippyOptions: {
-        onShow: () => {
-          this.opened = true;
-          this.root.addEventListener('keydown', this.eventListener);
-        },
-        onHide: () => {
-          this.selected = 0;
-          this.opened = false;
-          this.root.removeEventListener('keydown', this.eventListener);
-        },
-      },
+      trigger: this.trigger
     }) as any;
   }
 }

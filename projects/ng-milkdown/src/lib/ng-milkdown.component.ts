@@ -4,44 +4,24 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  Input,
-  OnChanges,
+  Input, NgZone,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {Ctx, MilkdownPlugin} from "@milkdown/ctx";
 import {defaultValueCtx, Editor, rootCtx} from "@milkdown/core";
 import {listener, listenerCtx} from "@milkdown/plugin-listener";
 import {commonmark} from "@milkdown/preset-commonmark";
-import {NgMilkdownService} from "./ng-milkdown.service";
-import {NgTemplateOutlet} from "@angular/common";
+import { gfm } from '@milkdown/kit/preset/gfm';
 import {StringTemplateOutletDirective} from "./directive/string-template-outlet.directive";
 import {
-  MilkdownPlugins,
-  MilkdownPluginsConfigurable,
-  NgMilkdownEditorConfig,
+  NgMilkdownEditor,
   NgMilkdownPlugin,
-  NgMilkdownPluginFactory,
 } from "./ng-milkdown.type";
-import {NgProsemirrorEditor} from "ng-prosemirror-adapter";
-
-
-function isZoneAwarePromise(object: any) {
-  return object instanceof Promise;
-}
-
-function flatPlugins(plugins: MilkdownPlugins): (MilkdownPlugin | MilkdownPlugin[]) {
-  let convertedPlugins: MilkdownPlugin | MilkdownPlugin[];
-  if (Array.isArray(plugins)) {
-    convertedPlugins = plugins.flat(1);
-  } else {
-    convertedPlugins = plugins;
-  }
-  return convertedPlugins;
-}
+import { NgProsemirrorEditor} from "ng-prosemirror-adapter";
+import {debounce, getPlugins} from "./utils/ng-milkdown-plugin-utils";
+import type {DefaultValue} from "@milkdown/kit/lib/core";
 
 @Component({
   selector: 'ng-milkdown',
@@ -57,10 +37,14 @@ function flatPlugins(plugins: MilkdownPlugins): (MilkdownPlugin | MilkdownPlugin
       :host {
         display: contents;
       }
+
+      .milkdown-editor {
+        position: relative;
+      }
     `
   ],
   imports: [
-    NgTemplateOutlet, StringTemplateOutletDirective
+    StringTemplateOutletDirective
   ],
   providers: [
     {
@@ -72,48 +56,40 @@ function flatPlugins(plugins: MilkdownPlugins): (MilkdownPlugin | MilkdownPlugin
       provide: NgProsemirrorEditor,
       useExisting: forwardRef(() => NgMilkdown)
     },
-    NgMilkdownService
   ]
 })
-export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit, OnChanges {
-  constructor(public override el: ElementRef, protected ngMilkdownService: NgMilkdownService) {
+export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAccessor, AfterViewInit {
+  constructor(public override el: ElementRef, private ngZone: NgZone) {
     super(el);
-  }
-
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes.config || changes.plugins || changes.editor) {
-      await this.render();
-    }
+    this.beforeReady.subscribe(({editor}) => {
+      editor.config(async (ctx) => {
+        ctx.set(rootCtx, this.editorRef.nativeElement);
+        ctx.set(defaultValueCtx, this.value);
+        ctx.get(listenerCtx).markdownUpdated((ctx, markdown, prevMarkdown) => {
+          if (markdown !== prevMarkdown) {
+            this.value = markdown;
+            this.onChange(markdown);
+          }
+        });
+      });
+    })
   }
 
   @Input() classList: string[] = [];
 
-  get loading() {
-    return this.ngMilkdownService.loading
-  }
-
-  @Input() set loading(value) {
-    this.ngMilkdownService.loading = value
-  }
+  @Input() loading = true;
   @Output() loadingChange = new EventEmitter<boolean>();
 
   @Input() spinner: TemplateRef<any> = null;
 
-  get editor(): Editor {
-    return this.ngMilkdownService.editor;
-  }
-
-  _editorFn: (element: HTMLElement) => Promise<Editor> = null;
-
-  @Input()
-  set editor(editorFn: ((element: HTMLElement) => Promise<Editor>)) {
-    this._editorFn = editorFn;
-  }
+  editor: Editor;
 
   async writeValue(value: any): Promise<void> {
     if (value !== undefined && value !== null) {
       this.value = value;
-      await this.render();
+      debounce(async ()=>{
+        await this.render();
+      });
     }
   }
 
@@ -129,13 +105,25 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
     this.disabled = isDisabled;
   }
 
-  @Input() value: string = null;
+
+  @Input() value: DefaultValue = null;
   @Output() onChanged = new EventEmitter<string>();
 
-  @Input() plugins: NgMilkdownPlugin[] = [];
-  @Input() config: NgMilkdownEditorConfig = (ctx, provider) => null;
-  @Output() onReady = new EventEmitter<Editor>();
-  onTouched: () => void = () => {};
+  defaultPlugins: NgMilkdownPlugin[] = [commonmark, listener, gfm];
+  loadedPlugins: NgMilkdownPlugin[] = [];
+  pluginsToLoad: NgMilkdownPlugin[] = [];
+  pluginsToUnload: NgMilkdownPlugin[] = [];
+
+  @Input() set plugins(plugins: NgMilkdownPlugin[]) {
+    plugins = plugins.filter((plugin) => !this.defaultPlugins.includes(plugin));
+    this.pluginsToLoad = plugins.filter((plugin) => !this.loadedPlugins.includes(plugin));
+    this.pluginsToUnload = this.loadedPlugins.filter((plugin) => !plugins.includes(plugin));
+    this.loadedPlugins = plugins;
+  }
+  @Output() beforeReady = new EventEmitter<NgMilkdownEditor>();
+  @Output() onReady = new EventEmitter<NgMilkdownEditor>();
+  onTouched: () => void = () => {
+  };
 
   onChange: (value: any) => void = (value) => {
     this.onChanged.emit(value)
@@ -145,61 +133,38 @@ export class NgMilkdown extends NgProsemirrorEditor implements ControlValueAcces
   disabled = false;
 
   async render(): Promise<void> {
-    this.loading = true;
-    if (this._editorFn) {
-      this.ngMilkdownService.editor = await this._editorFn(this.editorRef.nativeElement);
-      this.onReady.emit(this.editor);
-      this.loading = false;
-      this.loadingChange.emit(false);
-      return;
+    if(!this.editor){
+      this.loading = true;
     }
-
-    if(this.value) {
+    if(this.editor){
+      await this.editor.destroy();
+    }
+    if (this.value || this.editor) {
+      const provider = this.provider;
+      let editor = Editor.make()
       setTimeout(async () => {
-        let editor = Editor.make()
-          .config(async (ctx) => {
-            ctx.set(rootCtx, this.editorRef.nativeElement);
-            ctx.set(defaultValueCtx, this.value);
-            ctx.get(listenerCtx).markdownUpdated((_, md) => {
-              this.value = md;
-              this.onChange(md);
-            });
-
-            if (isZoneAwarePromise(this.config)) {
-              await this.config(ctx, this.provider);
-            } else {
-              this.config(ctx, this.provider);
-            }
-          })
-          .use(commonmark)
-          .use(listener)
-
-        for (const ngMilkdownPlugin of this.plugins) {
-          if ((ngMilkdownPlugin as any).plugin && (ngMilkdownPlugin as any).config) {
-            const {plugin, config} = ngMilkdownPlugin as unknown as MilkdownPluginsConfigurable;
-            editor = editor.use(flatPlugins(plugin));
-            if (isZoneAwarePromise(config)) {
-              editor = editor.config((await config) as (ctx: Ctx) => void)
-            } else {
-              editor = editor.config(config as (ctx: Ctx) => void)
-            }
-          } else if ((ngMilkdownPlugin as any).factory) {
-            editor = editor.use(flatPlugins((ngMilkdownPlugin as NgMilkdownPluginFactory).factory(this.provider)));
-          } else {
-            editor = editor.use(flatPlugins(ngMilkdownPlugin as (MilkdownPlugins)));
-          }
-        }
-
-        editor = await editor.create();
+        editor.use([
+          ...getPlugins(this.defaultPlugins, provider),
+          ...getPlugins(this.pluginsToLoad, provider)
+        ]);
+        await editor.remove([...getPlugins(this.pluginsToUnload, provider)]);
+        this.beforeReady.emit({editor, provider});
+        this.editor = editor;
+        await editor.create();
         this.loading = false;
         this.loadingChange.emit(false);
-        this.onReady.emit(editor);
-        this.ngMilkdownService.editor = editor;
-      })
+        this.onReady.emit({editor, provider});
+      });
     }
   }
 
   async ngAfterViewInit(): Promise<void> {
-    await this.render();
+    debounce(async ()=>{
+      await this.render();
+    });
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    await this.editor.destroy();
   }
 }

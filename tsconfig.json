@@ -16,22 +16,23 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
+    "module": "ESNext",
     "strictNullChecks": false,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
     "noUncheckedIndexedAccess": true,
-    "lib": [
-      "ESNext",
-      "dom"
-    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "resolve": { "extensions": [".json"] }
 }
